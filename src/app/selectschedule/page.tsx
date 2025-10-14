@@ -78,7 +78,7 @@ export default function SubjectsPage() {
             // 2. نجيب userToken من localStorage
             const userToken = localStorage.getItem("userToken");
             if (!userToken) {
-                // alert("مفيش userToken محفوظ!");
+                alert("مفيش userToken محفوظ!");
                 return;
             }
 
@@ -95,7 +95,7 @@ export default function SubjectsPage() {
             );
             const userData = await userRes.json();
             if (userData.length === 0) {
-                // alert("مفيش يوزر بالـ token ده!");
+                alert("مفيش يوزر بالـ token ده!");
                 return;
             }
 
@@ -119,12 +119,12 @@ export default function SubjectsPage() {
             const updatedUser = await updateRes.json();
             console.log("Updated User:", updatedUser);
 
-            // alert("تم تحديث اختياراتك بنجاح ✅");
+            alert("تم تحديث اختياراتك بنجاح ✅");
             setShowModal(false);
             router.replace("/home");
         } catch (err) {
             console.error("Error:", err);
-            // alert("حصل خطأ أثناء الحفظ ❌");
+            alert("حصل خطأ أثناء الحفظ ❌");
         }
     };
 
