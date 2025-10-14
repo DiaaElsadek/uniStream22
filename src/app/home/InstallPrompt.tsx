@@ -6,6 +6,7 @@ export default function InstallPrompt() {
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     const [showInstallBox, setShowInstallBox] = useState(false);
     const [isIOS, setIsIOS] = useState(false);
+    const [hideAnimation, setHideAnimation] = useState(false);
 
     useEffect(() => {
         const userAgent = window.navigator.userAgent.toLowerCase();
@@ -28,7 +29,10 @@ export default function InstallPrompt() {
 
         let hideTimer: any;
         if (showInstallBox) {
-            hideTimer = setTimeout(() => setShowInstallBox(false), 5000);
+            hideTimer = setTimeout(() => {
+                setHideAnimation(true);
+                setTimeout(() => setShowInstallBox(false), 600);
+            }, 5000);
         }
 
         return () => {
@@ -42,13 +46,14 @@ export default function InstallPrompt() {
         deferredPrompt.prompt();
         const choiceResult = await deferredPrompt.userChoice;
         setDeferredPrompt(null);
-        setShowInstallBox(false);
+        setHideAnimation(true);
+        setTimeout(() => setShowInstallBox(false), 600);
     };
 
     if (!showInstallBox) return null;
 
     return (
-        <div className="install-box">
+        <div className={`install-box ${hideAnimation ? "slide-out" : "slide-in"}`}>
             <div className="gradient-border"></div>
             <div className="install-content">
                 {isIOS ? (
@@ -74,8 +79,20 @@ export default function InstallPrompt() {
                     color: #e5e7eb;
                     font-weight: 500;
                     overflow: hidden;
-                    animation: fadeIn 0.6s ease-out;
                     max-width: 280px;
+                    transform: translateX(-120%);
+                    opacity: 0;
+                    transition: transform 0.6s ease, opacity 0.6s ease;
+                }
+
+                .slide-in {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+
+                .slide-out {
+                    transform: translateX(-120%);
+                    opacity: 0;
                 }
 
                 .gradient-border {
@@ -112,17 +129,6 @@ export default function InstallPrompt() {
                 button:hover {
                     transform: translateY(-2px);
                     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
-                }
-
-                @keyframes fadeIn {
-                    0% {
-                        opacity: 0;
-                        transform: translateY(-15px);
-                    }
-                    100% {
-                        opacity: 1;
-                        transform: translateY(0);
-                    }
                 }
 
                 @keyframes gradientMove {
