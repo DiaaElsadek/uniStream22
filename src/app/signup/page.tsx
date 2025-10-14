@@ -77,47 +77,54 @@ async function handelSignup(academicId: string,
     localStorage.setItem("academicId", academicId);
 
     // Handler OTP
-    const otp = await Math.floor(100000 + Math.random() * 900000); // Generate 6-digit 
-    const leftotp = await Math.floor(100000 + Math.random() * 900000); // Generate 6-digit 
-    const rightotp = await Math.floor(100000 + Math.random() * 900000); // Generate 6-digit 
+const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit
+const leftotp = Math.floor(100000 + Math.random() * 900000); 
+const rightotp = Math.floor(100000 + Math.random() * 900000);
 
-    const resOTP = await fetch("/api/handelerotp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, otp, academicId }),
-    });
+// تحديد الرابط الأساسي (محلي أو على Vercel)
+const baseUrl =
+  typeof window === "undefined"
+    ? process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+    : window.location.origin;
 
-    const successMessage = {
-        message: "Registerd Successfully",
-        status: true,
-        type: "All is Okay"
-    }
+const resOTP = await fetch(`${baseUrl}/api/handelerotp`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, otp, academicId }),
+});
 
-    console.log("res OTP : " + resOTP);
-    let dataOTP;
-    try {
-        dataOTP = await resOTP.json(); // نحاول نحول للـ JSON
-    } catch {
-        dataOTP = { success: false, message: `Server returned status ${resOTP.status}` };
-    }
-    console.log("Data OTP : " + dataOTP);
-    if (!dataOTP.success) {
-        // alert("Failed to send OTP: " + dataOTP.message || dataOTP.error);
-        return {
-            message: "Failed to send OTP. Please try again.",
-            status: false,
-            type: "OTP"
-        };
-    }
-    else {
-        // حفظ OTP مؤقتًا على الفرونت
-        localStorage.setItem("id", leftotp.toString() + otp.toString() + rightotp.toString()); // حفظ OTP مؤقتًا على الفرونت
-        localStorage.setItem("email", email);
-        localStorage.setItem("academicId", academicId);
-        localStorage.setItem("fullName", fullName);
-        localStorage.setItem("password", password);
-        return successMessage;
-    }
+const successMessage = {
+  message: "Registered Successfully",
+  status: true,
+  type: "All is Okay",
+};
+
+let dataOTP;
+try {
+  dataOTP = await resOTP.json();
+} catch {
+  dataOTP = { success: false, message: `Server returned status ${resOTP.status}` };
+}
+
+console.log("Data OTP:", dataOTP);
+
+if (!dataOTP.success) {
+  return {
+    message: "Failed to send OTP. Please try again.",
+    status: false,
+    type: "OTP",
+  };
+} else {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("id", leftotp.toString() + otp.toString() + rightotp.toString());
+    localStorage.setItem("email", email);
+    localStorage.setItem("academicId", academicId);
+    localStorage.setItem("fullName", fullName);
+    localStorage.setItem("password", password);
+  }
+  return successMessage;
+}
+
 
 }
 
