@@ -4,12 +4,47 @@ import './style.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { NextRequest, NextResponse } from "next/server";
 
 type SignupResponse = {
     message: string;
     status: boolean;
     type: string;
 };
+
+async function saveData(
+    academicId: string,
+    email: string,
+    password: string,
+    fullName: string,
+    userToken: string,
+) {
+    const res = await fetch(
+        "https://udhvfuvdxwhwobgleuyd.supabase.co/rest/v1/AppUser",
+        {
+            method: "POST",
+            headers: {
+                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkaHZmdXZkeHdod29iZ2xldXlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0OTIwODQsImV4cCI6MjA3NDA2ODA4NH0.P-EefbnljoUmaQ-t03FypD37CRmTDa8Xhv-QMJHndY4",
+                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkaHZmdXZkeHdod29iZ2xldXlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0OTIwODQsImV4cCI6MjA3NDA2ODA4NH0.P-EefbnljoUmaQ-t03FypD37CRmTDa8Xhv-QMJHndY4",
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                AcademicId: academicId,
+                email: email,
+                password: password,
+                Role: "user",
+                fullName: fullName,
+                userToken: userToken,
+            }),
+        }
+    );
+    if (res.ok) {
+        return true;
+    } else {
+        console.error("SaveData failed:", await res.text());
+        return false;
+    }
+}
 
 async function handelSignup(academicId: string,
     email: string,
@@ -309,7 +344,18 @@ export default function SignupPage() {
                 localStorage.setItem("userToken", token);
                 // success UX
                 // alert("Signed up successfully!");
-                router.push("/selectschedule");
+                // academicId = localStorage.getItem("academicId");
+                // email = localStorage.getItem("email");
+                const fullName = localStorage.getItem("fullName");
+                const userToken = localStorage.getItem("userToken");
+                const password = localStorage.getItem("password");
+                const res = await saveData(academicId, email, password ?? "", fullName ?? "", userToken ?? "");
+                if (res) {
+                    router.push("/selectschedule");
+                }
+                else {
+                    console.log("try again");
+                }
             }
             else {
                 if (isOkay.type === "academicId") {
