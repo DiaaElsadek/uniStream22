@@ -258,7 +258,7 @@ export default function HomePage() {
                         <button className="nav-btn w-full hover:text-indigo-400 text-left" onClick={() => { router.push("/notes"); setMenuOpen(false); }}>
                             Notes
                         </button>
-                        {isAdmin && <button className="nav-btn w-full hover:text-indigo-400 text-left" onClick={() => { router.push("/dashboard/"); setMenuOpen(false); }}>
+                        {isAdmin && <button className="nav-btn w-full hover:text-indigo-400 text-left" onClick={() => { router.push("/dashboard/addnews"); setMenuOpen(false); }}>
                             Dashboard
                         </button>}
                         <button className="nav-btn w-full hover:text-red-400 text-left" onClick={() => { localStorage.clear(); router.replace("/login"); setMenuOpen(false); }}>
