@@ -44,14 +44,21 @@ export default function AdminDashboard() {
     );
     const [isAdmin, setisAdmin] = useState(false);
 
-    useEffect((
-    ) => {
+    useEffect(() => {
         const userToken = localStorage.getItem("userToken");
+
         const checkRole = async () => {
             const check = await handelRole(userToken!);
             setisAdmin(check);
-        }
-    }, [])
+
+            if (!check) {
+                router.replace("/home"); // أو أي صفحة تانية
+            }
+        };
+
+        checkRole(); // ✅ استدعاء فعلي للدالة
+    }, []);
+
 
     const [formData, setFormData] = useState({
         title: "",
