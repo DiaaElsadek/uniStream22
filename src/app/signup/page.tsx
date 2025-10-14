@@ -77,54 +77,60 @@ async function handelSignup(academicId: string,
     localStorage.setItem("academicId", academicId);
 
     // Handler OTP
-const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit
-const leftotp = Math.floor(100000 + Math.random() * 900000); 
-const rightotp = Math.floor(100000 + Math.random() * 900000);
+    // const otp = Math.floor(100000 + Math.random() * 900000); // Generate 6-digit
+    // const leftotp = Math.floor(100000 + Math.random() * 900000);
+    // const rightotp = Math.floor(100000 + Math.random() * 900000);
 
-// تحديد الرابط الأساسي (محلي أو على Vercel)
-const baseUrl =
-  typeof window === "undefined"
-    ? process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-    : window.location.origin;
+    // تحديد الرابط الأساسي (محلي أو على Vercel)
+    // const baseUrl =
+    //     typeof window === "undefined"
+    //         ? process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
+    //         : window.location.origin;
 
-const resOTP = await fetch(`${baseUrl}/api/handelerotp`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ email, otp, academicId }),
-});
+    // const resOTP = await fetch(`${baseUrl}/api/handelerotp`, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify({ email, otp, academicId }),
+    // });
 
-const successMessage = {
-  message: "Registered Successfully",
-  status: true,
-  type: "All is Okay",
-};
+    const successMessage = {
+        message: "Registered Successfully",
+        status: true,
+        type: "All is Okay",
+    };
 
-let dataOTP;
-try {
-  dataOTP = await resOTP.json();
-} catch {
-  dataOTP = { success: false, message: `Server returned status ${resOTP.status}` };
-}
+    // let dataOTP;
+    // try {
+    //     dataOTP = await resOTP.json();
+    // } catch {
+    //     dataOTP = { success: false, message: `Server returned status ${resOTP.status}` };
+    // }
 
-console.log("Data OTP:", dataOTP);
+    // console.log("Data OTP:", dataOTP);
 
-if (!dataOTP.success) {
-  return {
-    message: "Failed to send OTP. Please try again.",
-    status: false,
-    type: "OTP",
-  };
-} else {
-  if (typeof window !== "undefined") {
-    localStorage.setItem("id", leftotp.toString() + otp.toString() + rightotp.toString());
+    // if (!dataOTP.success) {
+    //     return {
+    //         message: "Failed to send OTP. Please try again.",
+    //         status: false,
+    //         type: "OTP",
+    //     };
+    // } else {
+    //     if (typeof window !== "undefined") {
+    //         localStorage.setItem("id", leftotp.toString() + otp.toString() + rightotp.toString());
+    //         localStorage.setItem("email", email);
+    //         localStorage.setItem("academicId", academicId);
+    //         localStorage.setItem("fullName", fullName);
+    //         localStorage.setItem("password", password);
+    //     }
+    //     return successMessage;
+    // }
+
+    // localStorage.setItem("id", leftotp.toString() + otp.toString() + rightotp.toString());
     localStorage.setItem("email", email);
     localStorage.setItem("academicId", academicId);
     localStorage.setItem("fullName", fullName);
     localStorage.setItem("password", password);
-  }
-  return successMessage;
-}
-
+    return successMessage;
 
 }
 
@@ -303,7 +309,7 @@ export default function SignupPage() {
                 localStorage.setItem("userToken", token);
                 // success UX
                 // alert("Signed up successfully!");
-                router.push("/otpverified");
+                router.push("/selectschedule");
             }
             else {
                 if (isOkay.type === "academicId") {
