@@ -39,9 +39,11 @@ async function saveData(
         }
     );
     if (res.ok) {
+        alert("All is Okay");
         return true;
     } else {
         console.error("SaveData failed:", await res.text());
+        alert("All is Not Okay");
         return false;
     }
 }
