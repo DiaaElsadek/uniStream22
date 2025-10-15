@@ -27,6 +27,23 @@
     z-index: 0;
 }
 
+button {
+    position: relative;
+    z-index: 10;
+}
+
+.mouse-circle {
+    pointer-events: none;
+    position: fixed;
+    /* افتراضياً لو انت مستخدم fixed */
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    /* باقي الستيلات اللي عندك */
+}
+
+
 @keyframes bgMove {
     0% {
         transform: rotate(0deg) translate(0, 0);
@@ -256,6 +273,6 @@
     animation: shimmer 2s infinite;
 }
 
-.read-more:hover{
+.read-more:hover {
     cursor: pointer !important;
 }
