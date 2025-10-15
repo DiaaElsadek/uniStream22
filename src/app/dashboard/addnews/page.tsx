@@ -159,12 +159,41 @@ export default function AdminDashboard() {
         fetchNews();
     }, []);
 
-    if (loading || !isAdmin)
+    if (loading || !isAdmin) {
         return (
-            <div className="flex items-center justify-center min-h-screen text-white bg-gray-900">
-                <h1 className="text-3xl animate-pulse">Loading News...</h1>
+            <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
+                {/* Animated circles */}
+                <div className="flex space-x-3 mb-6">
+                    <motion.div
+                        animate={{ y: [0, -15, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.6, delay: 0 }}
+                        className="w-4 h-4 rounded-full bg-indigo-500"
+                    />
+                    <motion.div
+                        animate={{ y: [0, -15, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.6, delay: 0.2 }}
+                        className="w-4 h-4 rounded-full bg-indigo-400"
+                    />
+                    <motion.div
+                        animate={{ y: [0, -15, 0] }}
+                        transition={{ repeat: Infinity, duration: 0.6, delay: 0.4 }}
+                        className="w-4 h-4 rounded-full bg-indigo-300"
+                    />
+                </div>
+
+                {/* Loading text */}
+                <motion.h1
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: [0, 1, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.5 }}
+                    className="text-3xl font-bold tracking-wide"
+                >
+                    Loading News...
+                </motion.h1>
             </div>
         );
+    }
+
 
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white p-6 relative">
