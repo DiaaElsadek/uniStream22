@@ -1,22 +1,21 @@
 /** @type {import('next').NextConfig} */
 
-const isProd = process.env.NODE_ENV === "production";
-
 const withPWA = require("next-pwa")({
   dest: "public",
   register: true,
   skipWaiting: true,
-  disable: !isProd, // ✨ هنا بقى السحر — بيوقف الـPWA أثناء التطوير
+  disable: process.env.NODE_ENV === "development",
 });
 
 const nextConfig = withPWA({
-  output: "export",
+  reactStrictMode: true,
   images: {
-    unoptimized: true,
+    domains: [],
   },
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // ❌ احذف output: "export"
 });
 
 module.exports = nextConfig;
