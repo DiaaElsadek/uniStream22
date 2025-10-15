@@ -222,7 +222,7 @@ export default function NewsDetailsPage() {
                             }`}
                     >
                         {newsItem.content
-                            ? newsItem.content.split(/(https?:\/\/[^\s]+|www\.[^\s]+)/g).map((part, index) => {
+                            ? newsItem.content.split(/(https?:\/\/[^\s]+|www\.[^\s]+)/g).map((part: string, index: number) => {
                                 if (/^(https?:\/\/|www\.)/.test(part)) {
                                     const url = part.startsWith("http") ? part : `https://${part}`;
                                     return (
