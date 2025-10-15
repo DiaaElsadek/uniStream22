@@ -6,7 +6,7 @@ export default function InstallPrompt() {
     const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
     const [showInstallBox, setShowInstallBox] = useState(false);
     const [isIOS, setIsIOS] = useState(false);
-    const [hideAnimation, setHideAnimation] = useState(false);
+    const [fadeOut, setFadeOut] = useState(false);
 
     useEffect(() => {
         const userAgent = window.navigator.userAgent.toLowerCase();
@@ -16,7 +16,6 @@ export default function InstallPrompt() {
         if (iOS && !standalone) {
             setIsIOS(true);
             setShowInstallBox(true);
-            return;
         }
 
         const handleBeforeInstallPrompt = (e: any) => {
@@ -27,18 +26,20 @@ export default function InstallPrompt() {
 
         window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
 
-        let hideTimer: any;
-        if (showInstallBox) {
-            hideTimer = setTimeout(() => {
-                setHideAnimation(true);
-                setTimeout(() => setShowInstallBox(false), 600);
-            }, 5000);
-        }
-
         return () => {
             window.removeEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-            clearTimeout(hideTimer);
         };
+    }, []);
+
+    // ✅ Auto hide after 5s for both iOS & Android with fade animation
+    useEffect(() => {
+        if (showInstallBox) {
+            const timer = setTimeout(() => {
+                setFadeOut(true);
+                setTimeout(() => setShowInstallBox(false), 600); // بعد الانيميشن
+            }, 5000);
+            return () => clearTimeout(timer);
+        }
     }, [showInstallBox]);
 
     const handleInstallClick = async () => {
@@ -46,14 +47,14 @@ export default function InstallPrompt() {
         deferredPrompt.prompt();
         const choiceResult = await deferredPrompt.userChoice;
         setDeferredPrompt(null);
-        setHideAnimation(true);
+        setFadeOut(true);
         setTimeout(() => setShowInstallBox(false), 600);
     };
 
     if (!showInstallBox) return null;
 
     return (
-        <div className={`install-box ${hideAnimation ? "slide-out" : "slide-in"}`}>
+        <div className={`install-box ${fadeOut ? "fade-out" : "fade-in"}`}>
             <div className="gradient-border"></div>
             <div className="install-content">
                 {isIOS ? (
@@ -80,19 +81,19 @@ export default function InstallPrompt() {
                     font-weight: 500;
                     overflow: hidden;
                     max-width: 280px;
-                    transform: translateX(-120%);
                     opacity: 0;
-                    transition: transform 0.6s ease, opacity 0.6s ease;
+                    transform: translateY(-15px);
+                    transition: opacity 0.6s ease, transform 0.6s ease;
                 }
 
-                .slide-in {
-                    transform: translateX(0);
+                .fade-in {
                     opacity: 1;
+                    transform: translateY(0);
                 }
 
-                .slide-out {
-                    transform: translateX(-120%);
+                .fade-out {
                     opacity: 0;
+                    transform: translateY(-15px);
                 }
 
                 .gradient-border {
@@ -104,6 +105,7 @@ export default function InstallPrompt() {
                     background-size: 600% 600%;
                     animation: gradientMove 6s ease infinite;
                     z-index: 1;
+                    pointer-events: none;
                 }
 
                 .install-content {
