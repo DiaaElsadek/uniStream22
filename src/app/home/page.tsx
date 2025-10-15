@@ -244,9 +244,8 @@ export default function HomePage() {
                 </div>
 
                 <div
-                    className={`md:hidden transition-all duration-500 ease-in-out overflow-hidden ${
-                        menuOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
-                    }`}
+                    className={`md:hidden transition-all duration-500 ease-in-out overflow-hidden ${menuOpen ? "max-h-60 opacity-100" : "max-h-0 opacity-0"
+                        }`}
                 >
                     <div className="flex flex-col bg-gray-900/95 backdrop-blur-lg rounded-b-2xl p-3 gap-2 border-t border-gray-700/30">
                         <button className="nav-btn w-full hover:text-indigo-400 text-left" onClick={() => { router.push("/home"); setMenuOpen(false); }}>
@@ -277,9 +276,44 @@ export default function HomePage() {
                 </h2>
 
                 {loading ? (
-                    <div className="text-center text-gray-400 text-lg animate-pulse">
-                        Loading...
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
+                        {Array.from({ length: 6 }).map((_, i) => (
+                            <article
+                                key={i}
+                                className="relative overflow-hidden rounded-2xl p-6 bg-gray-800/90 border border-gray-700 shadow-lg"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-br from-gray-700/20 via-gray-600/10 to-gray-700/20 blur-xl"></div>
+                                <div className="relative z-10 space-y-4">
+
+                                    {/* العنوان */}
+                                    <div className="h-6 bg-gray-600 rounded w-3/4"></div>
+
+                                    {/* الوصف */}
+                                    <div className="space-y-2">
+                                        <div className="h-4 bg-gray-700 rounded"></div>
+                                        <div className="h-4 bg-gray-700 rounded w-5/6"></div>
+                                        <div className="h-4 bg-gray-700 rounded w-4/6"></div>
+                                    </div>
+
+                                    {/* الصف الصغير */}
+                                    <div className="flex justify-between items-center text-sm mt-4">
+                                        <div className="h-4 bg-gray-700 rounded w-1/4"></div>
+                                        <div className="h-4 bg-gray-700 rounded w-1/4"></div>
+                                    </div>
+
+                                    {/* Week */}
+                                    <div className="h-4 bg-gray-700 rounded w-1/3"></div>
+
+                                    {/* Group */}
+                                    <div className="h-4 bg-gray-700 rounded w-1/3"></div>
+
+                                    {/* الزر */}
+                                    <div className="h-9 bg-gray-600 rounded-lg mt-4 w-full"></div>
+                                </div>
+                            </article>
+                        ))}
                     </div>
+
                 ) : sortedWeeks.length === 0 ? (
                     <div className="text-center text-gray-400 text-lg animate-pulse">
                         No News
@@ -300,11 +334,10 @@ export default function HomePage() {
                             >
                                 <div className="relative flex items-center justify-center my-10 w-full">
                                     <div
-                                        className={`w-3 h-3 rounded-full ${
-                                            activeWeek === weekKey
-                                                ? "bg-gradient-to-r from-indigo-500 to-pink-500 scale-110 shadow-[0_0_12px_rgba(99,102,241,0.6)]"
-                                                : "bg-gray-600"
-                                        } transition-all duration-300`}
+                                        className={`w-3 h-3 rounded-full ${activeWeek === weekKey
+                                            ? "bg-gradient-to-r from-indigo-500 to-pink-500 scale-110 shadow-[0_0_12px_rgba(99,102,241,0.6)]"
+                                            : "bg-gray-600"
+                                            } transition-all duration-300`}
                                     />
                                     <div className="flex-1 h-[2px] bg-gradient-to-r from-indigo-500 via-indigo-400 to-transparent mx-3" />
                                     <span className="text-lg md:text-xl font-semibold text-blue-700 whitespace-nowrap">
@@ -317,27 +350,25 @@ export default function HomePage() {
                                     {items.map((item: any) => (
                                         <article
                                             key={item.id}
-                                            className="group relative overflow-hidden rounded-2xl p-6 bg-gray-800/90 border border-gray-700 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-500"
+                                            className="group relative overflow-hidden rounded-2xl p-6 bg-gray-800/90 border border-gray-700 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 flex flex-col justify-between"
                                         >
                                             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-400/6 to-pink-500/8 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700" />
-                                            <div className="relative z-10">
+
+                                            <div className="relative z-10 flex flex-col flex-grow">
                                                 <h3 className="text-2xl font-bold text-indigo-400 mb-3">
                                                     {item.title || "No Title"}
                                                 </h3>
-                                                <p className="text-gray-300 mb-4 line-clamp-3 leading-relaxed">
+
+                                                <p className="text-gray-300 mb-4 line-clamp-3 leading-relaxed flex-grow">
                                                     {item.content || "No Description"}
                                                 </p>
 
                                                 <div className="flex justify-between items-center text-sm text-gray-400 mb-3">
-                                                    <span>
-                                                        📚 {subjects[item.subjectId - 1] || "غير محدد"}
-                                                    </span>
+                                                    <span>📚 {subjects[item.subjectId - 1] || "غير محدد"}</span>
                                                     <span>
                                                         📅{" "}
                                                         {item.createdAt
-                                                            ? new Date(item.createdAt).toLocaleDateString(
-                                                                "ar-EG"
-                                                            )
+                                                            ? new Date(item.createdAt).toLocaleDateString("en")
                                                             : "—"}
                                                     </span>
                                                 </div>
@@ -355,12 +386,17 @@ export default function HomePage() {
                                                         {item.groupId === 0 ? "global" : item.groupId}
                                                     </span>
                                                 </div>
-
-                                                <button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all px-5 py-2 rounded-lg text-white font-semibold shadow-md hover:shadow-xl w-full">
-                                                    Read More
-                                                </button>
                                             </div>
+
+                                            <button
+                                                onClick={() => router.push(`/new/${item.id}`)}
+                                                className="read-more cursor-pointer mt-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 transition-all px-5 py-2 rounded-lg text-white font-semibold shadow-md hover:shadow-xl w-full"
+                                            >
+                                                Read More
+                                            </button>
+                                            
                                         </article>
+
                                     ))}
                                 </div>
                             </section>
