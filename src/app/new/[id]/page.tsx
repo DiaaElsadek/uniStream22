@@ -64,9 +64,23 @@ export default function NewsDetailsPage() {
 
     if (loading)
         return (
-            <div className="login-bg flex items-center justify-center min-h-screen text-gray-300 text-lg animate-pulse">
-                Loading...
+            <div className="login-bg flex flex-col items-center justify-center min-h-screen relative overflow-hidden">
+                {/* خلفية أنيميشن دوّارة */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-900 via-purple-900 to-black animate-bg-spin opacity-70"></div>
+
+                {/* دوائر طاقة متحركة */}
+                <div className="absolute w-64 h-64 bg-indigo-500/20 rounded-full blur-3xl animate-pulse-slow"></div>
+                <div className="absolute w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse-slower"></div>
+
+                {/* اللوجو أو العنوان */}
+                <h1 className="text-5xl md:text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 drop-shadow-lg animate-text-shine">
+                    Loading...
+                </h1>
+
+                {/* سبينر متطور */}
+                <div className="mt-8 w-16 h-16 border-[6px] border-t-transparent border-indigo-400 rounded-full animate-spin-fast shadow-[0_0_25px_rgba(99,102,241,0.6)]"></div>
             </div>
+
         );
 
     if (!newsItem)
