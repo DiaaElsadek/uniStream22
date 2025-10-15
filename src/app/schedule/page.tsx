@@ -278,7 +278,7 @@ export default function SchedulePage() {
                     </nav>
 
                     <div className="h-5" />
-                    <h1 className="text-3xl font-bold mb-8 text-center mt-5 md:mt-2 lg:mt-0">Weekly Schedule</h1>
+                    <h1 className="text-3xl font-bold mb-8 text-center mt-10 md:mt-2 lg:mt-0">Weekly Schedule</h1>
 
                     {loading ? (
                         <div className="flex items-center justify-center min-h-[40vh]">
