@@ -1,3 +1,8 @@
+/* إزالة أي تأثيرات شكل الماوس الخاصة */
+* {
+    cursor: default !important;
+}
+
 /* الباك جراوند */
 .login-bg {
     background: radial-gradient(circle at top left, #0f172a, #1e293b);
@@ -164,7 +169,6 @@
 .animate-slideDown {
     animation: slideDown 0.3s ease-out;
 }
-
 
 /* Subjects Footer - calm colors */
 .subject-item {
