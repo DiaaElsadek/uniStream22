@@ -1,11 +1,11 @@
 {
     "name": "UniStream22 HTI",
-    "short_name": "HTI4 App",
+    "short_name": "UniStream22 HTI",
     "start_url": "/home",
     "display": "standalone",
     "background_color": "#ffffff",
     "theme_color": "#1e293b",
-    "description": "Your Next.js app as a mobile PWA",
+    "description": "UniStream22 Continue and View The Last News",
     "icons": [
         {
             "src": "/icons/logo-HTI-4.png",
