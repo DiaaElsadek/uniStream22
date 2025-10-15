@@ -2,10 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import {
-    faBars,
-    faTimes,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./style.css";
 
@@ -20,7 +17,9 @@ const HEADERS = {
 
 export default function NewsDetailsPage() {
     const router = useRouter();
-    const { id } = useParams<{ id: string }>();
+    const params = useParams();
+    const id = params?.id as string;
+
     const [newsItem, setNewsItem] = useState<any | null>(null);
     const [loading, setLoading] = useState(true);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -36,6 +35,8 @@ export default function NewsDetailsPage() {
     ];
 
     useEffect(() => {
+        if (!id) return;
+
         const role = localStorage.getItem("role");
         setIsAdmin(role === "admin");
 
@@ -56,6 +57,7 @@ export default function NewsDetailsPage() {
         const handleMouseMove = (e: MouseEvent) => {
             setMousePos({ x: e.clientX, y: e.clientY });
         };
+
         window.addEventListener("mousemove", handleMouseMove);
         return () => window.removeEventListener("mousemove", handleMouseMove);
     }, [id]);
@@ -205,7 +207,6 @@ export default function NewsDetailsPage() {
                             </div>
                         ))}
                     </div>
-
                 </div>
 
                 <article
@@ -242,8 +243,6 @@ export default function NewsDetailsPage() {
                             })
                             : "No Description"}
                     </div>
-
-
                 </article>
             </div>
 
