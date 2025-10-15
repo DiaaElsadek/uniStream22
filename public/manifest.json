@@ -4,7 +4,7 @@
     "start_url": "/home",
     "display": "standalone",
     "background_color": "#ffffff",
-    "theme_color": "#55aaFF",
+    "theme_color": "#1e293b",
     "description": "Your Next.js app as a mobile PWA",
     "icons": [
         {
