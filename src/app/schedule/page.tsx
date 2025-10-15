@@ -186,7 +186,7 @@ export default function SchedulePage() {
                                 className="text-2xl font-bold text-indigo-400 drop-shadow-md cursor-pointer"
                                 onClick={() => router.push("/home")}
                             >
-                                My College
+                                UniStream22
                             </div>
 
                             <div className="hidden md:flex gap-6">
