@@ -45,19 +45,19 @@ export default function AdminDashboard() {
     const [isAdmin, setisAdmin] = useState(false);
 
     useEffect(() => {
-        const userToken = localStorage.getItem("userToken");
-
-        const checkRole = async () => {
+        const checkRoleAndFetch = async () => {
+            const userToken = localStorage.getItem("userToken");
             const check = await handelRole(userToken!);
             setisAdmin(check);
 
             if (!check) {
-                router.replace("/home"); // أو أي صفحة تانية
+                router.replace("/home"); // Redirect if not admin
             }
         };
 
-        checkRole(); // ✅ استدعاء فعلي للدالة
+        checkRoleAndFetch();
     }, []);
+
 
 
     const [formData, setFormData] = useState({
@@ -159,7 +159,7 @@ export default function AdminDashboard() {
         fetchNews();
     }, []);
 
-    if (loading || isAdmin)
+    if (loading || !isAdmin)
         return (
             <div className="flex items-center justify-center min-h-screen text-white bg-gray-900">
                 <h1 className="text-3xl animate-pulse">Loading News...</h1>
