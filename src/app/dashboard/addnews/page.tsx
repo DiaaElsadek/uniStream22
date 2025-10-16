@@ -19,15 +19,8 @@ async function handelRole(userToken: string): Promise<boolean> {
     const url = `https://udhvfuvdxwhwobgleuyd.supabase.co/rest/v1/AppUser${query}`;
 
     try {
-        const res = await fetch(url, {
-            method: "GET", headers: {
-                "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkaHZmdXZkeHdod29iZ2xldXlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0OTIwODQsImV4cCI6MjA3NDA2ODA4NH0.P-EefbnljoUmaQ-t03FypD37CRmTDa8Xhv-QMJHndY4",
-                "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkaHZmdXZkeHdod29iZ2xldXlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0OTIwODQsImV4cCI6MjA3NDA2ODA4NH0.P-EefbnljoUmaQ-t03FypD37CRmTDa8Xhv-QMJHndY4",
-                "Content-Type": "application/json",
-            },
-        });
+        const res = await fetch(url, { method: "GET", headers: HEADERS });
         const data = await res.json();
-        // localStorage.setItem("role", data[0]?.Role);
         return "admin" === data[0].Role;
     } catch {
         return false;
@@ -43,6 +36,9 @@ export default function AdminDashboard() {
         null
     );
     const [isAdmin, setisAdmin] = useState(false);
+    const [isEdit, setIsEdit] = useState(false);
+    const [editId, setEditId] = useState<number | null>(null);
+    const [searchTerm, setSearchTerm] = useState("");
 
     useEffect(() => {
         const checkRoleAndFetch = async () => {
@@ -51,19 +47,17 @@ export default function AdminDashboard() {
             setisAdmin(check);
 
             if (!check) {
-                router.replace("/home"); // Redirect if not admin
+                router.replace("/home");
             }
         };
 
         checkRoleAndFetch();
     }, []);
 
-
-
     const [formData, setFormData] = useState({
         title: "",
         content: "",
-        subjectId: 1,
+        subjectId: 0, // أول اختيار افتراضي Global
         groupId: 0,
         createdAt: "",
         publishData: false,
@@ -83,7 +77,7 @@ export default function AdminDashboard() {
 
     const showToast = (type: "success" | "error", message: string) => {
         setToast({ type, message });
-        setTimeout(() => setToast(null), 3000); // يختفي بعد 3 ثواني
+        setTimeout(() => setToast(null), 3000);
     };
 
     async function fetchNews() {
@@ -99,9 +93,6 @@ export default function AdminDashboard() {
     }
 
     async function deleteNews(id: number) {
-        // const confirmed = confirm("هل أنت متأكد من حذف هذا الخبر؟");
-        // if (!confirmed) return;
-
         const res = await fetch(`${API_URL}?id=eq.${id}`, {
             method: "DELETE",
             headers: HEADERS,
@@ -115,9 +106,8 @@ export default function AdminDashboard() {
         }
     }
 
-    async function addNews() {
+    async function addOrEditNews() {
         const now = new Date();
-
         const newData = {
             title: formData.title.trim(),
             content: formData.content.trim(),
@@ -129,40 +119,76 @@ export default function AdminDashboard() {
             createdBy: localStorage.getItem("fullName"),
         };
 
-        const res = await fetch(API_URL, {
-            method: "POST",
-            headers: HEADERS,
-            body: JSON.stringify(newData),
-        });
-
-        if (!res.ok) {
-            showToast("error", "⚠️ حدث خطأ أثناء إضافة الخبر");
-            return;
+        if (isEdit && editId !== null) {
+            const res = await fetch(`${API_URL}?id=eq.${editId}`, {
+                method: "PATCH",
+                headers: {
+                    ...HEADERS,
+                    Prefer: "return=representation",
+                },
+                body: JSON.stringify(newData),
+            });
+            if (res.ok) {
+                showToast("success", "✅ تم تعديل الخبر بنجاح");
+            } else {
+                showToast("error", "⚠️ حدث خطأ أثناء تعديل الخبر");
+            }
+        } else {
+            const res = await fetch(API_URL, {
+                method: "POST",
+                headers: HEADERS,
+                body: JSON.stringify(newData),
+            });
+            if (res.ok) {
+                showToast("success", "🎉 تم إضافة الخبر بنجاح");
+            } else {
+                showToast("error", "⚠️ حدث خطأ أثناء إضافة الخبر");
+            }
         }
 
         setShowModal(false);
         setFormData({
             title: "",
             content: "",
-            subjectId: 1,
+            subjectId: 0, // Global الافتراضي
             groupId: 0,
             publishData: false,
             createdAt: "",
             week: 1,
             createdBy: "",
         });
+        setIsEdit(false);
+        setEditId(null);
         fetchNews();
-        showToast("success", "🎉 تم إضافة الخبر بنجاح");
     }
 
     useEffect(() => {
         fetchNews();
     }, []);
 
+    function normalize(text: string) {
+        return text
+            .toLowerCase()
+            .replace(/\s+/g, "")
+            .replace(/[^\w\u0600-\u06FF]+/g, "");
+    }
+
+    const filteredNews = news.filter((item) => {
+        const search = normalize(searchTerm);
+        const title = normalize(item.title || "");
+        const subject = normalize(subjects[item.subjectId - 1] || "");
+        const week = normalize(item.week?.toString() || "");
+
+        return (
+            title.includes(search) ||
+            subject.includes(search) ||
+            week.includes(search)
+        );
+    });
+
     if (loading || !isAdmin) {
         return (
             <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black text-white">
-                {/* Animated circles */}
                 <div className="flex space-x-3 mb-6">
                     <motion.div
                         animate={{ y: [0, -15, 0] }}
@@ -180,8 +206,6 @@ export default function AdminDashboard() {
                         className="w-4 h-4 rounded-full bg-indigo-300"
                     />
                 </div>
-
-                {/* Loading text */}
                 <motion.h1
                     initial={{ opacity: 0 }}
                     animate={{ opacity: [0, 1, 0] }}
@@ -194,10 +218,8 @@ export default function AdminDashboard() {
         );
     }
 
-
     return (
         <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white p-6 relative">
-            {/* ✅ Toast Notifications */}
             <AnimatePresence>
                 {toast && (
                     <motion.div
@@ -215,22 +237,52 @@ export default function AdminDashboard() {
                 )}
             </AnimatePresence>
 
-            {/* Navbar */}
             <div className="flex justify-between items-center mb-10 border-b border-gray-700 pb-4">
                 <h1 className="text-3xl font-extrabold tracking-wide text-indigo-400">
                     Dashboard
                 </h1>
                 <button
                     className="px-6 py-2 bg-indigo-600 hover:bg-indigo-700 transition rounded-lg font-semibold shadow-lg cursor-pointer"
-                    onClick={() => setShowModal(true)}
+                    onClick={() => {
+                        setShowModal(true);
+                        setIsEdit(false);
+                        setFormData({
+                            title: "",
+                            content: "",
+                            subjectId: 0, // أول اختيار Global
+                            groupId: 0,
+                            publishData: false,
+                            createdAt: "",
+                            week: 1,
+                            createdBy: "",
+                        });
+                    }}
                 >
                     Add New +
                 </button>
             </div>
 
-            {/* News Cards */}
+            <div className="text-center mb-5">
+                <button
+                    onClick={() => router.back()}
+                    className="px-4 py-2 bg-gray-700 hover:bg-gray-600 transition rounded-lg font-semibold shadow-lg cursor-pointer"
+                >
+                    Back
+                </button>
+            </div>
+
+            <div className="mb-8 text-center">
+                <input
+                    type="text"
+                    placeholder="🔍 ابحث عن عنوان أو مادة أو أسبوع"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="text-center w-80 p-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-indigo-500 outline-none transition"
+                />
+            </div>
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {news.map((item) => (
+                {filteredNews.map((item) => (
                     <div
                         key={item.id}
                         className="relative bg-gray-900/80 backdrop-blur-lg p-6 rounded-2xl shadow-md border border-gray-700 hover:border-indigo-600 transition duration-300 hover:scale-[1.02]"
@@ -242,7 +294,7 @@ export default function AdminDashboard() {
                             {item.content || "لا يوجد محتوى"}
                         </p>
                         <div className="text-sm text-gray-400 space-y-1">
-                            <p>📘 المادة: {subjects[item.subjectId - 1] || "غير محددة"}</p>
+                            <p>📘 المادة: {item.subjectId === 0 ? "Global" : subjects[item.subjectId - 1]}</p>
                             <p>👥 المجموعة: {item.groupId === 0 ? "Global" : item.groupId}</p>
                             <p>📅 الأسبوع: {item.week}</p>
                             <p>
@@ -253,29 +305,48 @@ export default function AdminDashboard() {
                             </p>
                         </div>
                         <p className="text-gray-300 mb-4 pt-5 leading-relaxed">
-                            created By :
-                            {item.createdBy || " Admin"}
+                            created By : {item.createdBy || "Admin"}
                         </p>
-                        <button
-                            onClick={() => deleteNews(item.id)}
-                            className="cursor-pointer absolute bottom-3 right-3 px-4 py-1 bg-red-600 hover:bg-red-700 rounded-md text-sm font-semibold transition"
-                        >
-                            Delete
-                        </button>
+                        <div className="flex justify-between mt-3">
+                            <button
+                                onClick={() => {
+                                    setShowModal(true);
+                                    setIsEdit(true);
+                                    setEditId(item.id);
+                                    setFormData({
+                                        title: item.title,
+                                        content: item.content,
+                                        subjectId: item.subjectId,
+                                        groupId: item.groupId,
+                                        publishData: item.isGeneral,
+                                        createdAt: item.createdAt,
+                                        week: item.week,
+                                        createdBy: item.createdBy,
+                                    });
+                                }}
+                                className="cursor-pointer px-4 py-1 bg-blue-600 hover:bg-blue-700 rounded-md text-sm font-semibold transition"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => deleteNews(item.id)}
+                                className="cursor-pointer px-4 py-1 bg-red-600 hover:bg-red-700 rounded-md text-sm font-semibold transition"
+                            >
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 ))}
             </div>
 
-            {/* Popup Modal */}
             {showModal && (
                 <div className="fixed inset-0 bg-black/80 flex justify-center items-center z-50 backdrop-blur-sm">
                     <div className="bg-gray-900 border border-gray-700 rounded-2xl p-8 w-full max-w-lg shadow-2xl animate-fadeIn relative">
                         <h2 className="text-3xl font-bold mb-6 text-center text-indigo-400">
-                            Add New
+                            {isEdit ? "Edit News" : "Add New"}
                         </h2>
 
                         <div className="space-y-4">
-                            {/* العنوان */}
                             <div>
                                 <label className="block mb-1 text-gray-300">العنوان:</label>
                                 <input
@@ -289,7 +360,6 @@ export default function AdminDashboard() {
                                 />
                             </div>
 
-                            {/* المحتوى */}
                             <div>
                                 <label className="block mb-1 text-gray-300">المحتوى:</label>
                                 <textarea
@@ -303,7 +373,6 @@ export default function AdminDashboard() {
                                 ></textarea>
                             </div>
 
-                            {/* باقي الحقول */}
                             <div className="flex flex-col gap-4">
                                 <div className="flex gap-4">
                                     <div className="flex-1">
@@ -318,8 +387,9 @@ export default function AdminDashboard() {
                                             }
                                             className="w-full p-3 rounded-lg bg-gray-800 border border-gray-700 focus:border-indigo-500 outline-none transition"
                                         >
+                                            <option value={0}>Global</option>
                                             {subjects.map((sub, i) => (
-                                                <option key={i} value={i + 1}>
+                                                <option key={i + 1} value={i + 1}>
                                                     {sub}
                                                 </option>
                                             ))}
@@ -350,9 +420,10 @@ export default function AdminDashboard() {
                                     </div>
                                 </div>
 
-                                {/* رقم الأسبوع */}
                                 <div className="flex-1">
-                                    <label className="block mb-1 text-gray-300">📅 رقم الأسبوع:</label>
+                                    <label className="block mb-1 text-gray-300">
+                                        📅 رقم الأسبوع:
+                                    </label>
                                     <input
                                         type="text"
                                         value={formData.week}
@@ -376,13 +447,12 @@ export default function AdminDashboard() {
                                     إلغاء
                                 </button>
                                 <button
-                                    onClick={addNews}
+                                    onClick={addOrEditNews}
                                     className="px-6 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-700 font-semibold shadow-md transition"
                                 >
-                                    إضافة
+                                    {isEdit ? "تعديل" : "إضافة"}
                                 </button>
                             </div>
-
                         </div>
                     </div>
                 </div>
