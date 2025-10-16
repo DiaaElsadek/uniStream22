@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import "./style.css";
 import { useRouter } from "next/navigation";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faBars, faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 const API_URL = "https://udhvfuvdxwhwobgleuyd.supabase.co/rest/v1/News";
 const HEADERS = {
@@ -18,7 +18,6 @@ async function handelRole(userToken: string | null): Promise<boolean> {
     if (!userToken) return false;
     const query = `?userToken=eq.${userToken}`;
     const url = `https://udhvfuvdxwhwobgleuyd.supabase.co/rest/v1/AppUser${query}`;
-
     try {
         const res = await fetch(url, { method: "GET", headers: HEADERS });
         const data = await res.json();
@@ -32,7 +31,6 @@ async function handelLogin(userToken: string | null): Promise<boolean> {
     if (!userToken) return false;
     const query = `?userToken=eq.${userToken}`;
     const url = `https://udhvfuvdxwhwobgleuyd.supabase.co/rest/v1/AppUser${query}`;
-
     try {
         const res = await fetch(url, { method: "GET", headers: HEADERS });
         const data = await res.json();
@@ -46,7 +44,6 @@ async function handelSubjects(userToken: string | null): Promise<number[]> {
     if (!userToken) return [];
     const query = `?userToken=eq.${userToken}`;
     const url = `https://udhvfuvdxwhwobgleuyd.supabase.co/rest/v1/AppUser${query}`;
-
     try {
         const res = await fetch(url, { method: "GET", headers: HEADERS });
         const data = await res.json();
@@ -74,10 +71,10 @@ export default function HomePage() {
     const [news, setNews] = useState<any[]>([]);
     const [scrollProgress, setScrollProgress] = useState(0);
     const [activeWeek, setActiveWeek] = useState<number | null>(null);
+    const [searchQuery, setSearchQuery] = useState("");
     const weekRefs = useRef<Record<number, HTMLElement | null>>({});
     const router = useRouter();
 
-    // ✅ login check + fetch data مع localStorage caching
     useEffect(() => {
         let mounted = true;
         const init = async () => {
@@ -99,13 +96,11 @@ export default function HomePage() {
             setIsLoggedIn(true);
             setSubjectsId(subj || []);
 
-            // أولاً نعرض الأخبار من الكاش
             const cachedNews = localStorage.getItem("cachedNews");
             if (cachedNews) {
                 setNews(JSON.parse(cachedNews));
             }
 
-            // بعدين نعمل fetch لتحديث الأخبار
             try {
                 const res = await fetch(API_URL, { headers: HEADERS });
                 const data = await res.json();
@@ -170,7 +165,22 @@ export default function HomePage() {
         };
     }, []);
 
-    const groupedNews = news.reduce((acc: any, item: any) => {
+    // ✅ فلترة ذكية حسب الجروب أو المادة
+    const filteredNews = news.filter((item) => {
+        const subjectName = subjects[item.subjectId - 1] || "Global";
+        const group = item.groupId?.toString() || "";
+        const query = searchQuery.trim().toLowerCase();
+
+        if (!query) return true;
+
+        return (
+            subjectName.toLowerCase().includes(query) ||
+            group.toLowerCase().includes(query) ||
+            (query.includes("global") && item.groupId === 0)
+        );
+    });
+
+    const groupedNews = filteredNews.reduce((acc: any, item: any) => {
         const week = item.week ?? "غير محدد";
         if (!acc[week]) acc[week] = [];
         acc[week].push(item);
@@ -275,6 +285,21 @@ export default function HomePage() {
                     Last News
                 </h2>
 
+                {/* ✅ Search Bar */}
+                <div className="relative mb-10 max-w-xl mx-auto">
+                    <input
+                        type="text"
+                        placeholder="Search Here..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full px-5 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 outline-none text-white text-center shadow-lg placeholder-gray-400 transition-all duration-300"
+                    />
+                    <FontAwesomeIcon
+                        icon={faSearch}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 text-indigo-400 text-lg"
+                    />
+                </div>
+
                 {loading ? (
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
                         {Array.from({ length: 6 }).map((_, i) => (
@@ -284,39 +309,20 @@ export default function HomePage() {
                             >
                                 <div className="absolute inset-0 bg-gradient-to-br from-gray-700/20 via-gray-600/10 to-gray-700/20 blur-xl"></div>
                                 <div className="relative z-10 space-y-4">
-
-                                    {/* العنوان */}
                                     <div className="h-6 bg-gray-600 rounded w-3/4"></div>
-
-                                    {/* الوصف */}
                                     <div className="space-y-2">
                                         <div className="h-4 bg-gray-700 rounded"></div>
                                         <div className="h-4 bg-gray-700 rounded w-5/6"></div>
                                         <div className="h-4 bg-gray-700 rounded w-4/6"></div>
                                     </div>
-
-                                    {/* الصف الصغير */}
-                                    <div className="flex justify-between items-center text-sm mt-4">
-                                        <div className="h-4 bg-gray-700 rounded w-1/4"></div>
-                                        <div className="h-4 bg-gray-700 rounded w-1/4"></div>
-                                    </div>
-
-                                    {/* Week */}
-                                    <div className="h-4 bg-gray-700 rounded w-1/3"></div>
-
-                                    {/* Group */}
-                                    <div className="h-4 bg-gray-700 rounded w-1/3"></div>
-
-                                    {/* الزر */}
-                                    <div className="h-9 bg-gray-600 rounded-lg mt-4 w-full"></div>
+                                    <div className="h-4 bg-gray-700 rounded w-1/4"></div>
                                 </div>
                             </article>
                         ))}
                     </div>
-
                 ) : sortedWeeks.length === 0 ? (
                     <div className="text-center text-gray-400 text-lg animate-pulse">
-                        No News
+                        لا توجد أخبار مطابقة
                     </div>
                 ) : (
                     sortedWeeks.map((week) => {
@@ -394,9 +400,7 @@ export default function HomePage() {
                                             >
                                                 Read More
                                             </button>
-                                            
                                         </article>
-
                                     ))}
                                 </div>
                             </section>
