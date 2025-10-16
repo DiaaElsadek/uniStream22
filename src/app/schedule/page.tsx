@@ -340,6 +340,31 @@ export default function SchedulePage() {
                     )}
                 </div>
             </div>
+            {/* زر Edit My Schedule */}
+            <div className="w-full flex justify-center mt-16 mb-10 cursor-pointer">
+                <button
+                    onClick={() => router.push("/selectschedule")}
+                    className="
+      relative overflow-hidden group 
+      px-10 py-4 text-lg font-bold rounded-full 
+      text-white bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500
+      shadow-[0_0_20px_rgba(147,51,234,0.6)] 
+      transition-all duration-500 ease-out
+      hover:scale-105 hover:shadow-[0_0_35px_rgba(236,72,153,0.8)]
+      cursor-pointer
+    "
+                >
+                    <span
+                        className="
+        absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)]
+        translate-x-[-100%] group-hover:translate-x-[100%]
+        transition-transform duration-1000 ease-in-out
+      "
+                    ></span>
+                    Edit My Schedule ✏️
+                </button>
+            </div>
+
 
             {/* الأنيميشنات */}
             {/* <style jsx global>{`
