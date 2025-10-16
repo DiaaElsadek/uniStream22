@@ -292,7 +292,7 @@ export default function HomePage() {
                         placeholder="Search Here..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full px-5 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 outline-none text-white text-center shadow-lg placeholder-gray-400 transition-all duration-300"
+                        className="w-full px-5 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 outline-none text-white text-left shadow-lg placeholder-gray-400 transition-all duration-300"
                     />
                     {typeof window !== "undefined" && (
                         <FontAwesomeIcon
@@ -301,6 +301,7 @@ export default function HomePage() {
                         />
                     )}
                 </div>
+
 
                 {loading ? (
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
