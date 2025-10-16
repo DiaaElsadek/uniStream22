@@ -324,9 +324,17 @@ export default function HomePage() {
                         ))}
                     </div>
                 ) : sortedWeeks.length === 0 ? (
-                    <div className="text-center text-gray-400 text-lg animate-pulse">
-                        لا توجد أخبار مطابقة
+                    <div className="flex flex-col items-center justify-center py-20">
+                        <div className="bg-gradient-to-r from-indigo-500/10 to-purple-500/10 backdrop-blur-md border border-indigo-500/20 px-8 py-6 rounded-2xl shadow-lg text-center">
+                            <h3 className="text-2xl font-semibold text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400 animate-pulse mb-2">
+                                لا توجد أخبار مطابقة 🔍
+                            </h3>
+                            <p className="text-gray-400 text-sm">
+                                جرّب البحث بكلمة مختلفة أو تحقق من الإملاء.
+                            </p>
+                        </div>
                     </div>
+
                 ) : (
                     sortedWeeks.map((week) => {
                         const weekKey = typeof week === "number" ? week : week;
