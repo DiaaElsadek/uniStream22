@@ -16,5 +16,10 @@ export default function Home() {
     }
   }, [router]);
 
+  useEffect(() => {
+    console.clear();
+  }, []);
+
+
   return null; // مش محتاج تعرض حاجة هنا
 }
