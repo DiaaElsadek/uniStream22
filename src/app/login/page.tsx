@@ -17,7 +17,7 @@ async function handelLogin(email: string, password: string): Promise<SignupRespo
         const encodedEmail = encodeURIComponent(email);
         const url = `https://udhvfuvdxwhwobgleuyd.supabase.co/rest/v1/AppUser?email=eq.${encodedEmail}`;
 
-        console.log("Fetching URL:", url);
+        // console.log("Fetching URL:", url);
 
         const res = await fetch(url, {
             method: "GET",
@@ -35,14 +35,14 @@ async function handelLogin(email: string, password: string): Promise<SignupRespo
         }
 
         const data = await res.json();
-        console.log("data array:", data);
+        // console.log("data array:", data);
 
         if (!Array.isArray(data) || data.length === 0) {
             return { message: "User not found", status: false, type: "not_found" };
         }
 
         const user = data[0];
-        console.log("fetched user:", user);
+        // console.log("fetched user:", user);
 
         // قارن الباسورد (لو عندك هاش استخدم مقارنة مناسبة على السيرفر)
         if (password === user.password) {
@@ -143,7 +143,7 @@ export default function LoginPage() {
 
         try {
             const res = await handelLogin(email.trim(), password);
-            console.log("login response:", res);
+            // console.log("login response:", res);
 
             if (res.status) {
                 // حفظ الايميل للسهولة (مش الباسورد)
