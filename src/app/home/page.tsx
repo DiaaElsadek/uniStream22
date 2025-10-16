@@ -294,10 +294,12 @@ export default function HomePage() {
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="w-full px-5 py-3 rounded-xl bg-gray-800 border border-gray-700 focus:border-indigo-500 focus:ring focus:ring-indigo-500/20 outline-none text-white text-center shadow-lg placeholder-gray-400 transition-all duration-300"
                     />
-                    <FontAwesomeIcon
-                        icon={faSearch}
-                        className="absolute right-4 top-1/2 -translate-y-1/2 text-indigo-400 text-lg"
-                    />
+                    {typeof window !== "undefined" && (
+                        <FontAwesomeIcon
+                            icon={faSearch}
+                            className="absolute right-4 top-1/2 -translate-y-1/2 text-indigo-400 text-lg"
+                        />
+                    )}
                 </div>
 
                 {loading ? (
