@@ -364,7 +364,7 @@ export default function HomePage() {
                                                 </p>
 
                                                 <div className="flex justify-between items-center text-sm text-gray-400 mb-3">
-                                                    <span>📚 {subjects[item.subjectId - 1] || "غير محدد"}</span>
+                                                    <span>📚 {subjects[item.subjectId - 1] || "Global"}</span>
                                                     <span>
                                                         📅{" "}
                                                         {item.createdAt
