@@ -3,6 +3,12 @@
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 
+const headers = {
+    apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkaHZmdXZkeHdod29iZ2xldXlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0OTIwODQsImV4cCI6MjA3NDA2ODA4NH0.P-EefbnljoUmaQ-t03FypD37CRmTDa8Xhv-QMJHndY4",
+    Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkaHZmdXZkeHdod29iZ2xldXlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0OTIwODQsImV4cCI6MjA3NDA2ODA4NH0.P-EefbnljoUmaQ-t03FypD37CRmTDa8Xhv-QMJHndY4",
+    "Content-Type": "application/json",
+}
+
 async function handelLogin(userToken: string): Promise<boolean> {
     if (!userToken) return false;
     const query = `?userToken=eq.${userToken}`;
@@ -10,11 +16,7 @@ async function handelLogin(userToken: string): Promise<boolean> {
     try {
         const res = await fetch(url, {
             method: "GET",
-            headers: {
-                apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-                "Content-Type": "application/json",
-            },
+            headers: headers,
         });
         const data = await res.json();
         return userToken === data[0]?.userToken;
@@ -31,11 +33,7 @@ async function handelRole(userToken: string): Promise<boolean> {
     try {
         const res = await fetch(url, {
             method: "GET",
-            headers: {
-                apikey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkaHZmdXZkeHdod29iZ2xldXlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0OTIwODQsImV4cCI6MjA3NDA2ODA4NH0.P-EefbnljoUmaQ-t03FypD37CRmTDa8Xhv-QMJHndY4",
-                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVkaHZmdXZkeHdod29iZ2xldXlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTg0OTIwODQsImV4cCI6MjA3NDA2ODA4NH0.P-EefbnljoUmaQ-t03FypD37CRmTDa8Xhv-QMJHndY4",
-                "Content-Type": "application/json",
-            },
+            headers: headers,
         });
         const data = await res.json();
         console.log(data[0]);
