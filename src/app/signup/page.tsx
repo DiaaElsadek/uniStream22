@@ -529,7 +529,10 @@ export default function SignupPage() {
 
                 <div className="mt-6 text-center text-gray-300 relative z-10">
                     Already have an account?{" "}
-                    <Link href={'/login'} className="text-indigo-400 font-semibold hover:underline">
+                    <Link href={'/login'} onClick={ () => {
+                        sessionStorage.setItem("hasReloadedSignup", "false");
+                        sessionStorage.setItem("hasReloadedLogin", "false");
+                    }} className="text-indigo-400 font-semibold hover:underline">
                         Login Now
                     </Link>
                 </div>
