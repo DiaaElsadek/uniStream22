@@ -459,26 +459,38 @@ export default function SignupPage() {
 
                     {/* Password */}
                     <div className="relative">
-                        <label htmlFor="password" className="block text-gray-200 font-medium mb-2">
+                        <label
+                            htmlFor="password"
+                            className="block text-gray-200 font-medium mb-2"
+                        >
                             Password
                         </label>
-                        <input
-                            type={showPassword ? "text" : "password"}
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                            className={`w-full px-4 py-3 border rounded-xl border-gray-600 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition pr-12 ${passwordError ? "ring-2 ring-red-500" : ""}`}
-                            placeholder="Enter your password"
-                        />
-                        <button
-                            type="button"
-                            onClick={() => setShowPassword(!showPassword)}
-                            className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-indigo-400 focus:outline-none mb-20"
-                            aria-label={showPassword ? "Hide password" : "Show password"}
-                        >
-                            {!showPassword ? <i className="fas fa-eye-slash cursor-pointer mb-25"></i> : <i className="fas fa-eye cursor-pointer mb-25"></i>}
-                        </button>
+
+                        <div className="relative">
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                id="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                                className={`w-full px-4 py-3 border rounded-xl border-gray-600 bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:border-indigo-400 transition pr-12 ${passwordError ? "ring-2 ring-red-500" : ""
+                                    }`}
+                                placeholder="Enter your password"
+                            />
+
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-indigo-400 focus:outline-none"
+                                aria-label={showPassword ? "Hide password" : "Show password"}
+                            >
+                                {showPassword ? (
+                                    <i className="fas fa-eye cursor-pointer"></i>
+                                ) : (
+                                    <i className="fas fa-eye-slash cursor-pointer"></i>
+                                )}
+                            </button>
+                        </div>
 
                         {/* password rules visual */}
                         <div className="mt-3 space-y-1 text-sm">
@@ -489,7 +501,9 @@ export default function SignupPage() {
                             <RuleLine ok={pwSpecialOk} text="At least one special character (!@#$...)" />
                         </div>
 
-                        {passwordError && <p className="mt-2 text-sm text-red-400">{passwordError}</p>}
+                        {passwordError && (
+                            <p className="mt-2 text-sm text-red-400">{passwordError}</p>
+                        )}
                     </div>
 
                     <button
