@@ -221,7 +221,7 @@ export default function SignupPage() {
 
     // helpers: regex
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const academicRegex = /^4202[123]\d{3}$/; // starts with 4202 then 4 digits (total 8 digits)
+    const academicRegex = /^4202[0123456]\d{3}$/; // starts with 4202 then 4 digits (total 8 digits)
     const onlyDigitsRegex = /^\d*$/;
     const upperRegex = /[A-Z]/;
     const lowerRegex = /[a-z]/;
