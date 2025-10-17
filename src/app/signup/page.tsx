@@ -373,6 +373,16 @@ export default function SignupPage() {
         }
     };
 
+    // Hot Reload
+    useEffect(() => {
+        const hasReloaded = sessionStorage.getItem("hasReloadedSignup");
+    
+        if (!hasReloaded) {
+          sessionStorage.setItem("hasReloadedSignup", "true");
+          window.location.reload();
+        }
+      }, []);
+
     // console.log("Keys:", process.env.MAILJET_API_KEY, process.env.MAILJET_SECRET_KEY);
     // console.log("Keys:", process.env.MAILJET_API_KEY!, process.env.MAILJET_SECRET_KEY!);
 
