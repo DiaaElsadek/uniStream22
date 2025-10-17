@@ -162,6 +162,16 @@ export default function LoginPage() {
         }
     };
 
+    // Hot Reload
+    useEffect(() => {
+        const hasReloaded = sessionStorage.getItem("hasReloadedLogin");
+    
+        if (!hasReloaded) {
+          sessionStorage.setItem("hasReloadedLogin", "true");
+          window.location.reload();
+        }
+      }, []);
+
     return (
         <div className="login-bg min-h-screen flex items-center justify-center px-4">
             <div className="login-container relative max-w-md w-full p-8 sm:p-12">
