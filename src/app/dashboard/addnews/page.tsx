@@ -57,7 +57,7 @@ export default function AdminDashboard() {
     const [formData, setFormData] = useState({
         title: "",
         content: "",
-        subjectId: 0, // أول اختيار افتراضي Global
+        subjectId: 0,
         groupId: 0,
         createdAt: "",
         publishData: false,
@@ -150,7 +150,7 @@ export default function AdminDashboard() {
         setFormData({
             title: "",
             content: "",
-            subjectId: 0, // Global الافتراضي
+            subjectId: 0,
             groupId: 0,
             publishData: false,
             createdAt: "",
@@ -219,7 +219,7 @@ export default function AdminDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white p-6 relative">
+        <div className="min-h-screen bg-gradient-to-b from-gray-950 via-gray-900 to-black text-white p-6 relative overflow-x-hidden">
             <AnimatePresence>
                 {toast && (
                     <motion.div
@@ -249,7 +249,7 @@ export default function AdminDashboard() {
                         setFormData({
                             title: "",
                             content: "",
-                            subjectId: 0, // أول اختيار Global
+                            subjectId: 0,
                             groupId: 0,
                             publishData: false,
                             createdAt: "",
@@ -285,12 +285,12 @@ export default function AdminDashboard() {
                 {filteredNews.map((item) => (
                     <div
                         key={item.id}
-                        className="relative bg-gray-900/80 backdrop-blur-lg p-6 rounded-2xl shadow-md border border-gray-700 hover:border-indigo-600 transition duration-300 hover:scale-[1.02]"
+                        className="relative bg-gray-900/80 backdrop-blur-lg p-6 rounded-2xl shadow-md border border-gray-700 hover:border-indigo-600 transition duration-300 hover:scale-[1.02] overflow-hidden break-words"
                     >
-                        <h3 className="text-2xl font-bold mb-2 text-indigo-300">
+                        <h3 className="text-2xl font-bold mb-2 text-indigo-300 break-words overflow-hidden">
                             {item.title || "بدون عنوان"}
                         </h3>
-                        <p className="text-gray-300 mb-4 leading-relaxed">
+                        <p className="text-gray-300 mb-4 leading-relaxed break-words overflow-hidden">
                             {item.content || "لا يوجد محتوى"}
                         </p>
                         <div className="text-sm text-gray-400 space-y-1">
@@ -304,7 +304,7 @@ export default function AdminDashboard() {
                                     : "غير متاح"}
                             </p>
                         </div>
-                        <p className="text-gray-300 mb-4 pt-5 leading-relaxed">
+                        <p className="text-gray-300 mb-4 pt-5 leading-relaxed break-words overflow-hidden">
                             created By : {item.createdBy || "Admin"}
                         </p>
                         <div className="flex justify-between mt-3">
