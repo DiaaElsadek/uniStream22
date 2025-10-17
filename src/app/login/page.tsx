@@ -267,6 +267,7 @@ export default function LoginPage() {
                     Don't have an account?{" "}
                     <Link onClick={ () => {
                         sessionStorage.setItem("hasReloadedSignup", "false");
+                        sessionStorage.setItem("hasReloadedLogin", "false");
                     }} href="/signup" className="text-indigo-400 font-semibold hover:underline">
                         Sign Up Now
                     </Link>
