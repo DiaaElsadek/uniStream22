@@ -150,7 +150,9 @@ export default function LoginPage() {
                 localStorage.setItem("savedEmail", email.trim());
 
                 alert("Logged in successfully!");
-                router.push("/home");
+                sessionStorage.setItem("hasReloadedSignup", "false");
+                sessionStorage.setItem("hasReloadedLogin", "false");
+                router.replace("/home");
             } else {
                 seterror(res.message);
             }
