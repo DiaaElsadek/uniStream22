@@ -385,7 +385,7 @@ export default function SignupPage() {
                     Welcome To HTI
                 </h1>
                 <p className="text-gray-300 text-center mb-8 relative z-10">
-                    Get Started and Sign Up Now
+                    Get Start and Sign Up Now
                 </p>
 
                 <div className="gradient-border mb-4"></div>
