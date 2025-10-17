@@ -165,7 +165,7 @@ export default function HomePage() {
         };
     }, []);
 
-    // ✅ فلترة ذكية حسب الجروب أو المادة
+    // ✅ فلترة ذكية ومحسّنة
     const filteredNews = news.filter((item) => {
         const subjectName = subjects[item.subjectId - 1] || "Global";
         const group = item.groupId?.toString() || "";
@@ -173,10 +173,15 @@ export default function HomePage() {
 
         if (!query) return true;
 
+        const normalizedSubject = subjectName.toLowerCase();
+        const normalizedGroup = group.toLowerCase();
+
         return (
-            subjectName.toLowerCase().includes(query) ||
-            group.toLowerCase().includes(query) ||
-            (query.includes("global") && item.groupId === 0)
+            normalizedSubject.includes(query) ||
+            normalizedGroup.includes(query) ||
+            (query.includes("global") && item.groupId === 0) ||
+            (item.title && item.title.toLowerCase().includes(query)) ||
+            (item.content && item.content.toLowerCase().includes(query))
         );
     });
 
@@ -196,9 +201,7 @@ export default function HomePage() {
         );
 
     return (
-        <div
-            className="login-bg min-h-screen relative text-white"
-        >
+        <div className="login-bg min-h-screen relative text-white">
             {/* Navbar */}
             <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] md:w-[80%] z-50 
                     bg-gray-900/80 backdrop-blur-xl shadow-2xl rounded-2xl 
@@ -299,7 +302,6 @@ export default function HomePage() {
                     )}
                 </div>
 
-
                 {loading ? (
                     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 animate-pulse">
                         {Array.from({ length: 6 }).map((_, i) => (
@@ -331,7 +333,6 @@ export default function HomePage() {
                             </p>
                         </div>
                     </div>
-
                 ) : (
                     sortedWeeks.map((week) => {
                         const weekKey = typeof week === "number" ? week : week;
@@ -369,7 +370,7 @@ export default function HomePage() {
                                             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-purple-400/6 to-pink-500/8 opacity-0 group-hover:opacity-100 blur-xl transition-opacity duration-700" />
 
                                             <div className="relative z-10 flex flex-col flex-grow">
-                                                <h3 className="text-2xl font-bold text-indigo-400 mb-3">
+                                                <h3 className="text-2xl font-bold text-indigo-400 mb-3 text-center">
                                                     {item.title || "No Title"}
                                                 </h3>
 
