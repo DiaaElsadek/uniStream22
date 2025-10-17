@@ -374,7 +374,7 @@ export default function HomePage() {
                                                     {item.title || "No Title"}
                                                 </h3>
 
-                                                <p className="text-gray-300 mb-4 line-clamp-3 leading-relaxed flex-grow">
+                                                <p className="text-gray-300 mb-4 line-clamp-3 leading-relaxed flex-grow text-right">
                                                     {item.content || "No Description"}
                                                 </p>
 
