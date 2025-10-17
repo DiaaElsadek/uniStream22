@@ -198,9 +198,6 @@ export default function HomePage() {
     return (
         <div
             className="login-bg min-h-screen relative text-white"
-            style={{
-                background: `radial-gradient(circle at ${mousePos.x}px ${mousePos.y}px, rgba(100,200,255,0.08), #0f172a)`,
-            }}
         >
             {/* Navbar */}
             <nav className="fixed top-4 left-1/2 -translate-x-1/2 w-[90%] md:w-[80%] z-50 
@@ -419,14 +416,6 @@ export default function HomePage() {
                     })
                 )}
             </main>
-
-            <div
-                className="mouse-circle"
-                style={{
-                    left: mousePos.x - 10 + "px",
-                    top: mousePos.y - 10 + "px",
-                }}
-            />
         </div>
     );
 }
