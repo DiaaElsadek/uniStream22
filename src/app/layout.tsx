@@ -15,20 +15,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#9bbfe2" />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              const colors = [ '#9bbfe2', '#091f42'];
-              let i = 0;
-              setInterval(() => {
-                // تغيّر كل 1 ثانية لتقريب حركة الـ gradient
-                document.querySelector('meta[name="theme-color"]').setAttribute('content', colors[i % colors.length]);
-                i++;
-              }, 1000);
-            `,
-          }}
-        />
+        <meta name="theme-color" content="#091f42" />
       </head>
       <body>
         <AuthProvider>{children}</AuthProvider>
