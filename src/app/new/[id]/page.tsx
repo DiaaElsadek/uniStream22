@@ -259,15 +259,6 @@ export default function NewsDetailsPage() {
                     </div>
                 </article>
             </div>
-
-            /* {/* ✨ دائرة الماوس */}
-            <div
-                className="mouse-circle"
-                style={{
-                    left: mousePos.x - 10 + "px",
-                    top: mousePos.y - 10 + "px",
-                }}
-            /> */
         </div>
     );
 }
