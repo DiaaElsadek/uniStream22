@@ -101,7 +101,7 @@ export default function InstallPrompt() {
                     inset: 0;
                     padding: 2px;
                     border-radius: 1.5rem;
-                    background: linear-gradient(270deg, #ff00cc, #3333ff, #00ffcc, #ffcc00);
+                    background: linear-gradient(270deg, rgba(0, 0, 0, 0.6), #e5e7eb);
                     background-size: 600% 600%;
                     animation: gradientMove 6s ease infinite;
                     z-index: 1;
