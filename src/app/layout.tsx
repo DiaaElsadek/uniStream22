@@ -15,11 +15,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="manifest" href="/manifest.json" />
-        <meta name="theme-color" content="#55aaff" />
+        <meta name="theme-color" content="#9bbfe2" />
         <script
           dangerouslySetInnerHTML={{
             __html: `
-              const colors = ['#55aaff', '#8b5cf6', '#22d3ee', '#3b82f6'];
+              const colors = [ '#9bbfe2', '#091f42'];
               let i = 0;
               setInterval(() => {
                 // تغيّر كل 1 ثانية لتقريب حركة الـ gradient
