@@ -356,25 +356,3 @@
         transform: rotate(360deg);
     }
 }
-
-body {
-    background: linear-gradient(-45deg, #9bbfe2, #091f42);
-    background-size: 400% 400%;
-    animation: gradientMove 10s ease infinite;
-    min-height: 100vh;
-    transition: background 2s ease-in-out;
-}
-
-@keyframes gradientMove {
-    0% {
-        background-position: 0% 50%;
-    }
-
-    50% {
-        background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
-    }
-}
