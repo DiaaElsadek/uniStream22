@@ -353,6 +353,8 @@ export default function SignupPage() {
                 const password = localStorage.getItem("password");
                 const res = await saveData(academicId, email, password ?? "", fullName ?? "", userToken ?? "");
                 if (res) {
+                    sessionStorage.setItem("hasReloadedSignup", "false");
+                    sessionStorage.setItem("hasReloadedLogin", "false");
                     router.push("/selectschedule");
                 }
                 else {
