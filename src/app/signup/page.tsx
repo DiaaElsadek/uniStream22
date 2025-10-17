@@ -402,8 +402,8 @@ export default function SignupPage() {
 
                 <div className="gradient-border mb-4"></div>
 
-                <form onSubmit={handleSubmit} className="space-y-6 relative z-10" noValidate noValidate 
-                    autoComplete>
+                <form onSubmit={handleSubmit} className="space-y-6 relative z-10" noValidate
+                    autoComplete="on" >
                     {/* Full Name */}
                     <div>
                         <label htmlFor="fullName" className="block text-gray-200 font-medium mb-2">
