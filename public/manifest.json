@@ -8,13 +8,13 @@
     "description": "UniStream22 Continue and View The Last News",
     "icons": [
         {
-            "src": "/icons/logo-HTI-4.png",
+            "src": "/icons/uniStream22.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "/icons/logo-HTI-4.png",
+            "src": "/icons/uniStream22.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
