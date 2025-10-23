@@ -44,7 +44,7 @@ export default function AddNewsPage() {
         "اتصالات البيانات",
         "مشروع تخرج 1",
     ];
-    const groups = ["global", "1", "2", "3", "4", "5", "6"];
+    const groups = ["1", "2", "3", "4", "5", "6"];
 
     // Handle scroll effect for navbar
     useEffect(() => {
