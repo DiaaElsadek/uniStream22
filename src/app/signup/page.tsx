@@ -144,6 +144,7 @@ export default function SignupPage() {
         }
     };
 
+
     const onFullNameBlur = () => {
         if (fullName.length === 0) {
             setFullNameError("Full Name is required.");
@@ -186,7 +187,7 @@ export default function SignupPage() {
     const onEmailChange = (value: string) => {
         const sanitizedValue = sanitize(value);
         setEmail(sanitizedValue);
-        
+
         if (sanitizedValue.length === 0) {
             setEmailError(null);
         } else if (!emailRegex.test(sanitizedValue)) {
@@ -220,8 +221,8 @@ export default function SignupPage() {
         password.length === 8 &&
         onlyLettersDigits.test(password) &&
         fullName.trim().length >= 3 &&
-        !academicError && 
-        !emailError && 
+        !academicError &&
+        !emailError &&
         !passwordError;
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -400,7 +401,7 @@ export default function SignupPage() {
                             transition={{ delay: 1.1 }}
                         >
                             <label htmlFor="fullName" className="block text-gray-300 font-semibold mb-3 text-base">
-                                Full Name
+                                Username
                             </label>
                             <motion.div
                                 whileHover={{ scale: 1.02 }}
@@ -427,7 +428,7 @@ export default function SignupPage() {
                                     onBlur={onFullNameBlur}
                                     required
                                     className="w-full pl-12 pr-4 py-4 rounded-xl bg-gray-800/60 border-2 border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-100 transition-all duration-300 outline-none placeholder-gray-500"
-                                    placeholder="Enter your full name (min 3, max 20 chars)"
+                                    placeholder="Enter your Username (min 3, max 20 chars)"
                                 />
                                 <motion.div
                                     className="absolute inset-0 rounded-xl border-2 border-transparent pointer-events-none"
@@ -676,8 +677,8 @@ export default function SignupPage() {
                                 type="submit"
                                 disabled={loading || !formValid}
                                 className={`w-full py-4 rounded-xl font-bold text-base relative overflow-hidden ${loading || !formValid
-                                        ? "bg-gray-700 text-gray-400 cursor-not-allowed"
-                                        : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg hover:shadow-xl"
+                                    ? "bg-gray-700 text-gray-400 cursor-not-allowed"
+                                    : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg hover:shadow-xl"
                                     } transition-all duration-300`}
                                 whileHover={!loading && formValid ? {
                                     scale: 1.02,
@@ -785,8 +786,8 @@ function RuleLine({ ok, text }: { ok: boolean; text: string }) {
                 animate={ok ? { scale: [1, 1.2, 1] } : {}}
                 transition={{ duration: 0.3 }}
                 className={`w-5 h-5 rounded-full flex items-center justify-center ${ok
-                        ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                        : "bg-gray-700/50 text-gray-500 border border-gray-600/30"
+                    ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                    : "bg-gray-700/50 text-gray-500 border border-gray-600/30"
                     }`}
             >
                 {ok ? (
