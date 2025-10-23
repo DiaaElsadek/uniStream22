@@ -84,6 +84,10 @@ const CheckIcon = ({ className = "w-4 h-4" }) => (
     </svg>
 );
 
+// Utility functions from the second code
+const onlyLettersDigits = /^[A-Za-z0-9]+$/;
+const sanitize = (v: string) => v.replace(/<[^>]*>?/gm, "").replace(/script/gi, "").trim();
+
 export default function SignupPage() {
     const [academicId, setAcademicId] = useState("");
     const [email, setEmail] = useState("");
@@ -100,53 +104,41 @@ export default function SignupPage() {
     const [emailError, setEmailError] = useState<string | null>(null);
     const [passwordError, setPasswordError] = useState<string | null>(null);
 
-    // password rules state
+    // password rules state - UPDATED LOGIC
     const [pwLenOk, setPwLenOk] = useState(false);
-    const [pwUpperOk, setPwUpperOk] = useState(false);
-    const [pwLowerOk, setPwLowerOk] = useState(false);
-    const [pwDigitOk, setPwDigitOk] = useState(false);
-    const [pwSpecialOk, setPwSpecialOk] = useState(false);
+    const [pwLettersDigitsOk, setPwLettersDigitsOk] = useState(false);
 
     // helpers
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const academicRegex = /^4202[0123456]\d{3}$/;
     const onlyDigitsRegex = /^\d*$/;
-    const upperRegex = /[A-Z]/;
-    const lowerRegex = /[a-z]/;
-    const digitRegex = /[0-9]/;
-    const specialRegex = /[!@#$%^&*(),.?":{}|<>]/;
 
-    // live validate password
+    // live validate password - UPDATED LOGIC
     useEffect(() => {
-        setPwLenOk(password.length >= 8);
-        setPwUpperOk(upperRegex.test(password));
-        setPwLowerOk(lowerRegex.test(password));
-        setPwDigitOk(digitRegex.test(password));
-        setPwSpecialOk(specialRegex.test(password));
+        setPwLenOk(password.length === 8);
+        setPwLettersDigitsOk(onlyLettersDigits.test(password));
 
         if (password.length === 0) {
             setPasswordError(null);
-        } else if (
-            pwLenOk &&
-            pwUpperOk &&
-            pwLowerOk &&
-            pwDigitOk &&
-            pwSpecialOk
-        ) {
-            setPasswordError(null);
+        } else if (password.length !== 8) {
+            setPasswordError("Password must be exactly 8 characters.");
+        } else if (!onlyLettersDigits.test(password)) {
+            setPasswordError("Password must only contain letters and digits.");
         } else {
-            setPasswordError("Password does not meet all requirements.");
+            setPasswordError(null);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [password, pwLenOk, pwUpperOk, pwLowerOk, pwDigitOk, pwSpecialOk]);
+    }, [password]);
 
     // full name validation
     const onFullNameChange = (value: string) => {
-        if (value.length > 20) return;
-        setFullName(value);
+        const sanitizedValue = sanitize(value);
+        if (sanitizedValue.length > 20) return;
+        setFullName(sanitizedValue);
 
-        if (value.length === 0) {
+        if (sanitizedValue.length === 0) {
             setFullNameError("Full Name is required.");
+        } else if (sanitizedValue.length < 3) {
+            setFullNameError("Full Name must be at least 3 characters.");
         } else {
             setFullNameError(null);
         }
@@ -155,24 +147,23 @@ export default function SignupPage() {
     const onFullNameBlur = () => {
         if (fullName.length === 0) {
             setFullNameError("Full Name is required.");
+        } else if (fullName.length < 3) {
+            setFullNameError("Full Name must be at least 3 characters.");
         } else {
             setFullNameError(null);
         }
     };
 
-    // academic id validation
+    // academic id validation - UPDATED LOGIC
     const onAcademicChange = (value: string) => {
-        if (!onlyDigitsRegex.test(value)) return;
-        if (value.length > 8) return;
-        setAcademicId(value);
+        const sanitizedValue = sanitize(value).replace(/\D/g, "").slice(0, 8);
+        setAcademicId(sanitizedValue);
 
-        if (value.length === 0) {
+        if (sanitizedValue.length === 0) {
             setAcademicError(null);
-        } else if (!onlyDigitsRegex.test(value)) {
-            setAcademicError("Academic ID must contain digits only.");
-        } else if (value.length < 8) {
+        } else if (sanitizedValue.length < 8) {
             setAcademicError("Academic ID must be 8 digits long.");
-        } else if (!academicRegex.test(value)) {
+        } else if (!academicRegex.test(sanitizedValue)) {
             setAcademicError("Academic ID must start with 4202 and then 4 digits.");
         } else {
             setAcademicError(null);
@@ -191,12 +182,14 @@ export default function SignupPage() {
         }
     };
 
-    // email validation
+    // email validation - UPDATED LOGIC
     const onEmailChange = (value: string) => {
-        setEmail(value);
-        if (value.length === 0) {
+        const sanitizedValue = sanitize(value);
+        setEmail(sanitizedValue);
+        
+        if (sanitizedValue.length === 0) {
             setEmailError(null);
-        } else if (!emailRegex.test(value)) {
+        } else if (!emailRegex.test(sanitizedValue)) {
             setEmailError("Invalid email format.");
         } else {
             setEmailError(null);
@@ -213,14 +206,23 @@ export default function SignupPage() {
         }
     };
 
+    // password change handler - UPDATED LOGIC
+    const onPasswordChange = (value: string) => {
+        const sanitizedValue = sanitize(value).slice(0, 8);
+        setPassword(sanitizedValue);
+    };
+
+    // form validation - UPDATED LOGIC
     const formValid =
+        academicId.length === 8 &&
         academicRegex.test(academicId) &&
         emailRegex.test(email) &&
-        pwLenOk &&
-        pwUpperOk &&
-        pwLowerOk &&
-        pwDigitOk &&
-        pwSpecialOk;
+        password.length === 8 &&
+        onlyLettersDigits.test(password) &&
+        fullName.trim().length >= 3 &&
+        !academicError && 
+        !emailError && 
+        !passwordError;
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -230,8 +232,8 @@ export default function SignupPage() {
                 setAcademicError("Academic ID must be 8 digits and start with 4202.");
             if (!emailRegex.test(email))
                 setEmailError("Invalid email format.");
-            if (!(pwLenOk && pwUpperOk && pwLowerOk && pwDigitOk && pwSpecialOk))
-                setPasswordError("Password does not meet all requirements.");
+            if (!(password.length === 8 && onlyLettersDigits.test(password)))
+                setPasswordError("Password must be exactly 8 letters/digits.");
             return;
         }
 
@@ -425,7 +427,7 @@ export default function SignupPage() {
                                     onBlur={onFullNameBlur}
                                     required
                                     className="w-full pl-12 pr-4 py-4 rounded-xl bg-gray-800/60 border-2 border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-100 transition-all duration-300 outline-none placeholder-gray-500"
-                                    placeholder="Enter your full name (max 20 chars)"
+                                    placeholder="Enter your full name (min 3, max 20 chars)"
                                 />
                                 <motion.div
                                     className="absolute inset-0 rounded-xl border-2 border-transparent pointer-events-none"
@@ -583,7 +585,7 @@ export default function SignupPage() {
                             </AnimatePresence>
                         </motion.div>
 
-                        {/* Enhanced Password Field */}
+                        {/* Enhanced Password Field - UPDATED LOGIC */}
                         <motion.div
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
@@ -613,10 +615,11 @@ export default function SignupPage() {
                                     name="password"
                                     autoComplete="new-password"
                                     value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    onChange={(e) => onPasswordChange(e.target.value)}
                                     required
+                                    maxLength={8}
                                     className="w-full pl-12 pr-12 py-4 rounded-xl bg-gray-800/60 border-2 border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-100 transition-all duration-300 outline-none placeholder-gray-500"
-                                    placeholder="Enter your password"
+                                    placeholder="Enter exactly 8 letters/digits"
                                 />
 
                                 <motion.button
@@ -643,12 +646,10 @@ export default function SignupPage() {
                                 />
                             </motion.div>
 
+                            {/* Enhanced Password Rules - UPDATED */}
                             <div className="mt-4 space-y-2">
-                                <RuleLine ok={pwLenOk} text="Only 8 characters" />
-                                <RuleLine ok={pwUpperOk} text="At least one uppercase letter" />
-                                <RuleLine ok={pwLowerOk} text="At least one lowercase letter" />
-                                <RuleLine ok={pwDigitOk} text="At least one digit" />
-                                <RuleLine ok={pwSpecialOk} text="At least one special character" />
+                                <RuleLine ok={pwLenOk} text="Exactly 8 characters" />
+                                <RuleLine ok={pwLettersDigitsOk} text="Only letters and numbers" />
                             </div>
 
                             <AnimatePresence>
@@ -665,7 +666,7 @@ export default function SignupPage() {
                             </AnimatePresence>
                         </motion.div>
 
-                        {/* Submit Button (unchanged) */}
+                        {/* Submit Button */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
