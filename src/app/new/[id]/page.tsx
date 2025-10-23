@@ -79,6 +79,23 @@ export default function NewsDetailsPage() {
         return () => window.removeEventListener("mousemove", handleMouseMove);
     }, [id]);
 
+    // استخراج الروابط من المحتوى
+    const extractLinks = (content: string) => {
+        const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+        const links = content.match(urlRegex) || [];
+        return links.map((link, index) => ({
+            id: index + 1,
+            url: link.startsWith("http") ? link : `https://${link}`,
+            displayName: `Link ${index + 1}`
+        }));
+    };
+
+    // إزالة الروابط من المحتوى لعرض النص فقط
+    const getContentWithoutLinks = (content: string) => {
+        const urlRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+        return content.replace(urlRegex, '').trim();
+    };
+
     const shareNews = async () => {
         if (navigator.share) {
             try {
@@ -203,6 +220,10 @@ export default function NewsDetailsPage() {
                 </div>
             </div>
         );
+
+    // استخراج الروابط من المحتوى
+    const links = newsItem.content ? extractLinks(newsItem.content) : [];
+    const contentWithoutLinks = newsItem.content ? getContentWithoutLinks(newsItem.content) : "";
 
     return (
         <div className="news-details-page min-h-screen flex flex-col relative overflow-hidden bg-slate-900">
@@ -429,30 +450,47 @@ export default function NewsDetailsPage() {
                                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgba(120,119,198,0.15)_1px,_transparent_0)] bg-[length:20px_20px] opacity-10"></div>
 
                                     {/* Content */}
-                                    <div className={`relative z-10 text-lg leading-8 text-slate-200 whitespace-pre-line ${/[\u0600-\u06FF]/.test(newsItem.content) ? "text-right" : "text-left"
+                                    <div className={`relative z-10 text-lg leading-8 text-slate-200 whitespace-pre-line ${/[\u0600-\u06FF]/.test(contentWithoutLinks) ? "text-right" : "text-left"
                                         }`}>
-                                        {newsItem.content
-                                            ? newsItem.content.split(/(https?:\/\/[^\s]+|www\.[^\s]+)/g).map((part: string, index: number) => {
-                                                if (/^(https?:\/\/|www\.)/.test(part)) {
-                                                    const url = part.startsWith("http") ? part : `https://${part}`;
-                                                    return (
-                                                        <a
-                                                            key={index}
-                                                            href={url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline hover:no-underline transition-all duration-300 transform hover:translate-y-[-1px] bg-cyan-500/10 hover:bg-cyan-500/20 px-3 py-1.5 rounded-lg border border-cyan-500/20 hover:border-cyan-500/40 font-medium"
-                                                        >
-                                                            <FontAwesomeIcon icon={faLink} className="text-sm" />
-                                                            {part}
-                                                        </a>
-                                                    );
-                                                } else {
-                                                    return part;
-                                                }
-                                            })
-                                            : "No content available"}
+                                        {contentWithoutLinks || "No content available"}
                                     </div>
+
+                                    {/* Links Section */}
+                                    {links.length > 0 && (
+                                        <div className="relative z-10 mt-8 pt-8 border-t border-slate-700/50">
+                                            <h3 className="text-xl font-semibold text-cyan-300 mb-4 flex items-center gap-2">
+                                                <FontAwesomeIcon icon={faLink} className="text-sm" />
+                                                Related Links ({links.length})
+                                            </h3>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                {links.map((link) => (
+                                                    <a
+                                                        key={link.id}
+                                                        href={link.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="group flex items-center gap-3 bg-slate-700/30 hover:bg-cyan-500/20 border border-slate-600/50 hover:border-cyan-500/40 rounded-xl p-4 transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg hover:shadow-cyan-500/10"
+                                                    >
+                                                        <div className="bg-cyan-500/20 group-hover:bg-cyan-500/30 p-2 rounded-lg transition-colors duration-300">
+                                                            <FontAwesomeIcon icon={faLink} className="text-cyan-400 text-sm" />
+                                                        </div>
+                                                        <div className="flex-1 min-w-0">
+                                                            <span className="text-white font-medium group-hover:text-cyan-300 transition-colors duration-300">
+                                                                {link.displayName}
+                                                            </span>
+                                                            <p className="text-slate-400 text-xs truncate group-hover:text-slate-300 transition-colors duration-300">
+                                                                {link.url}
+                                                            </p>
+                                                        </div>
+                                                        <FontAwesomeIcon 
+                                                            icon={faArrowLeft} 
+                                                            className="text-slate-500 group-hover:text-cyan-400 group-hover:-translate-x-1 transition-all duration-300 text-sm" 
+                                                        />
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {/* Share Button */}
                                     <div className="relative z-10 mt-12 pt-8 border-t border-slate-700/50">
