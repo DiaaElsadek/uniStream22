@@ -6,16 +6,21 @@ import { cookies } from "next/headers";
 const SUPA_URL = process.env.SUPABASE_URL!;
 const SUPA_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
-// دالة بسيطة لتنظيف النصوص من أي أكواد JavaScript أو HTML
+// تنظيف لأي كود HTML أو جافاسكريبت
 function sanitizeInput(input: string): string {
   return input.replace(/<[^>]*>?/gm, "").replace(/script/gi, "").trim();
+}
+
+// يسمح فقط بحروف (عربي أو إنجليزي) وأرقام وسبيس
+function sanitizeFullName(input: string): string {
+  return input.replace(/[^A-Za-z0-9\u0600-\u06FF\s]/g, "").trim();
 }
 
 export async function POST(req: NextRequest) {
   try {
     const { academicId, email, password, fullName, userToken } = await req.json();
 
-    // ========== VALIDATION SECTION ==========
+    // ===== VALIDATION SECTION =====
     if (!academicId || !email || !password || !fullName || !userToken) {
       return NextResponse.json(
         { message: "All fields are required.", status: false, type: "validation" },
@@ -23,14 +28,14 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // تنظيف المدخلات لمنع إدخال أكواد جافا سكريبت أو HTML
+    // تنظيف كل القيم
     const cleanAcademicId = sanitizeInput(academicId);
     const cleanEmail = sanitizeInput(email);
     const cleanPassword = sanitizeInput(password);
-    const cleanFullName = sanitizeInput(fullName);
+    const cleanFullName = sanitizeFullName(fullName); // يمنع الرموز الخاصة
     const cleanUserToken = sanitizeInput(userToken);
 
-    // التحقق من أن الرقم الأكاديمي 8 أرقام فقط
+    // تحقق من أن الرقم الأكاديمي 8 أرقام فقط
     if (!/^\d{8}$/.test(cleanAcademicId)) {
       return NextResponse.json(
         { message: "Academic ID must be exactly 8 digits.", status: false, type: "academicId" },
@@ -38,7 +43,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // السماح فقط بحروف وأرقام و @ و . في الإيميل
+    // السماح فقط بحروف وأرقام و @ و . في الايميل
     const emailRegex = /^[A-Za-z0-9@.]+$/;
     if (!emailRegex.test(cleanEmail)) {
       return NextResponse.json(
@@ -47,7 +52,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // السماح بباسورد 8 حروف فقط بدون زيادة أو نقصان
+    // الباسورد يجب أن يكون 8 فقط
     if (cleanPassword.length !== 8) {
       return NextResponse.json(
         { message: "Password must be exactly 8 characters long.", status: false, type: "password" },
@@ -55,15 +60,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // full name تحقق أن الاسم لا يقل عن 3 أحرف
+    // الاسم لا يقل عن 3 وأقل من أو يساوي 20 وحروف/أرقام/سبيس فقط
     if (cleanFullName.length < 3) {
       return NextResponse.json(
         { message: "Full name must be at least 3 characters long.", status: false, type: "fullName" },
         { status: 400 }
       );
     }
+    if (cleanFullName.length > 20) {
+      return NextResponse.json(
+        { message: "Full name must be at most 20 characters.", status: false, type: "fullName" },
+        { status: 400 }
+      );
+    }
 
-    // ========== CHECK DUPLICATES ==========
+    // إذا اتمسح أو تغير فيه أي جزء غير مسموح بيرجع رسالة
+    if (cleanFullName !== fullName.trim()) {
+      return NextResponse.json(
+        { message: "Full name must only contain letters, numbers and spaces.", status: false, type: "fullName" },
+        { status: 400 }
+      );
+    }
+
+    // ===== CHECK DUPLICATES =====
     const resAcad = await fetch(`${SUPA_URL}/rest/v1/AppUser?AcademicId=eq.${cleanAcademicId}`, {
       method: "GET",
       headers: {
@@ -94,7 +113,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ========== INSERT NEW USER ==========
+    // ===== INSERT NEW USER =====
     const insertRes = await fetch(`${SUPA_URL}/rest/v1/AppUser`, {
       method: "POST",
       headers: {

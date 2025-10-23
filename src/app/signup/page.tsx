@@ -130,8 +130,11 @@ export default function SignupPage() {
     }, [password]);
 
     // full name validation
+    const sanitizeFullName = (v: string) =>
+        v.replace(/[^A-Za-z0-9\u0600-\u06FF\s]/g, "") // يسمح بحروف وأرقام وسبيس فقط (إنجليزي + عربي)
+
     const onFullNameChange = (value: string) => {
-        const sanitizedValue = sanitize(value);
+        const sanitizedValue = sanitizeFullName(value);
         if (sanitizedValue.length > 20) return;
         setFullName(sanitizedValue);
 
@@ -143,6 +146,7 @@ export default function SignupPage() {
             setFullNameError(null);
         }
     };
+
 
 
     const onFullNameBlur = () => {
