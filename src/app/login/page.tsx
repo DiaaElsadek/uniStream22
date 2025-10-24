@@ -540,6 +540,26 @@ export default function LoginPage() {
               </Link>
             </p>
           </motion.div>
+
+          {/* Admins */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.7 }}
+            className="mt-5 text-center"
+          >
+            <p className="text-gray-400 text-base">
+              Forgot your password? {" "}
+              <br/>
+              <Link
+                href="https://wa.me/201065504033"
+                target="blank"
+                className="text-green-300 font-semibold hover:text-indigo-300 underline underline-offset-4 transition-all duration-300 hover:underline-offset-2"
+              >
+                Contact the admin.
+              </Link>
+            </p>
+          </motion.div>
         </div>
       </motion.div>
     </div>
