@@ -203,7 +203,136 @@ export default function HomePage() {
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-gray-950 via-gray-900 to-gray-950 relative text-white overflow-hidden">
-            {/* Subtle Animated Background */}
+            {/* Enhanced Light Effect - Upper Center */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-96 pointer-events-none overflow-hidden z-0">
+                {/* Main Central Light Beam */}
+                <motion.div
+                    animate={{
+                        opacity: [0.3, 0.6, 0.3],
+                        scale: [1, 1.2, 1],
+                    }}
+                    transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-b from-indigo-500/20 via-purple-500/15 to-transparent rounded-full blur-3xl"
+                />
+                
+                {/* Rotating Color Orbs */}
+                <motion.div
+                    animate={{
+                        rotate: [0, 360],
+                        scale: [1, 1.3, 1],
+                    }}
+                    transition={{
+                        duration: 20,
+                        repeat: Infinity,
+                        ease: "linear"
+                    }}
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-80"
+                >
+                    <motion.div
+                        animate={{
+                            x: [-100, 100, -100],
+                            y: [-50, 50, -50],
+                        }}
+                        transition={{
+                            duration: 15,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                        className="absolute w-32 h-32 bg-gradient-to-r from-blue-500/30 to-cyan-500/20 rounded-full blur-2xl"
+                    />
+                    <motion.div
+                        animate={{
+                            x: [100, -100, 100],
+                            y: [50, -50, 50],
+                        }}
+                        transition={{
+                            duration: 18,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: 2
+                        }}
+                        className="absolute w-28 h-28 bg-gradient-to-r from-purple-500/30 to-pink-500/20 rounded-full blur-2xl"
+                    />
+                </motion.div>
+
+                {/* Pulsing Rings */}
+                <motion.div
+                    animate={{
+                        scale: [1, 1.5, 2, 1],
+                        opacity: [0.5, 0.8, 0.3, 0.5],
+                    }}
+                    transition={{
+                        duration: 6,
+                        repeat: Infinity,
+                        ease: "easeOut"
+                    }}
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-64 border-2 border-indigo-400/30 rounded-full blur-sm"
+                />
+                <motion.div
+                    animate={{
+                        scale: [1, 1.8, 2.2, 1],
+                        opacity: [0.3, 0.6, 0.2, 0.3],
+                    }}
+                    transition={{
+                        duration: 8,
+                        repeat: Infinity,
+                        ease: "easeOut",
+                        delay: 1
+                    }}
+                    className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-80 border-2 border-purple-400/20 rounded-full blur-sm"
+                />
+
+                {/* Floating Light Particles */}
+                {[...Array(12)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        animate={{
+                            y: [0, -80, 0],
+                            x: [0, Math.random() * 60 - 30, 0],
+                            opacity: [0, 0.8, 0],
+                            scale: [0, 1, 0],
+                        }}
+                        transition={{
+                            duration: 15 + Math.random() * 10,
+                            repeat: Infinity,
+                            delay: i * 1.5,
+                            ease: "easeInOut"
+                        }}
+                        className="absolute w-2 h-2 bg-gradient-to-r from-blue-300 to-purple-300 rounded-full opacity-40 blur-sm"
+                        style={{
+                            left: `${50 + Math.random() * 40 - 20}%`,
+                            top: `${Math.random() * 40}%`,
+                        }}
+                    />
+                ))}
+
+                {/* Shimmer Rays */}
+                {[...Array(8)].map((_, i) => (
+                    <motion.div
+                        key={i}
+                        animate={{
+                            rotate: [0, 360],
+                            opacity: [0.1, 0.4, 0.1],
+                        }}
+                        transition={{
+                            duration: 20 + i * 2,
+                            repeat: Infinity,
+                            ease: "linear",
+                            delay: i * 0.5
+                        }}
+                        className="absolute top-0 left-1/2 -translate-x-1/2 w-1 h-32 bg-gradient-to-b from-transparent via-blue-400/30 to-transparent"
+                        style={{
+                            transform: `rotate(${i * 45}deg)`,
+                        }}
+                    />
+                ))}
+            </div>
+
+            {/* Existing Subtle Animated Background */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
                 {/* Subtle Gradient Orbs */}
                 <motion.div
