@@ -34,7 +34,7 @@ export async function middleware(req: NextRequest) {
     }
 
     const userToken = req.cookies.get("userToken")?.value || null;
-    const userTokenLocal = localStorage.getItem("userToken") || null;
+    // const userTokenLocal = localStorage.getItem("userToken") || null;
 
     // ✅ لو مفيش userToken
     if (!userToken) {
@@ -43,9 +43,9 @@ export async function middleware(req: NextRequest) {
 
     const user = await checkUser(userToken);
 
-    if((userToken === userTokenLocal) && user && (pathname.startsWith("/login") || pathname.startsWith("/signup"))){
-        return NextResponse.redirect(new URL("/home", req.url));
-    }
+    // if((userToken === userTokenLocal) && user && (pathname.startsWith("/login") || pathname.startsWith("/signup"))){
+    //     return NextResponse.redirect(new URL("/home", req.url));
+    // }
 
     if (!user) {
         return NextResponse.redirect(new URL("/login", req.url));
