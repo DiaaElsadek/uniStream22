@@ -15,8 +15,9 @@ async function checkUser(userToken: string) {
         });
 
         const data = await res.json();
+
         if (!Array.isArray(data) || data.length === 0) return null;
-        return data[0];
+        else return data[0];
     } catch {
         return null;
     }
@@ -33,6 +34,7 @@ export async function middleware(req: NextRequest) {
     }
 
     const userToken = req.cookies.get("userToken")?.value || null;
+    const userTokenLocal = localStorage.getItem("userToken") || null;
 
     // ✅ لو مفيش userToken
     if (!userToken) {
@@ -40,6 +42,11 @@ export async function middleware(req: NextRequest) {
     }
 
     const user = await checkUser(userToken);
+
+    if((userToken === userTokenLocal) && user && (pathname.startsWith("/login") || pathname.startsWith("/signup"))){
+        return NextResponse.redirect(new URL("/home", req.url));
+    }
+
     if (!user) {
         return NextResponse.redirect(new URL("/login", req.url));
     }
@@ -52,7 +59,7 @@ export async function middleware(req: NextRequest) {
         return NextResponse.redirect(new URL("/home", req.url));
     }
 
-    if(user !== null && (pathname.startsWith("/login") || pathname.startsWith("/signup"))){
+    if(user && (pathname.startsWith("/login") || pathname.startsWith("/signup"))){
         return NextResponse.redirect(new URL("/home", req.url));
     }
 
