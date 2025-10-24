@@ -218,7 +218,7 @@ export default function HomePage() {
                     }}
                     className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-b from-indigo-500/20 via-purple-500/15 to-transparent rounded-full blur-3xl"
                 />
-                
+
                 {/* Rotating Color Orbs */}
                 <motion.div
                     animate={{
@@ -389,7 +389,7 @@ export default function HomePage() {
             </div>
 
             {/* Enhanced Responsive Navigation */}
-            <motion.nav 
+            <motion.nav
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1, ease: "easeOut" }}
@@ -420,8 +420,8 @@ export default function HomePage() {
                                 initial={{ opacity: 0, y: -20 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ delay: index * 0.1 + 0.3 }}
-                                whileHover={{ 
-                                    scale: 1.1, 
+                                whileHover={{
+                                    scale: 1.1,
                                     y: -2,
                                     color: "#a78bfa",
                                     transition: { duration: 0.2 }
@@ -438,8 +438,8 @@ export default function HomePage() {
                             initial={{ opacity: 0, y: -20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.7 }}
-                            whileHover={{ 
-                                scale: 1.1, 
+                            whileHover={{
+                                scale: 1.1,
                                 y: -2,
                                 color: "#f87171",
                                 backgroundColor: "rgba(248, 113, 113, 0.1)",
@@ -669,7 +669,7 @@ export default function HomePage() {
                                 className="mb-24 relative"
                             >
                                 {/* Enhanced Week Header - Clean Design */}
-                                <motion.div 
+                                <motion.div
                                     className="relative flex items-center justify-center my-16 w-full"
                                     whileInView={{ scale: 1.02 }}
                                     transition={{ duration: 0.5 }}
@@ -691,7 +691,7 @@ export default function HomePage() {
                                         transition={{ duration: 2, repeat: Infinity }}
                                         className="flex-1 h-0.5 bg-gradient-to-r from-gray-700 via-gray-600 to-transparent mx-6 rounded-full"
                                     />
-                                    
+
                                     {/* Clean Week Title with Animated Gradient Text */}
                                     <motion.div
                                         whileHover={{ scale: 1.05, y: -2 }}
@@ -729,7 +729,7 @@ export default function HomePage() {
                                             initial={{ opacity: 0, y: 50, rotateX: 45 }}
                                             animate={{ opacity: 1, y: 0, rotateX: 0 }}
                                             transition={{ duration: 0.6, delay: index * 0.15 }}
-                                            whileHover={{ 
+                                            whileHover={{
                                                 y: -12,
                                                 scale: 1.03,
                                                 rotateY: 5,
@@ -789,7 +789,7 @@ export default function HomePage() {
                                                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm">
                                                         <span className="text-gray-400 flex items-center gap-2 bg-gray-700/50 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm">
                                                             <FontAwesomeIcon icon={faBook} className="text-indigo-400" />
-                                                            <span className="font-semibold text-gray-300">Subject:</span> 
+                                                            <span className="font-semibold text-gray-300">Subject:</span>
                                                             <span className="text-indigo-300">{subjects[item.subjectId - 1] || "Global"}</span>
                                                         </span>
                                                         <span className="text-gray-400 flex items-center gap-2 bg-gray-700/50 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm">
@@ -797,7 +797,7 @@ export default function HomePage() {
                                                             {item.createdAt ? new Date(item.createdAt).toLocaleDateString("en") : "—"}
                                                         </span>
                                                     </div>
-                                                    
+
                                                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm">
                                                         <span className="text-gray-400 flex items-center gap-2 bg-gray-700/50 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm">
                                                             <FontAwesomeIcon icon={faStar} className="text-yellow-400" />
@@ -814,7 +814,7 @@ export default function HomePage() {
 
                                                 {/* Enhanced Read More Button */}
                                                 <motion.button
-                                                    whileHover={{ 
+                                                    whileHover={{
                                                         scale: 1.05,
                                                         background: "linear-gradient(45deg, #4f46e5, #7c3aed)",
                                                         transition: { duration: 0.2 }
@@ -840,6 +840,461 @@ export default function HomePage() {
                     })
                 )}
             </main>
+
+            {/* Enhanced Luxury Footer */}
+            <footer className="relative z-10 bg-gradient-to-t from-gray-900 via-gray-900/95 to-transparent pt-32 pb-8 mt-32">
+                {/* Footer Background Effects */}
+                <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                    <motion.div
+                        animate={{
+                            opacity: [0.1, 0.3, 0.1],
+                            scale: [1, 1.1, 1],
+                        }}
+                        transition={{
+                            duration: 8,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-gradient-to-t from-indigo-500/10 to-purple-500/5 rounded-full blur-3xl"
+                    />
+                </div>
+
+                <div className="max-w-7xl mx-auto px-4">
+                    {/* Main Footer Content */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1 }}
+                        className="text-center"
+                    >
+                        {/* Realistic 3D Processor-Style LinkedIn Box */}
+                        <motion.div
+                            whileHover={{
+                                scale: 1.02,
+                                y: -5,
+                                transition: { duration: 0.3 }
+                            }}
+                            whileTap={{ scale: 0.98 }}
+                            className="inline-block mb-12 group relative cursor-pointer"
+                            onClick={() => window.open('www.linkedin.com/in/diaaelsadek', '_blank')}
+                        >
+                            {/* 3D Base with Realistic Processor Legs */}
+                            <div className="relative">
+                                {/* Realistic Processor Legs */}
+                                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 flex gap-8 z-0">
+                                    {[...Array(4)].map((_, i) => (
+                                        <motion.div
+                                            key={i}
+                                            animate={{
+                                                y: [0, -3, 0],
+                                                opacity: [0.6, 0.9, 0.6],
+                                            }}
+                                            transition={{
+                                                duration: 2 + i * 0.5,
+                                                repeat: Infinity,
+                                                ease: "easeInOut",
+                                                delay: i * 0.2
+                                            }}
+                                            className="w-4 h-8 bg-gradient-to-b from-gray-700 via-gray-600 to-gray-800 rounded-t-lg relative border border-gray-500/30"
+                                        >
+                                            {/* Leg Contacts */}
+                                            <div className="absolute -bottom-1 left-0 w-full h-2 bg-gradient-to-b from-gray-500 to-gray-700 rounded-b-lg border-t border-gray-400/20" />
+
+                                            {/* Leg Glow */}
+                                            <motion.div
+                                                animate={{
+                                                    opacity: [0.3, 0.7, 0.3],
+                                                }}
+                                                transition={{
+                                                    duration: 3,
+                                                    repeat: Infinity,
+                                                    ease: "easeInOut",
+                                                    delay: i * 0.3
+                                                }}
+                                                className="absolute -bottom-1 left-0 w-full h-2 bg-blue-400/30 blur-sm rounded-full"
+                                            />
+                                        </motion.div>
+                                    ))}
+                                </div>
+
+                                {/* Main 3D Processor Container */}
+                                <motion.div
+                                    className="relative bg-gradient-to-br from-gray-800 via-gray-900 to-gray-800 px-12 sm:px-16 py-10 sm:py-12 rounded-2xl shadow-2xl backdrop-blur-xl border border-gray-600/50 group-hover:border-gray-500/70 transition-all duration-500 overflow-hidden transform-gpu"
+                                    style={{
+                                        transformStyle: 'preserve-3d',
+                                        perspective: '1000px'
+                                    }}
+                                >
+                                    {/* 3D Depth Effect */}
+                                    <div className="absolute inset-0 bg-gradient-to-b from-gray-700/30 to-transparent rounded-2xl transform-gpu"
+                                        style={{ transform: 'translateZ(-10px)' }} />
+
+                                    {/* Processor Top Heat Spreader */}
+                                    <div className="absolute inset-2 rounded-xl bg-gradient-to-br from-gray-700/80 to-gray-900/90 border border-gray-600/30" />
+
+                                    {/* Electric Circuit Border */}
+                                    <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                                        {/* Base Border */}
+                                        <motion.div
+                                            animate={{
+                                                opacity: [0.4, 0.8, 0.4],
+                                            }}
+                                            transition={{
+                                                duration: 3,
+                                                repeat: Infinity,
+                                                ease: "easeInOut"
+                                            }}
+                                            className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500 p-0.5"
+                                        />
+
+                                        {/* Animated Circuit Lines */}
+                                        <motion.div
+                                            animate={{
+                                                x: [-200, 400],
+                                            }}
+                                            transition={{
+                                                duration: 4,
+                                                repeat: Infinity,
+                                                ease: "linear"
+                                            }}
+                                            className="absolute top-2 left-0 w-32 h-0.5 bg-gradient-to-r from-transparent via-cyan-300 to-transparent blur-sm"
+                                        />
+                                        <motion.div
+                                            animate={{
+                                                x: [400, -200],
+                                            }}
+                                            transition={{
+                                                duration: 3.5,
+                                                repeat: Infinity,
+                                                ease: "linear",
+                                                delay: 1
+                                            }}
+                                            className="absolute bottom-2 left-0 w-28 h-0.5 bg-gradient-to-r from-transparent via-purple-300 to-transparent blur-sm"
+                                        />
+                                    </div>
+
+                                    {/* Processor Corner Pins */}
+                                    <div className="absolute -top-1 -left-1 w-4 h-4">
+                                        <motion.div
+                                            animate={{
+                                                opacity: [0, 1, 0],
+                                                scale: [0.8, 1.2, 0.8],
+                                            }}
+                                            transition={{
+                                                duration: 2,
+                                                repeat: Infinity,
+                                                ease: "easeInOut"
+                                            }}
+                                            className="w-full h-full bg-cyan-400 rounded-full blur-sm"
+                                        />
+                                    </div>
+                                    <div className="absolute -top-1 -right-1 w-4 h-4">
+                                        <motion.div
+                                            animate={{
+                                                opacity: [0, 1, 0],
+                                                scale: [0.8, 1.2, 0.8],
+                                            }}
+                                            transition={{
+                                                duration: 2,
+                                                repeat: Infinity,
+                                                ease: "easeInOut",
+                                                delay: 0.5
+                                            }}
+                                            className="w-full h-full bg-purple-400 rounded-full blur-sm"
+                                        />
+                                    </div>
+                                    <div className="absolute -bottom-1 -left-1 w-4 h-4">
+                                        <motion.div
+                                            animate={{
+                                                opacity: [0, 1, 0],
+                                                scale: [0.8, 1.2, 0.8],
+                                            }}
+                                            transition={{
+                                                duration: 2,
+                                                repeat: Infinity,
+                                                ease: "easeInOut",
+                                                delay: 1
+                                            }}
+                                            className="w-full h-full bg-blue-400 rounded-full blur-sm"
+                                        />
+                                    </div>
+                                    <div className="absolute -bottom-1 -right-1 w-4 h-4">
+                                        <motion.div
+                                            animate={{
+                                                opacity: [0, 1, 0],
+                                                scale: [0.8, 1.2, 0.8],
+                                            }}
+                                            transition={{
+                                                duration: 2,
+                                                repeat: Infinity,
+                                                ease: "easeInOut",
+                                                delay: 1.5
+                                            }}
+                                            className="w-full h-full bg-cyan-400 rounded-full blur-sm"
+                                        />
+                                    </div>
+
+                                    {/* Overheating Effect */}
+                                    <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                                        <motion.div
+                                            animate={{
+                                                background: [
+                                                    "linear-gradient(45deg, rgba(255, 107, 0, 0.1), rgba(255, 140, 0, 0.05), rgba(255, 107, 0, 0.1))",
+                                                    "linear-gradient(45deg, rgba(255, 140, 0, 0.15), rgba(255, 107, 0, 0.08), rgba(255, 140, 0, 0.15))",
+                                                    "linear-gradient(45deg, rgba(255, 107, 0, 0.1), rgba(255, 140, 0, 0.05), rgba(255, 107, 0, 0.1))",
+                                                ]
+                                            }}
+                                            transition={{
+                                                duration: 4,
+                                                repeat: Infinity,
+                                                ease: "easeInOut"
+                                            }}
+                                            className="absolute inset-0 opacity-30"
+                                        />
+                                    </div>
+
+                                    {/* Grid Pattern Background */}
+                                    <div className="absolute inset-0 opacity-[0.15]">
+                                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/30 via-transparent to-purple-500/30" />
+                                        <div className="absolute inset-0 bg-[linear-gradient(90deg,transparent_48%,rgba(120,119,198,0.4)_49%,rgba(120,119,198,0.4)_51%,transparent_52%)] bg-[length:25px_25px]" />
+                                        <div className="absolute inset-0 bg-[linear-gradient(transparent_48%,rgba(120,119,198,0.4)_49%,rgba(120,119,198,0.4)_51%,transparent_52%)] bg-[length:25px_25px]" />
+                                    </div>
+
+                                    {/* Hover Heat Wave Effect */}
+                                    <motion.div
+                                        initial={{ scale: 0.8, opacity: 0 }}
+                                        whileHover={{ scale: 1, opacity: 1 }}
+                                        transition={{ duration: 0.5 }}
+                                        className="absolute inset-0 rounded-2xl bg-gradient-to-r from-orange-500/20 via-red-500/10 to-orange-500/20 blur-xl"
+                                    />
+
+                                    {/* Content */}
+                                    <div className="relative z-10 flex flex-col items-center justify-center gap-8 transform-gpu"
+                                        style={{ transform: 'translateZ(20px)' }}>
+
+                                        {/* LinkedIn Icon Container - Enhanced 3D Effect */}
+                                        <motion.div
+                                            whileHover={{
+                                                scale: 1.15,
+                                                rotateY: 10,
+                                                transition: { duration: 0.4 }
+                                            }}
+                                            className="relative"
+                                            style={{ transformStyle: 'preserve-3d' }}
+                                        >
+                                            {/* Icon Background Glow */}
+                                            <motion.div
+                                                animate={{
+                                                    scale: [1, 1.3, 1],
+                                                    opacity: [0.3, 0.7, 0.3],
+                                                }}
+                                                transition={{
+                                                    duration: 3,
+                                                    repeat: Infinity,
+                                                    ease: "easeInOut"
+                                                }}
+                                                className="absolute inset-0 bg-blue-500/30 rounded-2xl blur-2xl"
+                                            />
+
+                                            {/* 3D Icon Platform */}
+                                            <div className="relative bg-gradient-to-br from-gray-700 to-gray-800 p-5 rounded-2xl border border-gray-600/50 shadow-2xl transform-gpu"
+                                                style={{
+                                                    transform: 'translateZ(30px)',
+                                                    boxShadow: '0 10px 30px rgba(0, 119, 181, 0.3), inset 0 1px 0 rgba(255,255,255,0.2)'
+                                                }}>
+
+                                                {/* FontAwesome LinkedIn Icon - Fixed */}
+                                                <div className="relative z-10">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" className="text-white drop-shadow-lg">
+                                                        <path fill="currentColor" d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                                                    </svg>
+                                                </div>
+
+                                                {/* Icon Reflection */}
+                                                <div className="absolute bottom-1 left-1 right-1 h-2 bg-gradient-to-t from-white/10 to-transparent rounded-full blur-sm" />
+                                            </div>
+
+                                            {/* Floating Heat Particles */}
+                                            {[...Array(6)].map((_, i) => (
+                                                <motion.div
+                                                    key={i}
+                                                    animate={{
+                                                        y: [0, -15, 0],
+                                                        x: [0, Math.random() * 10 - 5, 0],
+                                                        opacity: [0, 0.8, 0],
+                                                        scale: [0, 1, 0],
+                                                    }}
+                                                    transition={{
+                                                        duration: 2 + i * 0.5,
+                                                        repeat: Infinity,
+                                                        delay: i * 0.3,
+                                                        ease: "easeInOut"
+                                                    }}
+                                                    className={`absolute w-2 h-2 rounded-full blur-sm ${i % 2 === 0 ? 'bg-orange-400' : 'bg-red-400'}`}
+                                                    style={{
+                                                        left: `${20 + i * 12}%`,
+                                                        top: '-10px',
+                                                    }}
+                                                />
+                                            ))}
+                                        </motion.div>
+
+                                        {/* Text Content */}
+                                        <div className="text-center space-y-3">
+                                            <motion.h3
+                                                animate={{
+                                                    backgroundPosition: ["0%", "100%", "0%"],
+                                                    textShadow: [
+                                                        "0 0 20px rgba(0, 119, 181, 0.5)",
+                                                        "0 0 30px rgba(0, 119, 181, 0.8)",
+                                                        "0 0 20px rgba(0, 119, 181, 0.5)",
+                                                    ]
+                                                }}
+                                                transition={{
+                                                    duration: 3,
+                                                    repeat: Infinity,
+                                                    ease: "easeInOut"
+                                                }}
+                                                className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-gray-200 via-blue-300 to-cyan-300 bg-[length:200%_100%] bg-clip-text text-transparent"
+                                            >
+                                                Connect on LinkedIn
+                                            </motion.h3>
+                                            <motion.p
+                                                initial={{ opacity: 0.7 }}
+                                                whileHover={{ opacity: 1 }}
+                                                className="text-base text-gray-300 font-medium transition-opacity duration-300 tracking-wide"
+                                            >
+                                                Diaa Elsadek - Fullstack Developer
+                                            </motion.p>
+                                        </div>
+                                    </div>
+
+                                    {/* Processor Heat Vents */}
+                                    <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-3">
+                                        {[...Array(5)].map((_, i) => (
+                                            <motion.div
+                                                key={i}
+                                                animate={{
+                                                    opacity: [0.3, 0.8, 0.3],
+                                                    scaleY: [1, 1.2, 1],
+                                                }}
+                                                transition={{
+                                                    duration: 1.5 + i * 0.2,
+                                                    repeat: Infinity,
+                                                    ease: "easeInOut",
+                                                    delay: i * 0.1
+                                                }}
+                                                className="w-1 h-3 bg-gradient-to-t from-orange-400 to-red-500 rounded-full"
+                                            />
+                                        ))}
+                                    </div>
+
+                                    {/* Processor Text Label */}
+                                    <div className="absolute top-3 left-1/2 -translate-x-1/2">
+                                        <motion.p
+                                            animate={{
+                                                opacity: [0.5, 0.8, 0.5],
+                                            }}
+                                            transition={{
+                                                duration: 3,
+                                                repeat: Infinity,
+                                                ease: "easeInOut"
+                                            }}
+                                            className="text-xs text-gray-400 font-mono tracking-widest"
+                                        >
+                                            LINKEDIN
+                                        </motion.p>
+                                    </div>
+                                </motion.div>
+                            </div>
+
+                            {/* Ground Shadow */}
+                            <motion.div
+                                animate={{
+                                    opacity: [0.3, 0.5, 0.3],
+                                    scale: [0.8, 1, 0.8],
+                                }}
+                                transition={{
+                                    duration: 3,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                }}
+                                className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-32 h-4 bg-blue-500/20 blur-xl rounded-full"
+                            />
+                        </motion.div>
+
+                        {/* Copyright Text */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            transition={{ duration: 1, delay: 0.5 }}
+                            className="mt-16"
+                        >
+                            <motion.p
+                                animate={{
+                                    backgroundPosition: ["0%", "100%", "0%"],
+                                }}
+                                transition={{
+                                    duration: 5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut"
+                                }}
+                                className="text-lg sm:text-xl font-semibold bg-gradient-to-r from-gray-300 via-blue-300 to-purple-300 bg-[length:200%_100%] bg-clip-text text-transparent mb-3"
+                            >
+                                © {new Date().getFullYear()} Diaa Elsadek
+                            </motion.p>
+                        </motion.div>
+
+                        {/* Tech-inspired Decorative Elements */}
+                        <motion.div
+                            className="flex justify-center items-center gap-6 mt-12"
+                            initial={{ opacity: 0 }}
+                            whileInView={{ opacity: 1 }}
+                            transition={{ duration: 1, delay: 0.9 }}
+                        >
+                            {[...Array(7)].map((_, i) => (
+                                <motion.div
+                                    key={i}
+                                    animate={{
+                                        scale: [1, 1.4, 1],
+                                        opacity: [0.3, 0.8, 0.3],
+                                        y: [0, -2, 0],
+                                    }}
+                                    transition={{
+                                        duration: 2 + i * 0.2,
+                                        repeat: Infinity,
+                                        ease: "easeInOut",
+                                        delay: i * 0.15
+                                    }}
+                                    className={`w-1.5 h-1.5 rounded-full ${i % 4 === 0 ? 'bg-cyan-400' :
+                                        i % 4 === 1 ? 'bg-blue-400' :
+                                            i % 4 === 2 ? 'bg-purple-400' : 'bg-gray-400'}`}
+                                />
+                            ))}
+                        </motion.div>
+
+                        {/* Circuit Board Line */}
+                        <motion.div
+                            initial={{ scaleX: 0 }}
+                            whileInView={{ scaleX: 1 }}
+                            transition={{ duration: 1.5, delay: 0.3 }}
+                            className="mt-10 mx-auto w-48 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent rounded-full relative"
+                        >
+                            <motion.div
+                                animate={{
+                                    x: [-20, 220],
+                                }}
+                                transition={{
+                                    duration: 3,
+                                    repeat: Infinity,
+                                    ease: "linear"
+                                }}
+                                className="absolute w-2 h-0.5 bg-cyan-300 rounded-full blur-sm"
+                            />
+                        </motion.div>
+                    </motion.div>
+                </div>
+            </footer>
         </div>
     );
 }
