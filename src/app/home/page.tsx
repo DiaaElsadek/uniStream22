@@ -876,7 +876,7 @@ export default function HomePage() {
                             }}
                             whileTap={{ scale: 0.98 }}
                             className="inline-block mb-12 group relative cursor-pointer"
-                            onClick={() => window.open('www.linkedin.com/in/diaaelsadek', '_blank')}
+                            onClick={() => window.open('https://www.linkedin.com/in/diaaelsadek', '_blank')}
                         >
                             {/* 3D Base with Realistic Processor Legs */}
                             <div className="relative">
