@@ -16,7 +16,7 @@ export const metadata = {
     siteName: "UniStream22",
     images: [
       {
-        url: "../public/icons/uniStream22.png",
+        url: "../public/icons/UniStream22 logo.png",
         width: 800,
         height: 600,
         alt: "UniStream22 Logo",
@@ -26,7 +26,7 @@ export const metadata = {
     type: "website",
   },
   icons: {
-    icon: "/icons/uniStream22.png",
+    icon: "/icons/UniStream22 logo.png",
   },
   manifest: "/manifest.json",
 };
@@ -59,7 +59,7 @@ export default function RootLayout({
         />
         <meta
           property="og:image"
-          content="../../public/icons/uniStream22.png"
+          content="../../public/icons/UniStream22 logo.png"
         />
         <meta property="og:url" content="https://unistream22.vercel.app" />
       </head>
