@@ -1164,7 +1164,7 @@ export default function HomePage() {
                                                 whileHover={{ opacity: 1 }}
                                                 className="text-base text-gray-300 font-medium transition-opacity duration-300 tracking-wide"
                                             >
-                                                Diaa Elsadek - Fullstack Developer
+                                                Diaa Elsadek - Fullstack Web Developer
                                             </motion.p>
                                         </div>
                                     </div>

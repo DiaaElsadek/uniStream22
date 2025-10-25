@@ -16,7 +16,7 @@ export const metadata = {
     siteName: "UniStream22",
     images: [
       {
-        url: "/icons/uniStream22.png",
+        url: "../public/icons/uniStream22.png",
         width: 800,
         height: 600,
         alt: "UniStream22 Logo",
@@ -37,7 +37,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="rtl">
+    <html lang="ar" dir="ltr">
       <head>
         <meta name="theme-color" content="#091f42" />
         <meta
