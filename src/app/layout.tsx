@@ -16,7 +16,7 @@ export const metadata = {
     siteName: "UniStream22",
     images: [
       {
-        url: "../public/icons/UniStream22 logo.png",
+        url: "/icons/UniStream22-logo.png",
         width: 800,
         height: 600,
         alt: "UniStream22 Logo",

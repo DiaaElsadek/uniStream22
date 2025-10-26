@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     const cleanUserToken = sanitizeInput(userToken);
 
     // تحقق من أن الرقم الأكاديمي 8 أرقام فقط
-    if (!/^\d{8}$/.test(cleanAcademicId)) {
+    if (!/^4202[234]\d{3}$/.test(cleanAcademicId)) {
       return NextResponse.json(
         { message: "Academic ID must be exactly 8 digits.", status: false, type: "academicId" },
         { status: 400 }
