@@ -110,7 +110,7 @@ export default function SignupPage() {
 
     // helpers
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const academicRegex = /^4202[0123456]\d{3}$/;
+    const academicRegex = /^4202[234]\d{3}$/;
     const onlyDigitsRegex = /^\d*$/;
 
     // live validate password - UPDATED LOGIC
