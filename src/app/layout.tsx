@@ -59,7 +59,7 @@ export default function RootLayout({
         />
         <meta
           property="og:image"
-          content="../../public/icons/UniStream22 logo.png"
+          content="https://unistream22.vercel.app/icons/UniStream22-logo.png"
         />
         <meta property="og:url" content="https://unistream22.vercel.app" />
       </head>
