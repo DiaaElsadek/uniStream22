@@ -1,5 +1,6 @@
 import "./globals.css";
 import AuthProvider from "./AuthProvider";
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export const metadata = {
   title: "UniStream22",
