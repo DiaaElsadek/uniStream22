@@ -6,15 +6,14 @@
     "background_color": "#ffffff",
     "theme_color": "#1e293b",
     "description": "UniStream22 Continue and View The Last News",
-    "icons": [
-        {
-            "src": "/icons/uniStream22.png",
+    "icons": [{
+            "src": "/icons/UniStream22-dark-logo.png",
             "sizes": "192x192",
             "type": "image/png",
             "purpose": "any"
         },
         {
-            "src": "/icons/uniStream22.png",
+            "src": "/icons/UniStream22-dark-logo.png",
             "sizes": "512x512",
             "type": "image/png",
             "purpose": "any maskable"
