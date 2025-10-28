@@ -27,7 +27,15 @@ export const metadata = {
     type: "website",
   },
   icons: {
-    icon: "/icons/UniStream22-dark-logo.png",
+    icon: [
+      { url: "/icons/UniStream22-dark-logo.png", type: "image/png" },
+    ],
+    shortcut: [
+      { url: "/icons/UniStream22-dark-logo.png", type: "image/png" },
+    ],
+    apple: [
+      { url: "/icons/UniStream22-dark-logo.png", type: "image/png" },
+    ],
   },
   manifest: "/manifest.json",
 };
@@ -41,6 +49,10 @@ export default function RootLayout({
     <html lang="ar" dir="ltr">
       <head>
         <meta name="theme-color" content="#091f42" />
+        <link rel="icon" href="/icons/UniStream22-dark-logo.png" type="image/png" />
+        <link rel="shortcut icon" href="/icons/UniStream22-dark-logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/icons/UniStream22-dark-logo.png" />
+
         <meta
           name="description"
           content="UniStream22 — منصة لدفعة رابعة بالمعهد التكنولوجي العالي كلية الحاسبات والمعلومات لمتابعة المواد والجداول والأخبار الجامعية بسهولة"
