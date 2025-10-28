@@ -1,6 +1,6 @@
 {
-    "name": "UniStream22 HTI",
-    "short_name": "UniStream22 HTI",
+    "name": "UniStream22",
+    "short_name": "UniStream22",
     "start_url": "/home",
     "display": "standalone",
     "background_color": "#ffffff",
