@@ -17,7 +17,7 @@ export const metadata = {
     siteName: "UniStream22",
     images: [
       {
-        url: "/icons/UniStream22-logo.png",
+        url: "/icons/UniStream22-dark-logo.png",
         width: 800,
         height: 600,
         alt: "UniStream22 Logo",
@@ -27,7 +27,7 @@ export const metadata = {
     type: "website",
   },
   icons: {
-    icon: "/icons/UniStream22 logo.png",
+    icon: "/icons/UniStream22-dark-logo.png",
   },
   manifest: "/manifest.json",
 };
@@ -60,7 +60,7 @@ export default function RootLayout({
         />
         <meta
           property="og:image"
-          content="https://unistream22.vercel.app/icons/UniStream22-logo.png"
+          content="https://github.com/DiaaElsadek/uniStream22-test/blob/5c1e0fcf1e9db6d49393c46e9c6eb2e7f45ae2df/public/icons/UniStream22-dark-logo.png"
         />
         <meta property="og:url" content="https://unistream22.vercel.app" />
       </head>
