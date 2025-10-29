@@ -68,6 +68,7 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
     matcher: [
-        "/((?!_next/static|_next/image|favicon.ico|manifest.json|sw.js|icons|api).*)",
+        "/((?!_next/static|_next/image|icons/UniStream22-dark-logo.png|manifest.json|sw.js|api).*)",
     ],
 };
+
