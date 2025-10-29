@@ -20,7 +20,8 @@ import {
     faNewspaper,
     faClock,
     faExclamationTriangle,
-    faChevronUp
+    faChevronUp,
+    faExternalLinkAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./style.css";
@@ -37,6 +38,7 @@ export default function NewsDetailsPage() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(true);
+    const [extractedLinks, setExtractedLinks] = useState<{url: string, displayText: string}[]>([]);
 
     useEffect(() => {
         // Check initial theme
@@ -72,6 +74,27 @@ export default function NewsDetailsPage() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const extractLinksFromContent = (content: string) => {
+        if (!content) return [];
+        
+        const linkRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
+        const links: {url: string, displayText: string}[] = [];
+        let match;
+        
+        while ((match = linkRegex.exec(content)) !== null) {
+            const rawUrl = match[0];
+            const fullUrl = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
+            const domain = new URL(fullUrl).hostname.replace('www.', '');
+            
+            links.push({
+                url: fullUrl,
+                displayText: domain
+            });
+        }
+        
+        return links;
+    };
+
     useEffect(() => {
         if (!id) return;
 
@@ -84,7 +107,14 @@ export default function NewsDetailsPage() {
                 const data = await res.json();
 
                 if (data.status && Array.isArray(data.data) && data.data.length > 0) {
-                    setNewsItem(data.data[0]);
+                    const newsData = data.data[0];
+                    setNewsItem(newsData);
+                    
+                    // Extract links from content
+                    if (newsData.content) {
+                        const links = extractLinksFromContent(newsData.content);
+                        setExtractedLinks(links);
+                    }
                 } else {
                     setNewsItem(null);
                 }
@@ -500,25 +530,73 @@ export default function NewsDetailsPage() {
                                         {newsItem.content
                                             ? newsItem.content.split(/(https?:\/\/[^\s]+|www\.[^\s]+)/g).map((part: string, index: number) => {
                                                 if (/^(https?:\/\/|www\.)/.test(part)) {
-                                                    const url = part.startsWith("http") ? part : `https://${part}`;
-                                                    return (
-                                                        <a
-                                                            key={index}
-                                                            href={url}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
-                                                            className="inline-flex items-center gap-2 text-cyan-400 hover:text-cyan-300 underline hover:no-underline transition-all duration-300 transform hover:translate-y-[-1px] bg-cyan-500/10 hover:bg-cyan-500/20 px-3 py-1.5 rounded-lg border border-cyan-500/20 hover:border-cyan-500/40 font-medium"
-                                                        >
-                                                            <FontAwesomeIcon icon={faLink} className="text-sm" />
-                                                            {part}
-                                                        </a>
-                                                    );
+                                                    return null; // Skip rendering URLs in main content
                                                 } else {
                                                     return part;
                                                 }
                                             })
                                             : "No content available"}
                                     </div>
+
+                                    {/* Beautiful Links Section */}
+                                    {extractedLinks.length > 0 && (
+                                        <div className="relative z-10 mt-12">
+                                            <div className={`mb-6 pb-4 border-b ${isDarkMode ? 'border-slate-700/50' : 'border-slate-300/50'}`}>
+                                                <h3 className="text-xl font-semibold text-cyan-300 flex items-center gap-3">
+                                                    <FontAwesomeIcon icon={faLink} className="text-cyan-400" />
+                                                    Related Links
+                                                    <span className={`text-sm ${isDarkMode ? 'bg-cyan-500/20 text-cyan-300' : 'bg-cyan-400/20 text-cyan-600'} px-3 py-1 rounded-full border ${isDarkMode ? 'border-cyan-500/30' : 'border-cyan-400/30'}`}>
+                                                        {extractedLinks.length}
+                                                    </span>
+                                                </h3>
+                                            </div>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                                {extractedLinks.map((link, index) => (
+                                                    <a
+                                                        key={index}
+                                                        href={link.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className={`group relative overflow-hidden rounded-2xl p-6 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl ${
+                                                            isDarkMode 
+                                                                ? 'bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 hover:border-cyan-500/50' 
+                                                                : 'bg-gradient-to-br from-white/80 to-slate-100/80 border border-slate-300/50 hover:border-cyan-400/50'
+                                                        } backdrop-blur-xl`}
+                                                    >
+                                                        {/* Background Glow Effect */}
+                                                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+                                                        
+                                                        {/* Link Content */}
+                                                        <div className="relative z-10 flex items-center gap-4">
+                                                            {/* Link Number */}
+                                                            <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                                                                {index + 1}
+                                                            </div>
+                                                            
+                                                            {/* Link Info */}
+                                                            <div className="flex-1 min-w-0">
+                                                                <div className="flex items-center gap-2 mb-1">
+                                                                    <span className={`text-sm font-medium truncate ${isDarkMode ? 'text-cyan-300' : 'text-cyan-600'}`}>
+                                                                        {link.displayText}
+                                                                    </span>
+                                                                    <FontAwesomeIcon 
+                                                                        icon={faExternalLinkAlt} 
+                                                                        className={`text-xs ${isDarkMode ? 'text-cyan-400' : 'text-cyan-500'} group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300`} 
+                                                                    />
+                                                                </div>
+                                                                <p className={`text-xs truncate ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
+                                                                    {link.url.length > 50 ? link.url.substring(0, 50) + '...' : link.url}
+                                                                </p>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        {/* Hover Effect */}
+                                                        <div className={`absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-cyan-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:via-blue-500/10 group-hover:to-purple-500/10 transition-all duration-500`}></div>
+                                                    </a>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {/* Share Button */}
                                     <div className={`relative z-10 mt-12 pt-8 border-t ${isDarkMode ? 'border-slate-700/50' : 'border-slate-300/50'}`}>
