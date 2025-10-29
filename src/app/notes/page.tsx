@@ -39,8 +39,35 @@ export default function StickyWall() {
     const [isHovered, setIsHovered] = useState(false);
     const [menuOpen, setMenuOpen] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
+    const [isDarkMode, setIsDarkMode] = useState(true);
     const nextIdRef = useRef<number>(1);
     const router = useRouter();
+
+    useEffect(() => {
+        // Check initial theme
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+
+        checkTheme();
+
+        // Observe theme changes
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    checkTheme();
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+
+        return () => observer.disconnect();
+    }, []);
 
     const randomRotation = () => {
         let r = Math.floor(Math.random() * 13) - 6;
@@ -220,11 +247,16 @@ export default function StickyWall() {
     const unpinned = notes.filter((n) => !n.isPinned);
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900/10 to-slate-800 relative overflow-hidden">
+        <div className={`min-h-screen bg-gradient-to-br ${isDarkMode 
+            ? 'from-slate-900 via-purple-900/10 to-slate-800' 
+            : 'from-blue-50 via-purple-50/20 to-indigo-50'} relative overflow-hidden`}>
+            
             {/* Premium Animated Background */}
             <div className="absolute inset-0 overflow-hidden">
                 {/* Animated Gradient Mesh */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-indigo-900/5 via-transparent to-slate-800/10"></div>
+                <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${isDarkMode 
+                    ? 'from-indigo-900/5 via-transparent to-slate-800/10' 
+                    : 'from-blue-200/10 via-transparent to-purple-100/10'}`}></div>
 
                 {/* Floating Gradient Orbs */}
                 <motion.div
@@ -238,7 +270,9 @@ export default function StickyWall() {
                         repeat: Infinity,
                         ease: "easeInOut"
                     }}
-                    className="absolute top-20 left-20 w-72 h-72 bg-gradient-to-r from-indigo-500/5 to-purple-500/5 rounded-full blur-3xl"
+                    className={`absolute top-20 left-20 w-72 h-72 ${isDarkMode 
+                        ? 'bg-gradient-to-r from-indigo-500/5 to-purple-500/5' 
+                        : 'bg-gradient-to-r from-blue-400/10 to-purple-400/10'} rounded-full blur-3xl`}
                 />
                 <motion.div
                     animate={{
@@ -252,7 +286,9 @@ export default function StickyWall() {
                         ease: "easeInOut",
                         delay: 2
                     }}
-                    className="absolute bottom-20 right-20 w-80 h-80 bg-gradient-to-r from-slate-600/5 to-blue-500/5 rounded-full blur-3xl"
+                    className={`absolute bottom-20 right-20 w-80 h-80 ${isDarkMode 
+                        ? 'bg-gradient-to-r from-slate-600/5 to-blue-500/5' 
+                        : 'bg-gradient-to-r from-slate-400/10 to-blue-400/10'} rounded-full blur-3xl`}
                 />
 
                 {/* Subtle Grid */}
@@ -277,7 +313,7 @@ export default function StickyWall() {
                             delay: i * 0.5,
                             ease: "easeInOut"
                         }}
-                        className="absolute w-1 h-1 bg-slate-400 rounded-full"
+                        className={`absolute w-1 h-1 ${isDarkMode ? 'bg-slate-400' : 'bg-slate-600'} rounded-full`}
                         style={{
                             left: `${Math.random() * 100}%`,
                             top: `${Math.random() * 100}%`,
@@ -291,9 +327,11 @@ export default function StickyWall() {
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] z-50 
-                    bg-slate-800/80 backdrop-blur-3xl shadow-2xl rounded-3xl 
-                    border border-slate-700/50 transition-all duration-500 hover:shadow-3xl hover:border-slate-600/60"
+                className={`fixed top-6 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] z-50 
+                    ${isDarkMode 
+                        ? 'bg-slate-800/80 backdrop-blur-3xl shadow-2xl border border-slate-700/50 hover:border-slate-600/60' 
+                        : 'bg-white/80 backdrop-blur-3xl shadow-2xl border border-slate-200/50 hover:border-slate-300/60'} 
+                    rounded-3xl transition-all duration-500 hover:shadow-3xl`}
             >
                 <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
                     <motion.div
@@ -305,9 +343,11 @@ export default function StickyWall() {
                         <motion.div
                             animate={{ rotate: [0, 15, -15, 0] }}
                             transition={{ duration: 4, repeat: Infinity }}
-                            className="p-2 bg-gradient-to-r from-slate-600 to-slate-500 rounded-xl"
+                            className={`p-2 ${isDarkMode 
+                                ? 'bg-gradient-to-r from-slate-600 to-slate-500' 
+                                : 'bg-gradient-to-r from-slate-400 to-slate-300'} rounded-xl`}
                         >
-                            <FontAwesomeIcon icon={faGraduationCap} className="text-slate-200 text-xl" />
+                            <FontAwesomeIcon icon={faGraduationCap} className={`${isDarkMode ? 'text-slate-200' : 'text-slate-700'} text-xl`} />
                         </motion.div>
                         UniStream22
                     </motion.div>
@@ -327,11 +367,17 @@ export default function StickyWall() {
                                 whileHover={{
                                     scale: 1.05,
                                     y: -2,
-                                    background: "linear-gradient(135deg, rgba(100, 116, 139, 0.1), rgba(71, 85, 105, 0.1))",
+                                    background: isDarkMode 
+                                        ? "linear-gradient(135deg, rgba(100, 116, 139, 0.1), rgba(71, 85, 105, 0.1))"
+                                        : "linear-gradient(135deg, rgba(100, 116, 139, 0.05), rgba(71, 85, 105, 0.05))",
                                     transition: { duration: 0.2 }
                                 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="flex items-center gap-3 text-slate-300 hover:text-white transition-all duration-300 font-semibold text-sm px-4 py-2.5 rounded-2xl hover:bg-gradient-to-r hover:from-slate-700/10 hover:to-slate-600/10 border border-transparent hover:border-slate-600/30"
+                                className={`flex items-center gap-3 ${isDarkMode 
+                                    ? 'text-slate-300 hover:text-white' 
+                                    : 'text-slate-600 hover:text-slate-900'} transition-all duration-300 font-semibold text-sm px-4 py-2.5 rounded-2xl ${isDarkMode 
+                                    ? 'hover:bg-gradient-to-r hover:from-slate-700/10 hover:to-slate-600/10 border border-transparent hover:border-slate-600/30' 
+                                    : 'hover:bg-gradient-to-r hover:from-slate-200/50 hover:to-slate-300/50 border border-transparent hover:border-slate-300/50'}`}
                                 onClick={() => router.push(item.path)}
                             >
                                 <FontAwesomeIcon icon={item.icon} className="text-sm" />
@@ -364,7 +410,9 @@ export default function StickyWall() {
                         <motion.button
                             whileHover={{ scale: 1.1, rotate: 90 }}
                             whileTap={{ scale: 0.9 }}
-                            className="text-slate-300 focus:outline-none p-3 rounded-xl bg-slate-700/50 border border-slate-600/40"
+                            className={`${isDarkMode 
+                                ? 'text-slate-300 bg-slate-700/50 border border-slate-600/40' 
+                                : 'text-slate-600 bg-slate-200/50 border border-slate-300/40'} focus:outline-none p-3 rounded-xl`}
                             onClick={() => setMenuOpen(!menuOpen)}
                         >
                             <FontAwesomeIcon
@@ -382,9 +430,13 @@ export default function StickyWall() {
                             animate={{ opacity: 1, height: "auto" }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.5, ease: "easeInOut" }}
-                            className="md:hidden overflow-hidden border-t border-slate-700/40"
+                            className={`md:hidden overflow-hidden border-t ${isDarkMode 
+                                ? 'border-slate-700/40' 
+                                : 'border-slate-200/40'}`}
                         >
-                            <div className="flex flex-col bg-slate-800/95 backdrop-blur-3xl rounded-b-3xl p-4 gap-2">
+                            <div className={`flex flex-col ${isDarkMode 
+                                ? 'bg-slate-800/95' 
+                                : 'bg-white/95'} backdrop-blur-3xl rounded-b-3xl p-4 gap-2`}>
                                 {[
                                     { name: "Home", path: "/home", icon: faHome },
                                     { name: "Table", path: "/schedule", icon: faCalendarAlt },
@@ -396,8 +448,17 @@ export default function StickyWall() {
                                         initial={{ opacity: 0, x: -30 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: index * 0.1 }}
-                                        whileHover={{ x: 10, background: "linear-gradient(135deg, rgba(100, 116, 139, 0.1), rgba(71, 85, 105, 0.1))" }}
-                                        className="flex items-center gap-3 w-full text-slate-300 hover:text-white text-left transition-all duration-300 py-4 px-4 rounded-xl hover:bg-gradient-to-r hover:from-slate-700/10 hover:to-slate-600/10"
+                                        whileHover={{ 
+                                            x: 10, 
+                                            background: isDarkMode 
+                                                ? "linear-gradient(135deg, rgba(100, 116, 139, 0.1), rgba(71, 85, 105, 0.1))"
+                                                : "linear-gradient(135deg, rgba(100, 116, 139, 0.05), rgba(71, 85, 105, 0.05))" 
+                                        }}
+                                        className={`flex items-center gap-3 w-full ${isDarkMode 
+                                            ? 'text-slate-300 hover:text-white' 
+                                            : 'text-slate-600 hover:text-slate-900'} text-left transition-all duration-300 py-4 px-4 rounded-xl ${isDarkMode 
+                                            ? 'hover:bg-gradient-to-r hover:from-slate-700/10 hover:to-slate-600/10' 
+                                            : 'hover:bg-gradient-to-r hover:from-slate-200/50 hover:to-slate-300/50'}`}
                                         onClick={() => { router.push(item.path); setMenuOpen(false); }}
                                     >
                                         <FontAwesomeIcon icon={item.icon} className="w-4 h-4" />
@@ -458,7 +519,9 @@ export default function StickyWall() {
                             repeat: Infinity,
                             ease: "easeInOut"
                         }}
-                        className="text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r from-slate-200 via-slate-100 to-slate-300 bg-clip-text text-transparent bg-[length:300%_300%]"
+                        className={`text-5xl md:text-6xl font-black mb-6 bg-gradient-to-r ${isDarkMode 
+                            ? 'from-slate-200 via-slate-100 to-slate-300' 
+                            : 'from-slate-700 via-slate-600 to-slate-800'} bg-clip-text text-transparent bg-[length:300%_300%]`}
                     >
                         Sticky Notes Wall
                     </motion.h1>
@@ -466,7 +529,9 @@ export default function StickyWall() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.8 }}
-                        className="text-slate-400 text-lg md:text-xl max-w-3xl mx-auto leading-relaxed"
+                        className={`text-lg md:text-xl max-w-3xl mx-auto leading-relaxed ${isDarkMode 
+                            ? 'text-slate-400' 
+                            : 'text-slate-600'}`}
                     >
                         Capture your ideas, organize your thoughts, and unleash your creativity with beautiful animated sticky notes
                     </motion.p>
@@ -553,7 +618,9 @@ export default function StickyWall() {
                             <motion.h2
                                 initial={{ opacity: 0, x: -30 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                className="text-2xl font-bold text-slate-300 mb-8 flex items-center gap-3 justify-center"
+                                className={`text-2xl font-bold mb-8 flex items-center gap-3 justify-center ${isDarkMode 
+                                    ? 'text-slate-300' 
+                                    : 'text-slate-700'}`}
                             >
                                 <FontAwesomeIcon
                                     icon={faThumbtack}
@@ -575,6 +642,7 @@ export default function StickyWall() {
                                         getColor={getColor}
                                         getShadowColor={getShadowColor}
                                         updateNoteContent={updateNoteContent}
+                                        isDarkMode={isDarkMode}
                                     />
                                 ))}
                             </div>
@@ -588,11 +656,13 @@ export default function StickyWall() {
                                 <motion.h2
                                     initial={{ opacity: 0, x: -30 }}
                                     animate={{ opacity: 1, x: 0 }}
-                                    className="text-2xl font-bold text-slate-300 mb-8 flex items-center gap-3 justify-center"
+                                    className={`text-2xl font-bold mb-8 flex items-center gap-3 justify-center ${isDarkMode 
+                                        ? 'text-slate-300' 
+                                        : 'text-slate-700'}`}
                                 >
                                     <FontAwesomeIcon
                                         icon={faBook}
-                                        className="text-slate-400 text-xl"
+                                        className={`text-xl ${isDarkMode ? 'text-slate-400' : 'text-slate-500'}`}
                                     />
                                     All Notes
                                 </motion.h2>
@@ -611,6 +681,7 @@ export default function StickyWall() {
                                         getColor={getColor}
                                         getShadowColor={getShadowColor}
                                         updateNoteContent={updateNoteContent}
+                                        isDarkMode={isDarkMode}
                                     />
                                 ))}
                             </div>
@@ -638,13 +709,17 @@ export default function StickyWall() {
                             >
                                 <FontAwesomeIcon
                                     icon={faLightbulb}
-                                    className="text-7xl text-slate-400/60"
+                                    className={`text-7xl ${isDarkMode ? 'text-slate-400/60' : 'text-slate-500/60'}`}
                                 />
                             </motion.div>
-                            <h3 className="text-3xl font-black bg-gradient-to-r from-slate-300 to-slate-200 bg-clip-text text-transparent mb-6">
+                            <h3 className={`text-3xl font-black bg-gradient-to-r ${isDarkMode 
+                                ? 'from-slate-300 to-slate-200' 
+                                : 'from-slate-700 to-slate-600'} bg-clip-text text-transparent mb-6`}>
                                 Your Creative Space Awaits
                             </h3>
-                            <p className="text-slate-500 text-lg mb-12 max-w-2xl mx-auto leading-relaxed">
+                            <p className={`text-lg mb-12 max-w-2xl mx-auto leading-relaxed ${isDarkMode 
+                                ? 'text-slate-500' 
+                                : 'text-slate-600'}`}>
                                 Start organizing your thoughts with beautiful, animated sticky notes.
                                 Click below to create your first note and unleash your creativity!
                             </p>
@@ -680,7 +755,8 @@ const NoteCard = ({
     changeColor,
     getColor,
     getShadowColor,
-    updateNoteContent
+    updateNoteContent,
+    isDarkMode
 }: any) => {
     const isEditing = editingId === note.id;
     const [localHover, setLocalHover] = useState(false);

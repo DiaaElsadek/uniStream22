@@ -1,6 +1,7 @@
 import "./globals.css";
 import AuthProvider from "./AuthProvider";
-import { SpeedInsights } from "@vercel/speed-insights/next"
+import { ThemeProvider } from "./ThemeProvider"; // ✅ أضفنا ThemeProvider
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 export const metadata = {
   title: "UniStream22",
@@ -27,15 +28,9 @@ export const metadata = {
     type: "website",
   },
   icons: {
-    icon: [
-      { url: "/icons/UniStream22-dark-logo.png", type: "image/png" },
-    ],
-    shortcut: [
-      { url: "/icons/UniStream22-dark-logo.png", type: "image/png" },
-    ],
-    apple: [
-      { url: "/icons/UniStream22-dark-logo.png", type: "image/png" },
-    ],
+    icon: [{ url: "/icons/UniStream22-dark-logo.png", type: "image/png" }],
+    shortcut: [{ url: "/icons/UniStream22-dark-logo.png", type: "image/png" }],
+    apple: [{ url: "/icons/UniStream22-dark-logo.png", type: "image/png" }],
   },
   manifest: "/manifest.json",
 };
@@ -46,11 +41,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="ltr">
+    <html lang="ar" dir="ltr" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#091f42" />
-        <link rel="icon" href="/icons/UniStream22-dark-logo.png" type="image/png" />
-        <link rel="shortcut icon" href="/icons/UniStream22-dark-logo.png" type="image/png" />
+        <link
+          rel="icon"
+          href="/icons/UniStream22-dark-logo.png"
+          type="image/png"
+        />
+        <link
+          rel="shortcut icon"
+          href="/icons/UniStream22-dark-logo.png"
+          type="image/png"
+        />
         <link rel="apple-touch-icon" href="/icons/UniStream22-dark-logo.png" />
 
         <meta
@@ -77,7 +80,11 @@ export default function RootLayout({
         <meta property="og:url" content="https://unistream22.vercel.app" />
       </head>
       <body>
-        <AuthProvider>{children}</AuthProvider>
+        {/* ✅ ThemeProvider هنا هو اللي هيتحكم في الثيم */}
+        <ThemeProvider>
+          <AuthProvider>{children}</AuthProvider>
+          <SpeedInsights />
+        </ThemeProvider>
       </body>
     </html>
   );

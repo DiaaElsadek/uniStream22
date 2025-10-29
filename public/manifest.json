@@ -6,6 +6,7 @@
     "background_color": "#ffffff",
     "theme_color": "#1e293b",
     "description": "UniStream22 Continue and View The Last News",
+
     "icons": [{
             "src": "/icons/UniStream22-dark-logo.png",
             "sizes": "192x192",

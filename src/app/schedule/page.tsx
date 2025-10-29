@@ -26,6 +26,33 @@ export default function SchedulePage() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isHovered, setIsHovered] = useState(false);
     const [currentTime, setCurrentTime] = useState(new Date());
+    const [isDarkMode, setIsDarkMode] = useState(true);
+
+    useEffect(() => {
+        // Check initial theme
+        const checkTheme = () => {
+            const isDark = document.documentElement.classList.contains('dark');
+            setIsDarkMode(isDark);
+        };
+
+        checkTheme();
+
+        // Observe theme changes
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.attributeName === 'class') {
+                    checkTheme();
+                }
+            });
+        });
+
+        observer.observe(document.documentElement, {
+            attributes: true,
+            attributeFilter: ['class']
+        });
+
+        return () => observer.disconnect();
+    }, []);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -113,11 +140,16 @@ export default function SchedulePage() {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-gray-950 via-slate-900 to-gray-950 relative overflow-hidden">
+        <div className={`min-h-screen bg-gradient-to-br ${isDarkMode 
+            ? 'from-gray-950 via-slate-900 to-gray-950' 
+            : 'from-blue-50 via-slate-100 to-indigo-50'} relative overflow-hidden`}>
+            
             {/* Premium Animated Background */}
             <div className="absolute inset-0 overflow-hidden">
                 {/* Animated Gradient Mesh */}
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-blue-900/20"></div>
+                <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${isDarkMode 
+                    ? 'from-purple-900/20 via-transparent to-blue-900/20' 
+                    : 'from-purple-200/20 via-transparent to-blue-200/20'}`}></div>
                 
                 {/* Floating Gradient Orbs */}
                 <motion.div
@@ -131,7 +163,9 @@ export default function SchedulePage() {
                         repeat: Infinity,
                         ease: "easeInOut"
                     }}
-                    className="absolute top-20 left-20 w-80 h-80 bg-gradient-to-r from-violet-600/10 to-fuchsia-600/10 rounded-full blur-3xl"
+                    className={`absolute top-20 left-20 w-80 h-80 ${isDarkMode 
+                        ? 'bg-gradient-to-r from-violet-600/10 to-fuchsia-600/10' 
+                        : 'bg-gradient-to-r from-violet-400/15 to-fuchsia-400/15'} rounded-full blur-3xl`}
                 />
                 <motion.div
                     animate={{
@@ -145,7 +179,9 @@ export default function SchedulePage() {
                         ease: "easeInOut",
                         delay: 3
                     }}
-                    className="absolute bottom-20 right-20 w-96 h-96 bg-gradient-to-r from-blue-600/10 to-cyan-600/10 rounded-full blur-3xl"
+                    className={`absolute bottom-20 right-20 w-96 h-96 ${isDarkMode 
+                        ? 'bg-gradient-to-r from-blue-600/10 to-cyan-600/10' 
+                        : 'bg-gradient-to-r from-blue-400/15 to-cyan-400/15'} rounded-full blur-3xl`}
                 />
                 <motion.div
                     animate={{
@@ -159,13 +195,15 @@ export default function SchedulePage() {
                         ease: "easeInOut",
                         delay: 6
                     }}
-                    className="absolute top-1/2 left-1/2 w-64 h-64 bg-gradient-to-r from-emerald-600/10 to-teal-600/10 rounded-full blur-3xl"
+                    className={`absolute top-1/2 left-1/2 w-64 h-64 ${isDarkMode 
+                        ? 'bg-gradient-to-r from-emerald-600/10 to-teal-600/10' 
+                        : 'bg-gradient-to-r from-emerald-400/15 to-teal-400/15'} rounded-full blur-3xl`}
                 />
 
                 {/* Animated Grid */}
                 <div className="absolute inset-0 opacity-10">
-                    <div className="absolute inset-0 bg-[linear-gradient(90deg,_transparent_95%,_rgba(255,255,255,0.1)_100%)] bg-[length:50px_50px] animate-[gridMove_20s_linear_infinite]"></div>
-                    <div className="absolute inset-0 bg-[linear-gradient(180deg,_transparent_95%,_rgba(255,255,255,0.1)_100%)] bg-[length:50px_50px] animate-[gridMove_15s_linear_infinite_reverse]"></div>
+                    <div className={`absolute inset-0 bg-[linear-gradient(90deg,_transparent_95%,_rgba(255,255,255,0.1)_100%)] bg-[length:50px_50px] animate-[gridMove_20s_linear_infinite] ${isDarkMode ? '' : 'invert'}`}></div>
+                    <div className={`absolute inset-0 bg-[linear-gradient(180deg,_transparent_95%,_rgba(255,255,255,0.1)_100%)] bg-[length:50px_50px] animate-[gridMove_15s_linear_infinite_reverse] ${isDarkMode ? '' : 'invert'}`}></div>
                 </div>
 
                 {/* Floating Particles */}
@@ -185,7 +223,9 @@ export default function SchedulePage() {
                             delay: i * 0.4,
                             ease: "easeInOut"
                         }}
-                        className="absolute w-2 h-2 bg-gradient-to-r from-violet-400 to-blue-400 rounded-full opacity-60"
+                        className={`absolute w-2 h-2 ${isDarkMode 
+                            ? 'bg-gradient-to-r from-violet-400 to-blue-400' 
+                            : 'bg-gradient-to-r from-violet-500 to-blue-500'} rounded-full opacity-60`}
                         style={{
                             left: `${Math.random() * 100}%`,
                             top: `${Math.random() * 100}%`,
@@ -204,7 +244,9 @@ export default function SchedulePage() {
                         rotate: { duration: 25, repeat: Infinity, ease: "linear" },
                         y: { duration: 8, repeat: Infinity, ease: "easeInOut" }
                     }}
-                    className="absolute top-32 right-32 w-12 h-12 border-2 border-violet-400/30 rounded-lg"
+                    className={`absolute top-32 right-32 w-12 h-12 border-2 ${isDarkMode 
+                        ? 'border-violet-400/30' 
+                        : 'border-violet-500/40'} rounded-lg`}
                 />
                 <motion.div
                     animate={{
@@ -217,7 +259,9 @@ export default function SchedulePage() {
                         rotate: { duration: 20, repeat: Infinity, ease: "linear" },
                         y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
                     }}
-                    className="absolute bottom-40 left-40 w-10 h-10 border-2 border-blue-400/20 rotate-45"
+                    className={`absolute bottom-40 left-40 w-10 h-10 border-2 ${isDarkMode 
+                        ? 'border-blue-400/20' 
+                        : 'border-blue-500/30'} rotate-45`}
                 />
             </div>
 
@@ -226,9 +270,11 @@ export default function SchedulePage() {
                 initial={{ y: -100, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-                className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] z-50 
-                    bg-slate-900/90 backdrop-blur-3xl shadow-2xl rounded-3xl 
-                    border border-slate-700/40 transition-all duration-500 hover:shadow-3xl hover:border-slate-600/60"
+                className={`fixed top-6 left-1/2 -translate-x-1/2 w-[95%] md:w-[85%] z-50 
+                    ${isDarkMode 
+                        ? 'bg-slate-900/90 backdrop-blur-3xl shadow-2xl border border-slate-700/40 hover:border-slate-600/60' 
+                        : 'bg-white/90 backdrop-blur-3xl shadow-2xl border border-slate-200/40 hover:border-slate-300/60'} 
+                    rounded-3xl transition-all duration-500 hover:shadow-3xl`}
             >
                 <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
                     <motion.div
@@ -262,11 +308,17 @@ export default function SchedulePage() {
                                 whileHover={{ 
                                     scale: 1.1, 
                                     y: -3,
-                                    background: "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))",
+                                    background: isDarkMode 
+                                        ? "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))"
+                                        : "linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.05))",
                                     transition: { duration: 0.2 }
                                 }}
                                 whileTap={{ scale: 0.95 }}
-                                className="flex items-center gap-3 text-slate-300 hover:text-white transition-all duration-300 font-semibold text-base px-5 py-3 rounded-2xl hover:bg-gradient-to-r hover:from-violet-500/10 hover:to-blue-500/10 border border-transparent hover:border-slate-600/30"
+                                className={`flex items-center gap-3 ${isDarkMode 
+                                    ? 'text-slate-300 hover:text-white hover:bg-gradient-to-r hover:from-violet-500/10 hover:to-blue-500/10' 
+                                    : 'text-slate-600 hover:text-slate-900 hover:bg-gradient-to-r hover:from-violet-500/5 hover:to-blue-500/5'} transition-all duration-300 font-semibold text-base px-5 py-3 rounded-2xl border border-transparent ${isDarkMode 
+                                    ? 'hover:border-slate-600/30' 
+                                    : 'hover:border-slate-300/30'}`}
                                 onClick={() => router.push(item.path)}
                             >
                                 <FontAwesomeIcon icon={item.icon} className="text-sm" />
@@ -299,7 +351,9 @@ export default function SchedulePage() {
                         <motion.button
                             whileHover={{ scale: 1.1, rotate: 90 }}
                             whileTap={{ scale: 0.9 }}
-                            className="text-violet-400 focus:outline-none p-3 rounded-xl bg-slate-800/50 border border-slate-700/40"
+                            className={`${isDarkMode 
+                                ? 'text-violet-400 bg-slate-800/50 border border-slate-700/40' 
+                                : 'text-violet-500 bg-white/50 border border-slate-300/40'} focus:outline-none p-3 rounded-xl`}
                             onClick={() => setMenuOpen(!menuOpen)}
                         >
                             <FontAwesomeIcon
@@ -317,9 +371,13 @@ export default function SchedulePage() {
                             animate={{ opacity: 1, height: "auto" }}
                             exit={{ opacity: 0, height: 0 }}
                             transition={{ duration: 0.5, ease: "easeInOut" }}
-                            className="md:hidden overflow-hidden border-t border-slate-700/40"
+                            className={`md:hidden overflow-hidden border-t ${isDarkMode 
+                                ? 'border-slate-700/40' 
+                                : 'border-slate-200/40'}`}
                         >
-                            <div className="flex flex-col bg-slate-900/95 backdrop-blur-3xl rounded-b-3xl p-4 gap-2">
+                            <div className={`flex flex-col ${isDarkMode 
+                                ? 'bg-slate-900/95' 
+                                : 'bg-white/95'} backdrop-blur-3xl rounded-b-3xl p-4 gap-2`}>
                                 {[
                                     { name: "Home", path: "/home", icon: faHome },
                                     { name: "Table", path: "/schedule", icon: faCalendarAlt },
@@ -331,8 +389,17 @@ export default function SchedulePage() {
                                         initial={{ opacity: 0, x: -30 }}
                                         animate={{ opacity: 1, x: 0 }}
                                         transition={{ delay: index * 0.1 }}
-                                        whileHover={{ x: 10, background: "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))" }}
-                                        className="flex items-center gap-3 w-full text-slate-300 hover:text-white text-left transition-all duration-300 py-4 px-4 rounded-xl hover:bg-gradient-to-r hover:from-violet-500/10 hover:to-blue-500/10"
+                                        whileHover={{ 
+                                            x: 10, 
+                                            background: isDarkMode 
+                                                ? "linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))"
+                                                : "linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.05))" 
+                                        }}
+                                        className={`flex items-center gap-3 w-full ${isDarkMode 
+                                            ? 'text-slate-300 hover:text-white' 
+                                            : 'text-slate-600 hover:text-slate-900'} text-left transition-all duration-300 py-4 px-4 rounded-xl ${isDarkMode 
+                                            ? 'hover:bg-gradient-to-r hover:from-violet-500/10 hover:to-blue-500/10' 
+                                            : 'hover:bg-gradient-to-r hover:from-violet-500/5 hover:to-blue-500/5'}`}
                                         onClick={() => { router.push(item.path); setMenuOpen(false); }}
                                     >
                                         <FontAwesomeIcon icon={item.icon} className="w-4 h-4" />
@@ -391,9 +458,11 @@ export default function SchedulePage() {
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ delay: 1 }}
-                        className="mt-8 inline-block bg-gradient-to-r from-slate-800/50 to-slate-900/50 backdrop-blur-sm rounded-2xl px-6 py-3 border border-slate-700/40"
+                        className={`mt-8 inline-block ${isDarkMode 
+                            ? 'bg-gradient-to-r from-slate-800/50 to-slate-900/50 border border-slate-700/40' 
+                            : 'bg-gradient-to-r from-white/60 to-slate-100/60 border border-slate-300/40'} backdrop-blur-sm rounded-2xl px-6 py-3`}
                     >
-                        <div className="flex items-center gap-3 text-slate-300">
+                        <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
                             <FontAwesomeIcon icon={faClock} className="text-blue-400" />
                             <span className="font-mono text-lg">{currentTime.toLocaleTimeString()}</span>
                         </div>
@@ -425,11 +494,13 @@ export default function SchedulePage() {
                     <motion.div
                         initial={{ opacity: 0, y: 30 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="text-center bg-gradient-to-r from-red-500/10 to-pink-500/10 p-10 rounded-3xl border border-red-500/20 backdrop-blur-sm max-w-2xl mx-auto"
+                        className={`text-center ${isDarkMode 
+                            ? 'bg-gradient-to-r from-red-500/10 to-pink-500/10 border border-red-500/20' 
+                            : 'bg-gradient-to-r from-red-500/5 to-pink-500/5 border border-red-500/10'} p-10 rounded-3xl backdrop-blur-sm max-w-2xl mx-auto`}
                     >
                         <div className="text-5xl mb-6">🚨</div>
                         <h3 className="text-3xl font-bold text-red-400 mb-4">Schedule Loading Error</h3>
-                        <p className="text-red-300/80 text-lg">{error}</p>
+                        <p className={`text-lg ${isDarkMode ? 'text-red-300/80' : 'text-red-600/80'}`}>{error}</p>
                     </motion.div>
                 ) : (
                     <motion.div
@@ -472,7 +543,9 @@ export default function SchedulePage() {
                                         className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${dayGradients[dayIndex]} blur-2xl group-hover:blur-3xl transition-all duration-700`}
                                     />
 
-                                    <div className={`relative bg-gradient-to-br from-slate-800/90 to-slate-900/90 backdrop-blur-3xl rounded-3xl p-7 border border-slate-700/40 shadow-2xl hover:shadow-4xl transition-all duration-500 h-full overflow-hidden ${dayGradients[dayIndex].replace('20', '15')}`}>
+                                    <div className={`relative ${isDarkMode 
+                                        ? 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-700/40' 
+                                        : 'bg-gradient-to-br from-white/80 to-slate-100/80 border border-slate-300/40'} backdrop-blur-3xl rounded-3xl p-7 shadow-2xl hover:shadow-4xl transition-all duration-500 h-full overflow-hidden ${dayGradients[dayIndex].replace('20', '15')}`}>
                                         {/* Current Class Indicator */}
                                         {currentClass && (
                                             <motion.div
@@ -499,7 +572,9 @@ export default function SchedulePage() {
                                             <h2 className={`text-2xl font-black ${
                                                 day === WEEK_DAYS[todayIndex] 
                                                     ? "bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent" 
-                                                    : "text-slate-100"
+                                                    : isDarkMode 
+                                                    ? "text-slate-100" 
+                                                    : "text-slate-800"
                                             }`}>
                                                 {day}
                                                 {day === WEEK_DAYS[todayIndex] && (
@@ -538,7 +613,7 @@ export default function SchedulePage() {
                                                                 } ${isCurrent ? 'ring-2 ring-green-400/50 scale-105' : ''}`}
                                                             >
                                                                 <div className="flex items-start justify-between mb-3">
-                                                                    <h3 className="font-bold text-lg text-slate-100 leading-tight flex-1">
+                                                                    <h3 className={`font-bold text-lg leading-tight flex-1 ${isDarkMode ? 'text-slate-100' : 'text-slate-800'}`}>
                                                                         {subjects_name[lec.subjectId - 1] ?? `Subject ${lec.subjectId}`}
                                                                     </h3>
                                                                     {isCurrent && (
@@ -553,26 +628,28 @@ export default function SchedulePage() {
                                                                 </div>
                                                                 
                                                                 <div className="space-y-3 text-sm">
-                                                                    <div className="flex items-center gap-3 text-slate-300">
+                                                                    <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
                                                                         <div className="p-2 bg-blue-500/20 rounded-lg">
                                                                             <FontAwesomeIcon icon={faClock} className="w-3 h-3 text-blue-400" />
                                                                         </div>
                                                                         <span className="font-semibold">{lec.startTime ?? "-"} - {lec.endTime ?? "-"}</span>
                                                                     </div>
-                                                                    <div className="flex items-center gap-3 text-slate-300">
+                                                                    <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
                                                                         <div className="p-2 bg-green-500/20 rounded-lg">
                                                                             <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3 h-3 text-green-400" />
                                                                         </div>
                                                                         <span>Room: {lec.location ?? "-"}</span>
                                                                     </div>
-                                                                    <div className="flex items-center gap-3 text-slate-300">
+                                                                    <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
                                                                         <div className="p-2 bg-purple-500/20 rounded-lg">
                                                                             <FontAwesomeIcon icon={faUsers} className="w-3 h-3 text-purple-400" />
                                                                         </div>
                                                                         <span>Group: {lec.groupId ?? "-"}</span>
                                                                     </div>
                                                                     {lec.description && (
-                                                                        <p className="text-slate-400 text-xs mt-3 leading-relaxed bg-slate-800/30 p-3 rounded-xl">
+                                                                        <p className={`text-xs mt-3 leading-relaxed ${isDarkMode 
+                                                                            ? 'text-slate-400 bg-slate-800/30' 
+                                                                            : 'text-slate-600 bg-slate-200/50'} p-3 rounded-xl`}>
                                                                             {lec.description}
                                                                         </p>
                                                                     )}
@@ -587,8 +664,8 @@ export default function SchedulePage() {
                                                     className="text-center py-12"
                                                 >
                                                     <div className="text-5xl mb-4">🎯</div>
-                                                    <p className="text-slate-400 text-lg">No classes scheduled</p>
-                                                    <p className="text-slate-500 text-sm mt-2">Enjoy your free time!</p>
+                                                    <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>No classes scheduled</p>
+                                                    <p className={`text-sm mt-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>Enjoy your free time!</p>
                                                 </motion.div>
                                             )}
                                         </div>
