@@ -694,7 +694,7 @@ export default function NewsDetailsPage() {
                                         <div className="flex justify-between items-center py-3">
                                             <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Priority</span>
                                             <span className={`bg-${priorityInfo.bgColor} text-${priorityInfo.textColor} px-3 py-1 rounded-full text-sm font-medium border border-${priorityInfo.borderColor}`}>
-                                                {newsItem.priority ? newsItem.priority : "Medium"}
+                                                {newsItem.priorty ? newsItem.priorty : "Medium"}
                                             </span>
                                         </div>
                                     </div>
