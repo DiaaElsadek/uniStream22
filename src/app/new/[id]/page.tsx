@@ -528,75 +528,60 @@ export default function NewsDetailsPage() {
                                     <div className={`relative z-10 text-lg leading-8 ${isDarkMode ? 'text-slate-200' : 'text-slate-700'} whitespace-pre-line ${/[\u0600-\u06FF]/.test(newsItem.content) ? "text-right" : "text-left"
                                         }`}>
                                         {newsItem.content
-                                            ? newsItem.content.split(/(https?:\/\/[^\s]+|www\.[^\s]+)/g).map((part: string, index: number) => {
-                                                if (/^(https?:\/\/|www\.)/.test(part)) {
-                                                    return null; // Skip rendering URLs in main content
-                                                } else {
-                                                    return part;
-                                                }
-                                            })
+                                            ? (() => {
+                                                let linkCounter = 0;
+                                                return newsItem.content.split(/(https?:\/\/[^\s]+|www\.[^\s]+)/g).map((part: string, index: number) => {
+                                                    if (/^(https?:\/\/|www\.)/.test(part)) {
+                                                        linkCounter++;
+                                                        const link = extractedLinks.find(l => l.url === (part.startsWith("http") ? part : `https://${part}`));
+                                                        return (
+                                                            <a
+                                                                key={index}
+                                                                href={link?.url || part}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                className={`group/link relative inline-flex items-center gap-3 mx-1 px-5 py-3 rounded-2xl transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 ${
+                                                                    isDarkMode 
+                                                                        ? 'bg-gradient-to-br from-cyan-500/15 to-blue-500/15 border border-cyan-500/30 hover:border-cyan-400/60 text-cyan-300 hover:text-white' 
+                                                                        : 'bg-gradient-to-br from-cyan-400/20 to-blue-400/20 border border-cyan-400/40 hover:border-cyan-500/60 text-cyan-700 hover:text-cyan-900'
+                                                                } backdrop-blur-xl shadow-lg hover:shadow-cyan-500/25 overflow-hidden`}
+                                                            >
+                                                                {/* Background Blur Effect */}
+                                                                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-purple-500/10 opacity-0 group-hover/link:opacity-100 transition-opacity duration-500 blur-sm"></div>
+                                                                
+                                                                {/* Animated Border */}
+                                                                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 opacity-0 group-hover/link:opacity-100 transition-opacity duration-500">
+                                                                    <div className="absolute inset-[1px] rounded-2xl bg-inherit"></div>
+                                                                </div>
+
+                                                                {/* Link Content */}
+                                                                <div className="relative z-10 flex items-center gap-3">
+                                                                    {/* Link Number Badge */}
+                                                                    <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-lg group-hover/link:scale-110 transition-transform duration-300`}>
+                                                                        {linkCounter}
+                                                                    </div>
+                                                                    
+                                                                    {/* Link Text */}
+                                                                    <div className="flex items-center gap-2">
+                                                                        <span className="font-semibold text-sm">Chapter {linkCounter}</span>
+                                                                        <FontAwesomeIcon 
+                                                                            icon={faExternalLinkAlt} 
+                                                                            className={`text-xs ${isDarkMode ? 'text-cyan-400' : 'text-cyan-500'} group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform duration-300`} 
+                                                                        />
+                                                                    </div>
+                                                                </div>
+
+                                                                {/* Hover Glow Effect */}
+                                                                <div className="absolute inset-0 rounded-2xl bg-cyan-500/0 group-hover/link:bg-cyan-500/10 transition-all duration-500 blur-md"></div>
+                                                            </a>
+                                                        );
+                                                    } else {
+                                                        return part;
+                                                    }
+                                                });
+                                            })()
                                             : "No content available"}
                                     </div>
-
-                                    {/* Beautiful Links Section */}
-                                    {extractedLinks.length > 0 && (
-                                        <div className="relative z-10 mt-12">
-                                            <div className={`mb-6 pb-4 border-b ${isDarkMode ? 'border-slate-700/50' : 'border-slate-300/50'}`}>
-                                                <h3 className="text-xl font-semibold text-cyan-300 flex items-center gap-3">
-                                                    <FontAwesomeIcon icon={faLink} className="text-cyan-400" />
-                                                    Related Links
-                                                    <span className={`text-sm ${isDarkMode ? 'bg-cyan-500/20 text-cyan-300' : 'bg-cyan-400/20 text-cyan-600'} px-3 py-1 rounded-full border ${isDarkMode ? 'border-cyan-500/30' : 'border-cyan-400/30'}`}>
-                                                        {extractedLinks.length}
-                                                    </span>
-                                                </h3>
-                                            </div>
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                                {extractedLinks.map((link, index) => (
-                                                    <a
-                                                        key={index}
-                                                        href={link.url}
-                                                        target="_blank"
-                                                        rel="noopener noreferrer"
-                                                        className={`group relative overflow-hidden rounded-2xl p-6 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl ${
-                                                            isDarkMode 
-                                                                ? 'bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 hover:border-cyan-500/50' 
-                                                                : 'bg-gradient-to-br from-white/80 to-slate-100/80 border border-slate-300/50 hover:border-cyan-400/50'
-                                                        } backdrop-blur-xl`}
-                                                    >
-                                                        {/* Background Glow Effect */}
-                                                        <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/5 via-blue-500/5 to-purple-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                                        
-                                                        {/* Link Content */}
-                                                        <div className="relative z-10 flex items-center gap-4">
-                                                            {/* Link Number */}
-                                                            <div className={`flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                                                                {index + 1}
-                                                            </div>
-                                                            
-                                                            {/* Link Info */}
-                                                            <div className="flex-1 min-w-0">
-                                                                <div className="flex items-center gap-2 mb-1">
-                                                                    <span className={`text-sm font-medium truncate ${isDarkMode ? 'text-cyan-300' : 'text-cyan-600'}`}>
-                                                                        {link.displayText}
-                                                                    </span>
-                                                                    <FontAwesomeIcon 
-                                                                        icon={faExternalLinkAlt} 
-                                                                        className={`text-xs ${isDarkMode ? 'text-cyan-400' : 'text-cyan-500'} group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform duration-300`} 
-                                                                    />
-                                                                </div>
-                                                                <p className={`text-xs truncate ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>
-                                                                    {link.url.length > 50 ? link.url.substring(0, 50) + '...' : link.url}
-                                                                </p>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                        {/* Hover Effect */}
-                                                        <div className={`absolute inset-0 rounded-2xl border-2 border-transparent bg-gradient-to-r from-cyan-500/0 via-blue-500/0 to-purple-500/0 group-hover:from-cyan-500/10 group-hover:via-blue-500/10 group-hover:to-purple-500/10 transition-all duration-500`}></div>
-                                                    </a>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    )}
 
                                     {/* Share Button */}
                                     <div className={`relative z-10 mt-12 pt-8 border-t ${isDarkMode ? 'border-slate-700/50' : 'border-slate-300/50'}`}>
