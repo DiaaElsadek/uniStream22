@@ -38,7 +38,7 @@ export default function NewsDetailsPage() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const [isDarkMode, setIsDarkMode] = useState(true);
-    const [extractedLinks, setExtractedLinks] = useState<{url: string, displayText: string}[]>([]);
+    const [extractedLinks, setExtractedLinks] = useState<{ url: string, displayText: string }[]>([]);
 
     useEffect(() => {
         // Check initial theme
@@ -76,22 +76,22 @@ export default function NewsDetailsPage() {
 
     const extractLinksFromContent = (content: string) => {
         if (!content) return [];
-        
+
         const linkRegex = /(https?:\/\/[^\s]+|www\.[^\s]+)/g;
-        const links: {url: string, displayText: string}[] = [];
+        const links: { url: string, displayText: string }[] = [];
         let match;
-        
+
         while ((match = linkRegex.exec(content)) !== null) {
             const rawUrl = match[0];
             const fullUrl = rawUrl.startsWith("http") ? rawUrl : `https://${rawUrl}`;
             const domain = new URL(fullUrl).hostname.replace('www.', '');
-            
+
             links.push({
                 url: fullUrl,
                 displayText: domain
             });
         }
-        
+
         return links;
     };
 
@@ -109,7 +109,7 @@ export default function NewsDetailsPage() {
                 if (data.status && Array.isArray(data.data) && data.data.length > 0) {
                     const newsData = data.data[0];
                     setNewsItem(newsData);
-                    
+
                     // Extract links from content
                     if (newsData.content) {
                         const links = extractLinksFromContent(newsData.content);
@@ -156,24 +156,24 @@ export default function NewsDetailsPage() {
 
     if (loading)
         return (
-            <div className={`loading-container min-h-screen flex flex-col items-center justify-center relative overflow-hidden ${isDarkMode 
-                ? 'bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900' 
+            <div className={`loading-container min-h-screen flex flex-col items-center justify-center relative overflow-hidden ${isDarkMode
+                ? 'bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900'
                 : 'bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50'}`}>
                 {/* Animated Gradient Background */}
-                <div className={`absolute inset-0 ${isDarkMode 
-                    ? 'bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900' 
+                <div className={`absolute inset-0 ${isDarkMode
+                    ? 'bg-gradient-to-br from-slate-900 via-purple-900 to-indigo-900'
                     : 'bg-gradient-to-br from-blue-50 via-purple-50 to-indigo-50'}`}></div>
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent"></div>
 
                 {/* Floating Particles */}
-                <div className={`absolute w-96 h-96 ${isDarkMode 
-                    ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20' 
+                <div className={`absolute w-96 h-96 ${isDarkMode
+                    ? 'bg-gradient-to-r from-cyan-500/20 to-blue-500/20'
                     : 'bg-gradient-to-r from-cyan-400/30 to-blue-400/30'} rounded-full blur-3xl animate-particle-float-1`}></div>
-                <div className={`absolute w-80 h-80 ${isDarkMode 
-                    ? 'bg-gradient-to-r from-purple-500/15 to-pink-500/15' 
+                <div className={`absolute w-80 h-80 ${isDarkMode
+                    ? 'bg-gradient-to-r from-purple-500/15 to-pink-500/15'
                     : 'bg-gradient-to-r from-purple-400/25 to-pink-400/25'} rounded-full blur-3xl animate-particle-float-2`}></div>
-                <div className={`absolute w-64 h-64 ${isDarkMode 
-                    ? 'bg-gradient-to-r from-indigo-500/10 to-violet-500/10' 
+                <div className={`absolute w-64 h-64 ${isDarkMode
+                    ? 'bg-gradient-to-r from-indigo-500/10 to-violet-500/10'
                     : 'bg-gradient-to-r from-indigo-400/20 to-violet-400/20'} rounded-full blur-3xl animate-particle-float-3`}></div>
 
                 {/* Main Loading Content */}
@@ -220,8 +220,8 @@ export default function NewsDetailsPage() {
 
     if (!newsItem)
         return (
-            <div className={`error-container min-h-screen flex flex-col items-center justify-center relative overflow-hidden ${isDarkMode 
-                ? 'bg-gradient-to-br from-slate-900 via-red-900/20 to-purple-900/20' 
+            <div className={`error-container min-h-screen flex flex-col items-center justify-center relative overflow-hidden ${isDarkMode
+                ? 'bg-gradient-to-br from-slate-900 via-red-900/20 to-purple-900/20'
                 : 'bg-gradient-to-br from-red-50 via-pink-50/20 to-purple-50/20'}`}>
                 <div className={`absolute w-full h-1/2 bg-gradient-to-t ${isDarkMode ? 'from-slate-900' : 'from-white'} via-transparent to-transparent bottom-0`}></div>
 
@@ -262,8 +262,8 @@ export default function NewsDetailsPage() {
                         </button>
                         <button
                             onClick={() => window.location.reload()}
-                            className={`group border ${isDarkMode 
-                                ? 'border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white' 
+                            className={`group border ${isDarkMode
+                                ? 'border-slate-600 hover:border-slate-400 text-slate-300 hover:text-white'
                                 : 'border-slate-400 hover:border-slate-600 text-slate-600 hover:text-slate-800'} px-8 py-4 rounded-2xl transition-all duration-300 transform hover:scale-105 font-semibold flex items-center gap-3`}
                         >
                             <FontAwesomeIcon icon={faClock} className="group-hover:rotate-180 transition-transform duration-300" />
@@ -275,10 +275,10 @@ export default function NewsDetailsPage() {
         );
 
     return (
-        <div className={`news-details-page min-h-screen flex flex-col relative overflow-hidden ${isDarkMode 
-            ? 'bg-slate-900' 
+        <div className={`news-details-page min-h-screen flex flex-col relative overflow-hidden ${isDarkMode
+            ? 'bg-slate-900'
             : 'bg-gradient-to-br from-blue-50 via-purple-50/20 to-indigo-50'}`}>
-            
+
             {/* Dynamic Background with Mouse Interaction */}
             <div
                 className="fixed inset-0 transition-opacity duration-1000"
@@ -296,8 +296,8 @@ export default function NewsDetailsPage() {
             ></div>
 
             {/* Static Background Layers */}
-            <div className={`fixed inset-0 ${isDarkMode 
-                ? 'bg-gradient-to-br from-slate-900 via-purple-900/20 to-indigo-900/30' 
+            <div className={`fixed inset-0 ${isDarkMode
+                ? 'bg-gradient-to-br from-slate-900 via-purple-900/20 to-indigo-900/30'
                 : 'bg-gradient-to-br from-blue-50/80 via-purple-50/40 to-indigo-50/60'}`}></div>
             <div
                 className="fixed inset-0"
@@ -313,10 +313,10 @@ export default function NewsDetailsPage() {
 
             {/* Enhanced Navigation */}
             <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${scrolled
-                    ? isDarkMode 
-                        ? 'bg-slate-900/95 backdrop-blur-2xl shadow-2xl shadow-black/50 border-b border-slate-700/50 py-2'
-                        : 'bg-white/95 backdrop-blur-2xl shadow-2xl shadow-slate-200/50 border-b border-slate-200/50 py-2'
-                    : 'bg-transparent py-4'
+                ? isDarkMode
+                    ? 'bg-slate-900/95 backdrop-blur-2xl shadow-2xl shadow-black/50 border-b border-slate-700/50 py-2'
+                    : 'bg-white/95 backdrop-blur-2xl shadow-2xl shadow-slate-200/50 border-b border-slate-200/50 py-2'
+                : 'bg-transparent py-4'
                 }`}>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center">
@@ -324,8 +324,8 @@ export default function NewsDetailsPage() {
                         <div className="flex items-center gap-4">
                             <button
                                 onClick={() => router.push("/home")}
-                                className={`group flex items-center gap-3 ${isDarkMode 
-                                    ? 'text-slate-300 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-cyan-500/30' 
+                                className={`group flex items-center gap-3 ${isDarkMode
+                                    ? 'text-slate-300 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-cyan-500/30'
                                     : 'text-slate-600 hover:text-slate-900 bg-white/50 hover:bg-slate-100/50 border border-slate-300/50 hover:border-cyan-400/30'} transition-all duration-300 transform hover:scale-105 px-4 py-2.5 rounded-xl backdrop-blur-sm`}
                             >
                                 <FontAwesomeIcon
@@ -355,8 +355,8 @@ export default function NewsDetailsPage() {
                             ].map((item, index) => (
                                 <button
                                     key={item.path}
-                                    className={`group flex items-center gap-2 ${isDarkMode 
-                                        ? 'text-slate-300 hover:text-white hover:bg-slate-800/50 border border-transparent hover:border-cyan-500/20' 
+                                    className={`group flex items-center gap-2 ${isDarkMode
+                                        ? 'text-slate-300 hover:text-white hover:bg-slate-800/50 border border-transparent hover:border-cyan-500/20'
                                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/50 border border-transparent hover:border-cyan-400/20'} px-4 py-2.5 rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm font-medium`}
                                     onClick={() => router.push(item.path)}
                                     style={{ animationDelay: `${index * 100}ms` }}
@@ -389,8 +389,8 @@ export default function NewsDetailsPage() {
                         {/* Mobile Menu Button */}
                         <div className="lg:hidden">
                             <button
-                                className={`${isDarkMode 
-                                    ? 'text-slate-300 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-cyan-500/30' 
+                                className={`${isDarkMode
+                                    ? 'text-slate-300 hover:text-white bg-slate-800/50 hover:bg-slate-700/50 border border-slate-700/50 hover:border-cyan-500/30'
                                     : 'text-slate-600 hover:text-slate-900 bg-white/50 hover:bg-slate-100/50 border border-slate-300/50 hover:border-cyan-400/30'} p-3 rounded-xl transition-all duration-300 transform hover:scale-105 backdrop-blur-sm`}
                                 onClick={() => setMenuOpen(!menuOpen)}
                             >
@@ -407,8 +407,8 @@ export default function NewsDetailsPage() {
                         className={`lg:hidden transition-all duration-500 ease-out overflow-hidden ${menuOpen ? "max-h-96 opacity-100 mt-4" : "max-h-0 opacity-0"
                             }`}
                     >
-                        <div className={`${isDarkMode 
-                            ? 'bg-slate-800/95 backdrop-blur-2xl border border-slate-700/50' 
+                        <div className={`${isDarkMode
+                            ? 'bg-slate-800/95 backdrop-blur-2xl border border-slate-700/50'
                             : 'bg-white/95 backdrop-blur-2xl border border-slate-200/50'} rounded-2xl p-4 space-y-2 shadow-2xl`}>
                             {[
                                 { path: '/home', icon: faHome, label: 'Home' },
@@ -418,8 +418,8 @@ export default function NewsDetailsPage() {
                             ].map((item) => (
                                 <button
                                     key={item.path}
-                                    className={`w-full flex items-center gap-3 ${isDarkMode 
-                                        ? 'text-slate-300 hover:text-white hover:bg-slate-700/50 border border-transparent hover:border-cyan-500/20' 
+                                    className={`w-full flex items-center gap-3 ${isDarkMode
+                                        ? 'text-slate-300 hover:text-white hover:bg-slate-700/50 border border-transparent hover:border-cyan-500/20'
                                         : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/50 border border-transparent hover:border-cyan-400/20'} p-4 rounded-lg transition-all duration-300 transform hover:translate-x-2 font-medium`}
                                     onClick={() => { router.push(item.path); setMenuOpen(false); }}
                                 >
@@ -446,8 +446,8 @@ export default function NewsDetailsPage() {
                         {/* Header Section */}
                         <section className="text-center space-y-8 animate-content-fade">
                             {/* Badge */}
-                            <div className={`inline-flex items-center gap-3 ${isDarkMode 
-                                ? 'bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20' 
+                            <div className={`inline-flex items-center gap-3 ${isDarkMode
+                                ? 'bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/20'
                                 : 'bg-gradient-to-r from-cyan-400/15 to-blue-400/15 border border-cyan-400/30'} px-6 py-3 rounded-2xl backdrop-blur-sm`}>
                                 <FontAwesomeIcon icon={faStar} className="text-yellow-400 text-sm" />
                                 <span className="text-cyan-300 font-semibold text-sm tracking-wide">NEWS DETAILS</span>
@@ -490,8 +490,8 @@ export default function NewsDetailsPage() {
                                 ].map((item, index) => (
                                     <div
                                         key={index}
-                                        className={`group ${isDarkMode 
-                                            ? 'bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 hover:border-cyan-500/30' 
+                                        className={`group ${isDarkMode
+                                            ? 'bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-slate-700/50 hover:border-cyan-500/30'
                                             : 'bg-gradient-to-br from-white/60 to-slate-100/60 border border-slate-300/50 hover:border-cyan-400/30'} backdrop-blur-xl rounded-2xl p-6 transition-all duration-500 transform hover:-translate-y-2 hover:shadow-2xl ${isDarkMode ? 'hover:shadow-cyan-500/10' : 'hover:shadow-cyan-400/20'} cursor-pointer`}
                                         style={{ animationDelay: `${item.delay * 150}ms` }}
                                     >
@@ -518,8 +518,8 @@ export default function NewsDetailsPage() {
                             {/* Main Article */}
                             <article className="xl:col-span-3 group relative">
                                 <div className="absolute -inset-4 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                                <div className={`relative ${isDarkMode 
-                                    ? 'bg-slate-800/50 backdrop-blur-2xl border border-slate-700/50 group-hover:border-cyan-500/30' 
+                                <div className={`relative ${isDarkMode
+                                    ? 'bg-slate-800/50 backdrop-blur-2xl border border-slate-700/50 group-hover:border-cyan-500/30'
                                     : 'bg-white/60 backdrop-blur-2xl border border-slate-300/50 group-hover:border-cyan-400/30'} rounded-3xl p-8 lg:p-12 transition-all duration-500 overflow-hidden`}>
                                     {/* Background Pattern */}
                                     <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,_rgba(120,119,198,0.15)_1px,_transparent_0)] bg-[length:20px_20px] opacity-10"></div>
@@ -540,39 +540,74 @@ export default function NewsDetailsPage() {
                                                                 href={link?.url || part}
                                                                 target="_blank"
                                                                 rel="noopener noreferrer"
-                                                                className={`group/link relative inline-flex items-center gap-3 mx-1 px-5 py-3 rounded-2xl transition-all duration-500 transform hover:-translate-y-1 hover:scale-105 ${
-                                                                    isDarkMode 
-                                                                        ? 'bg-gradient-to-br from-cyan-500/15 to-blue-500/15 border border-cyan-500/30 hover:border-cyan-400/60 text-cyan-300 hover:text-white' 
-                                                                        : 'bg-gradient-to-br from-cyan-400/20 to-blue-400/20 border border-cyan-400/40 hover:border-cyan-500/60 text-cyan-700 hover:text-cyan-900'
-                                                                } backdrop-blur-xl shadow-lg hover:shadow-cyan-500/25 overflow-hidden`}
+                                                                className={`group/link relative inline-flex items-center gap-3 mx-1 px-6 py-4 rounded-2xl transition-all duration-700 transform hover:-translate-y-2 hover:scale-105 ${isDarkMode
+                                                                        ? 'bg-gradient-to-br from-slate-800/80 to-slate-900/80 border border-slate-700/50 hover:border-cyan-400/50 text-cyan-300 hover:text-white'
+                                                                        : 'bg-gradient-to-br from-white/90 to-slate-100/90 border border-slate-300/50 hover:border-cyan-500/50 text-cyan-600 hover:text-cyan-800'
+                                                                    } backdrop-blur-xl shadow-2xl hover:shadow-cyan-500/30 overflow-hidden`}
                                                             >
-                                                                {/* Background Blur Effect */}
-                                                                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/10 to-purple-500/10 opacity-0 group-hover/link:opacity-100 transition-opacity duration-500 blur-sm"></div>
-                                                                
-                                                                {/* Animated Border */}
+                                                                {/* Animated Gradient Background */}
+                                                                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/0 via-blue-500/0 to-purple-500/0 group-hover/link:from-cyan-500/20 group-hover/link:via-blue-500/15 group-hover/link:to-purple-500/10 transition-all duration-1000 ease-out"></div>
+
+                                                                {/* Floating Particles Animation */}
+                                                                <div className="absolute inset-0 overflow-hidden rounded-2xl">
+                                                                    <div className="absolute w-20 h-20 bg-cyan-400/10 rounded-full -top-4 -left-4 group-hover/link:scale-150 group-hover/link:opacity-100 opacity-0 transition-all duration-1000 ease-out blur-lg"></div>
+                                                                    <div className="absolute w-16 h-16 bg-blue-400/10 rounded-full -bottom-4 -right-4 group-hover/link:scale-150 group-hover/link:opacity-100 opacity-0 transition-all duration-1000 ease-out blur-lg delay-200"></div>
+                                                                    <div className="absolute w-12 h-12 bg-purple-400/10 rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 group-hover/link:scale-200 group-hover/link:opacity-100 opacity-0 transition-all duration-1000 ease-out blur-lg delay-400"></div>
+                                                                </div>
+
+                                                                {/* Animated Border Glow */}
                                                                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 opacity-0 group-hover/link:opacity-100 transition-opacity duration-500">
-                                                                    <div className="absolute inset-[1px] rounded-2xl bg-inherit"></div>
+                                                                    <div className="absolute inset-[2px] rounded-2xl bg-inherit backdrop-blur-xl"></div>
                                                                 </div>
 
                                                                 {/* Link Content */}
-                                                                <div className="relative z-10 flex items-center gap-3">
-                                                                    {/* Link Number Badge */}
-                                                                    <div className={`flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-lg group-hover/link:scale-110 transition-transform duration-300`}>
-                                                                        {linkCounter}
+                                                                <div className="relative z-20 flex items-center gap-4">
+                                                                    {/* Animated Number Badge */}
+                                                                    <div className="relative">
+                                                                        <div className={`flex-shrink-0 w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center text-white font-bold text-sm shadow-2xl group-hover/link:scale-110 group-hover/link:rotate-12 transition-all duration-500 ease-out overflow-hidden`}>
+                                                                            {/* Shine effect on badge */}
+                                                                            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover/link:translate-x-full transition-transform duration-1000 ease-out"></div>
+                                                                            <span className="relative z-10">{linkCounter}</span>
+                                                                        </div>
+                                                                        {/* Badge glow */}
+                                                                        <div className="absolute inset-0 rounded-xl bg-cyan-400/30 blur-md group-hover/link:scale-125 group-hover/link:opacity-100 opacity-0 transition-all duration-500 ease-out"></div>
                                                                     </div>
-                                                                    
-                                                                    {/* Link Text */}
-                                                                    <div className="flex items-center gap-2">
-                                                                        <span className="font-semibold text-sm">Link {linkCounter}</span>
-                                                                        <FontAwesomeIcon 
-                                                                            icon={faExternalLinkAlt} 
-                                                                            className={`text-xs ${isDarkMode ? 'text-cyan-400' : 'text-cyan-500'} group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform duration-300`} 
+
+                                                                    {/* Link Text with Typing Animation */}
+                                                                    <div className="flex items-center gap-3">
+                                                                        <div className="text-left">
+                                                                            <span className="font-bold text-sm bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent group-hover/link:from-cyan-300 group-hover/link:to-blue-400 transition-all duration-500">
+                                                                                Chapter {linkCounter}
+                                                                            </span>
+                                                                            <div className="flex items-center gap-2 mt-1">
+                                                                                <div className={`w-2 h-2 rounded-full bg-cyan-400 group-hover/link:scale-150 group-hover/link:bg-cyan-300 transition-all duration-500 ${isDarkMode ? 'bg-cyan-500' : 'bg-cyan-400'
+                                                                                    }`}></div>
+                                                                                <span className={`text-xs font-medium ${isDarkMode ? 'text-slate-400 group-hover/link:text-slate-300' : 'text-slate-500 group-hover/link:text-slate-700'
+                                                                                    } transition-colors duration-500 truncate max-w-[120px]`}>
+                                                                                    {link?.displayText || 'External Link'}
+                                                                                </span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <FontAwesomeIcon
+                                                                            icon={faExternalLinkAlt}
+                                                                            className={`text-sm ${isDarkMode
+                                                                                    ? 'text-cyan-400 group-hover/link:text-cyan-300'
+                                                                                    : 'text-cyan-500 group-hover/link:text-cyan-600'
+                                                                                } group-hover/link:translate-x-1 group-hover/link:-translate-y-1 group-hover/link:scale-110 transition-all duration-500 ease-out`}
                                                                         />
                                                                     </div>
                                                                 </div>
 
-                                                                {/* Hover Glow Effect */}
-                                                                <div className="absolute inset-0 rounded-2xl bg-cyan-500/0 group-hover/link:bg-cyan-500/10 transition-all duration-500 blur-md"></div>
+                                                                {/* Hover Pulse Effect */}
+                                                                <div className="absolute inset-0 rounded-2xl bg-cyan-500/0 group-hover/link:bg-cyan-500/5 transition-all duration-1000 ease-out"></div>
+
+                                                                {/* Ripple Effect on Click */}
+                                                                <div className="absolute inset-0 rounded-2xl overflow-hidden">
+                                                                    <div className="absolute inset-0 bg-cyan-500/0 group-active/link:bg-cyan-500/20 transition-colors duration-300 ease-out"></div>
+                                                                </div>
+
+                                                                {/* Subtle Shine Line */}
+                                                                <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent opacity-0 group-hover/link:opacity-100 transition-opacity duration-700 ease-out"></div>
                                                             </a>
                                                         );
                                                     } else {
@@ -599,22 +634,22 @@ export default function NewsDetailsPage() {
                             {/* Sidebar */}
                             <aside className="space-y-6">
                                 {/* News Info Card */}
-                                <div className={`${isDarkMode 
-                                    ? 'bg-slate-800/50 backdrop-blur-2xl border border-slate-700/50 hover:border-cyan-500/30' 
+                                <div className={`${isDarkMode
+                                    ? 'bg-slate-800/50 backdrop-blur-2xl border border-slate-700/50 hover:border-cyan-500/30'
                                     : 'bg-white/60 backdrop-blur-2xl border border-slate-300/50 hover:border-cyan-400/30'} rounded-2xl p-6 transition-all duration-500 group`}>
                                     <h3 className="text-lg font-semibold text-cyan-300 mb-4 flex items-center gap-2">
                                         <FontAwesomeIcon icon={faNewspaper} className="text-sm" />
                                         News Information
                                     </h3>
                                     <div className="space-y-4">
-                                        <div className={`flex justify-between items-center py-3 border-b ${isDarkMode 
-                                            ? 'border-slate-700/30 group-hover:border-slate-600/50' 
+                                        <div className={`flex justify-between items-center py-3 border-b ${isDarkMode
+                                            ? 'border-slate-700/30 group-hover:border-slate-600/50'
                                             : 'border-slate-300/30 group-hover:border-slate-400/50'} transition-colors`}>
                                             <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Status</span>
                                             <span className="bg-emerald-500/20 text-emerald-400 px-3 py-1 rounded-full text-sm font-medium border border-emerald-500/30">Published</span>
                                         </div>
-                                        <div className={`flex justify-between items-center py-3 border-b ${isDarkMode 
-                                            ? 'border-slate-700/30 group-hover:border-slate-600/50' 
+                                        <div className={`flex justify-between items-center py-3 border-b ${isDarkMode
+                                            ? 'border-slate-700/30 group-hover:border-slate-600/50'
                                             : 'border-slate-300/30 group-hover:border-slate-400/50'} transition-colors`}>
                                             <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Type</span>
                                             <span className="bg-purple-500/20 text-purple-400 px-3 py-1 rounded-full text-sm font-medium border border-purple-500/30">Announcement</span>
@@ -627,8 +662,8 @@ export default function NewsDetailsPage() {
                                 </div>
 
                                 {/* Quick Actions */}
-                                <div className={`${isDarkMode 
-                                    ? 'bg-slate-800/50 backdrop-blur-2xl border border-slate-700/50 hover:border-purple-500/30' 
+                                <div className={`${isDarkMode
+                                    ? 'bg-slate-800/50 backdrop-blur-2xl border border-slate-700/50 hover:border-purple-500/30'
                                     : 'bg-white/60 backdrop-blur-2xl border border-slate-300/50 hover:border-purple-400/30'} rounded-2xl p-6 transition-all duration-500 group`}>
                                     <h3 className="text-lg font-semibold text-purple-300 mb-4 flex items-center gap-2">
                                         <FontAwesomeIcon icon={faDashboard} className="text-sm" />
@@ -643,8 +678,8 @@ export default function NewsDetailsPage() {
                                             <button
                                                 key={action.path}
                                                 onClick={() => router.push(action.path)}
-                                                className={`w-full flex items-center gap-3 ${isDarkMode 
-                                                    ? 'text-slate-300 hover:text-white hover:bg-slate-700/50 border border-transparent hover:border-cyan-500/20' 
+                                                className={`w-full flex items-center gap-3 ${isDarkMode
+                                                    ? 'text-slate-300 hover:text-white hover:bg-slate-700/50 border border-transparent hover:border-cyan-500/20'
                                                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/50 border border-transparent hover:border-cyan-400/20'} p-4 rounded-xl transition-all duration-300 transform hover:-translate-y-1 group`}
                                             >
                                                 <div className={`bg-${action.color}-500/20 p-2 rounded-lg group-hover:scale-110 transition-transform duration-300`}>
