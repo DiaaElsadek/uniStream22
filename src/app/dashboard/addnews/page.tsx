@@ -35,6 +35,8 @@ export default function AddNewsPage() {
         week: 1,
         publishData: false,
         createdBy: "",
+        priorty: "", // New priority field
+        publish: false, // New publish field
     });
 
     const subjects = [
@@ -45,6 +47,7 @@ export default function AddNewsPage() {
         "مشروع تخرج 1",
     ];
     const groups = ["1", "2", "3", "4", "5", "6"];
+    const priorities = ["low", "medium", "high"];
 
     // Handle scroll effect for navbar
     useEffect(() => {
@@ -124,7 +127,8 @@ export default function AddNewsPage() {
             normalizeText(item.groupId).includes(term) ||
             normalizeText(item.week).includes(term) ||
             normalizeText(item.createdBy || "").includes(term) ||
-            normalizeText(formatDateTime(item.createdAt)).includes(term)
+            normalizeText(formatDateTime(item.createdAt)).includes(term) ||
+            normalizeText(item.priorty || "").includes(term)
         );
     });
 
@@ -136,6 +140,43 @@ export default function AddNewsPage() {
             minute: "2-digit",
         })}`;
     }
+
+    const getPriorityInfo = (priority: string) => {
+        switch (priority?.toLowerCase()) {
+            case "high":
+                return {
+                    color: "red",
+                    bgColor: "red-500/20",
+                    textColor: "red-400",
+                    borderColor: "red-500/30",
+                    label: "عالي"
+                };
+            case "medium":
+                return {
+                    color: "emerald",
+                    bgColor: "emerald-500/20",
+                    textColor: "emerald-400",
+                    borderColor: "emerald-500/30",
+                    label: "متوسط"
+                };
+            case "low":
+                return {
+                    color: "blue",
+                    bgColor: "blue-500/20",
+                    textColor: "blue-400",
+                    borderColor: "blue-500/30",
+                    label: "منخفض"
+                };
+            default:
+                return {
+                    color: "gray",
+                    bgColor: "gray-500/20",
+                    textColor: "gray-400",
+                    borderColor: "gray-500/30",
+                    label: "غير محدد"
+                };
+        }
+    };
 
     if (loading)
         return (
@@ -735,6 +776,8 @@ export default function AddNewsPage() {
                                             week: 1,
                                             publishData: false,
                                             createdBy: "",
+                                            priorty: "",
+                                            publish: false,
                                         });
                                     }}
                                     className="group relative bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-4 rounded-2xl font-bold text-lg backdrop-blur-xl border border-indigo-400/30 shadow-2xl shadow-indigo-500/25 transition-all duration-300"
@@ -814,112 +857,133 @@ export default function AddNewsPage() {
                             </motion.div>
                         ) : (
                             <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
-                                {filteredNews.map((item, index) => (
-                                    <motion.div
-                                        key={item.id}
-                                        initial={{ opacity: 0, y: 30 }}
-                                        animate={{ opacity: 1, y: 0 }}
-                                        transition={{ delay: index * 0.1 }}
-                                        whileHover={{
-                                            y: -5,
-                                            boxShadow: "0 25px 50px rgba(139, 92, 246, 0.15)"
-                                        }}
-                                        className="group relative bg-gradient-to-br from-white/5 to-white/10 p-6 rounded-3xl border border-indigo-500/20 shadow-2xl shadow-purple-500/10 backdrop-blur-xl hover:border-indigo-400/40 transition-all duration-500"
-                                    >
-                                        {/* Animated Gradient Border */}
-                                        <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm group-hover:blur-0"></div>
+                                {filteredNews.map((item, index) => {
+                                    const priorityInfo = getPriorityInfo(item.priorty);
+                                    return (
+                                        <motion.div
+                                            key={item.id}
+                                            initial={{ opacity: 0, y: 30 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: index * 0.1 }}
+                                            whileHover={{
+                                                y: -5,
+                                                boxShadow: "0 25px 50px rgba(139, 92, 246, 0.15)"
+                                            }}
+                                            className="group relative bg-gradient-to-br from-white/5 to-white/10 p-6 rounded-3xl border border-indigo-500/20 shadow-2xl shadow-purple-500/10 backdrop-blur-xl hover:border-indigo-400/40 transition-all duration-500"
+                                        >
+                                            {/* Animated Gradient Border */}
+                                            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-indigo-500/20 via-purple-500/20 to-pink-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-sm group-hover:blur-0"></div>
 
-                                        {/* Content */}
-                                        <div className="relative z-10">
-                                            <div className="flex justify-between items-start mb-4">
-                                                <h3 className="text-xl font-black bg-gradient-to-r from-indigo-200 to-purple-200 bg-clip-text text-transparent leading-tight flex-1 pr-3">
-                                                    {item.title}
-                                                </h3>
-                                                <motion.span
-                                                    whileHover={{ scale: 1.1 }}
-                                                    className="bg-indigo-500/30 text-indigo-100 px-3 py-1 rounded-full border border-indigo-400/30 text-sm font-bold whitespace-nowrap backdrop-blur-sm"
-                                                >
-                                                    الأسبوع {item.week}
-                                                </motion.span>
-                                            </div>
-
-                                            <div className="mb-6 max-h-[120px] overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-500/30 scrollbar-track-indigo-500/10 rounded-lg bg-white/5 p-3 backdrop-blur-sm">
-                                                <p className="text-indigo-100/90 leading-relaxed text-right pr-3 border-r-2 border-indigo-500/30">
-                                                    {item.content}
-                                                </p>
-                                            </div>
-
-                                            {/* Metadata Grid */}
-                                            <div className="grid grid-cols-1 gap-3 mb-6">
-                                                {[
-                                                    { icon: "📘", label: "المادة", value: subjects[item.subjectId - 1] || "عام", color: "blue" },
-                                                    { icon: "👥", label: "المجموعة", value: item.groupId || "الكل", color: "emerald" },
-                                                    { icon: "✍️", label: "الناشر", value: item.createdBy || "Admin", color: "purple" },
-                                                    { icon: "🕒", label: "التاريخ", value: formatDateTime(item.createdAt), color: "amber" }
-                                                ].map((meta, i) => (
-                                                    <motion.div
-                                                        key={i}
-                                                        whileHover={{ scale: 1.02 }}
-                                                        className={`flex items-center gap-3 bg-white/5 p-3 rounded-xl border border-${meta.color}-500/20 backdrop-blur-sm`}
-                                                    >
-                                                        <span className={`bg-${meta.color}-500/20 p-2 rounded-lg`}>
-                                                            <span className={`text-${meta.color}-300 text-lg`}>{meta.icon}</span>
-                                                        </span>
-                                                        <div className="text-right flex-1">
-                                                            <p className="text-indigo-200/70 text-xs font-semibold">{meta.label}</p>
-                                                            <p className="text-white font-medium text-sm">{meta.value}</p>
-                                                        </div>
-                                                    </motion.div>
-                                                ))}
-                                            </div>
-
-                                            {/* Actions */}
-                                            <div className="flex gap-3 pt-4 border-t border-indigo-500/20">
-                                                <motion.button
-                                                    whileHover={{ scale: 1.05 }}
-                                                    whileTap={{ scale: 0.95 }}
-                                                    onClick={() => {
-                                                        setShowModal(true);
-                                                        setIsEdit(true);
-                                                        setEditId(item.id);
-                                                        setFormData({
-                                                            title: item.title,
-                                                            content: item.content,
-                                                            subjectId: item.subjectId,
-                                                            groupId: item.groupId,
-                                                            week: item.week,
-                                                            publishData: item.publishData,
-                                                            createdBy: item.createdBy,
-                                                        });
-                                                    }}
-                                                    className="flex-1 group bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-400 hover:to-cyan-500 text-white py-3 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-blue-500/25 font-bold flex items-center justify-center gap-2 backdrop-blur-sm"
-                                                >
+                                            {/* Content */}
+                                            <div className="relative z-10">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <h3 className="text-xl font-black bg-gradient-to-r from-indigo-200 to-purple-200 bg-clip-text text-transparent leading-tight flex-1 pr-3">
+                                                        {item.title}
+                                                    </h3>
                                                     <motion.span
-                                                        whileHover={{ rotate: 12 }}
-                                                        className="transition-transform duration-300"
+                                                        whileHover={{ scale: 1.1 }}
+                                                        className="bg-indigo-500/30 text-indigo-100 px-3 py-1 rounded-full border border-indigo-400/30 text-sm font-bold whitespace-nowrap backdrop-blur-sm"
                                                     >
-                                                        ✏️
+                                                        الأسبوع {item.week}
                                                     </motion.span>
-                                                    تعديل
-                                                </motion.button>
-                                                <motion.button
-                                                    whileHover={{ scale: 1.05 }}
-                                                    whileTap={{ scale: 0.95 }}
-                                                    onClick={() => deleteNews(item.id)}
-                                                    className="flex-1 group bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-400 hover:to-pink-500 text-white py-3 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-rose-500/25 font-bold flex items-center justify-center gap-2 backdrop-blur-sm"
-                                                >
-                                                    <motion.span
-                                                        whileHover={{ scale: 1.2 }}
-                                                        className="transition-transform duration-300"
+                                                </div>
+
+                                                <div className="mb-6 max-h-[120px] overflow-y-auto scrollbar-thin scrollbar-thumb-indigo-500/30 scrollbar-track-indigo-500/10 rounded-lg bg-white/5 p-3 backdrop-blur-sm">
+                                                    <p className="text-indigo-100/90 leading-relaxed text-right pr-3 border-r-2 border-indigo-500/30">
+                                                        {item.content}
+                                                    </p>
+                                                </div>
+
+                                                {/* Metadata Grid */}
+                                                <div className="grid grid-cols-1 gap-3 mb-6">
+                                                    {[
+                                                        { icon: "📘", label: "المادة", value: subjects[item.subjectId - 1] || "عام", color: "blue" },
+                                                        { icon: "👥", label: "المجموعة", value: item.groupId || "الكل", color: "emerald" },
+                                                        { icon: "✍️", label: "الناشر", value: item.createdBy || "Admin", color: "purple" },
+                                                        { icon: "🕒", label: "التاريخ", value: formatDateTime(item.createdAt), color: "amber" },
+                                                        { 
+                                                            icon: "🎯", 
+                                                            label: "الأولوية", 
+                                                            value: priorityInfo.label, 
+                                                            color: priorityInfo.color,
+                                                            customClass: `bg-${priorityInfo.bgColor} border-${priorityInfo.borderColor} text-${priorityInfo.textColor}`
+                                                        },
+                                                        {
+                                                            icon: item.publish ? "✅" : "❌",
+                                                            label: "الحالة",
+                                                            value: item.publish ? "منشور" : "مسودة",
+                                                            color: item.publish ? "emerald" : "rose",
+                                                            customClass: item.publish 
+                                                                ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400" 
+                                                                : "bg-rose-500/20 border-rose-500/30 text-rose-400"
+                                                        }
+                                                    ].map((meta, i) => (
+                                                        <motion.div
+                                                            key={i}
+                                                            whileHover={{ scale: 1.02 }}
+                                                            className={`flex items-center gap-3 ${meta.customClass || `bg-white/5 border border-${meta.color}-500/20`} p-3 rounded-xl backdrop-blur-sm`}
+                                                        >
+                                                            <span className={`${meta.customClass ? `bg-${priorityInfo.color}-500/20` : `bg-${meta.color}-500/20`} p-2 rounded-lg`}>
+                                                                <span className={`${meta.customClass ? `text-${priorityInfo.textColor}` : `text-${meta.color}-300`} text-lg`}>{meta.icon}</span>
+                                                            </span>
+                                                            <div className="text-right flex-1">
+                                                                <p className="text-indigo-200/70 text-xs font-semibold">{meta.label}</p>
+                                                                <p className={`${meta.customClass ? `text-${priorityInfo.textColor}` : 'text-white'} font-medium text-sm`}>{meta.value}</p>
+                                                            </div>
+                                                        </motion.div>
+                                                    ))}
+                                                </div>
+
+                                                {/* Actions */}
+                                                <div className="flex gap-3 pt-4 border-t border-indigo-500/20">
+                                                    <motion.button
+                                                        whileHover={{ scale: 1.05 }}
+                                                        whileTap={{ scale: 0.95 }}
+                                                        onClick={() => {
+                                                            setShowModal(true);
+                                                            setIsEdit(true);
+                                                            setEditId(item.id);
+                                                            setFormData({
+                                                                title: item.title,
+                                                                content: item.content,
+                                                                subjectId: item.subjectId,
+                                                                groupId: item.groupId,
+                                                                week: item.week,
+                                                                publishData: item.publishData,
+                                                                createdBy: item.createdBy,
+                                                                priorty: item.priorty || "",
+                                                                publish: item.publish || false,
+                                                            });
+                                                        }}
+                                                        className="flex-1 group bg-gradient-to-r from-blue-500 to-cyan-600 hover:from-blue-400 hover:to-cyan-500 text-white py-3 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-blue-500/25 font-bold flex items-center justify-center gap-2 backdrop-blur-sm"
                                                     >
-                                                        🗑️
-                                                    </motion.span>
-                                                    حذف
-                                                </motion.button>
+                                                        <motion.span
+                                                            whileHover={{ rotate: 12 }}
+                                                            className="transition-transform duration-300"
+                                                        >
+                                                            ✏️
+                                                        </motion.span>
+                                                        تعديل
+                                                    </motion.button>
+                                                    <motion.button
+                                                        whileHover={{ scale: 1.05 }}
+                                                        whileTap={{ scale: 0.95 }}
+                                                        onClick={() => deleteNews(item.id)}
+                                                        className="flex-1 group bg-gradient-to-r from-rose-500 to-pink-600 hover:from-rose-400 hover:to-pink-500 text-white py-3 px-4 rounded-xl transition-all duration-300 shadow-lg shadow-rose-500/25 font-bold flex items-center justify-center gap-2 backdrop-blur-sm"
+                                                    >
+                                                        <motion.span
+                                                            whileHover={{ scale: 1.2 }}
+                                                            className="transition-transform duration-300"
+                                                        >
+                                                            🗑️
+                                                        </motion.span>
+                                                        حذف
+                                                    </motion.button>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </motion.div>
-                                ))}
+                                        </motion.div>
+                                    );
+                                })}
                             </div>
                         )}
                     </motion.div>
@@ -1019,6 +1083,93 @@ export default function AddNewsPage() {
                                             )}
                                         </div>
                                     ))}
+                                </div>
+
+                                {/* Priority and Publish Section */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                    {/* Priority Select */}
+                                    <div>
+                                        <label className="block text-sm font-bold text-indigo-200 mb-3">الأولوية</label>
+                                        <select
+                                            value={formData.priorty}
+                                            onChange={(e) => setFormData({ ...formData, priorty: e.target.value })}
+                                            className="w-full p-4 bg-white/5 border border-indigo-500/30 rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300 text-white backdrop-blur-sm"
+                                        >
+                                            <option value="" disabled>--Select Priority--</option>
+                                            {priorities.map((priority, idx) => (
+                                                <option key={idx} value={priority}>
+                                                    {priority === "low" ? "منخفض" : 
+                                                     priority === "medium" ? "متوسط" : "عالي"}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+
+                                    {/* Publish Switch */}
+                                    <div>
+                                        <label className="block text-sm font-bold text-indigo-200 mb-3">الحالة</label>
+                                        <motion.div
+                                            whileHover={{ scale: 1.05 }}
+                                            className={`relative inline-flex items-center w-full h-14 rounded-2xl p-1 cursor-pointer transition-all duration-300 ${
+                                                formData.publish 
+                                                    ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/30' 
+                                                    : 'bg-gradient-to-r from-rose-500/20 to-red-500/20 border border-rose-500/30'
+                                            } backdrop-blur-sm`}
+                                            onClick={() => setFormData({ ...formData, publish: !formData.publish })}
+                                        >
+                                            {/* Switch Track */}
+                                            <div className={`absolute w-full h-full rounded-2xl transition-all duration-300 ${
+                                                formData.publish 
+                                                    ? 'bg-gradient-to-r from-emerald-500 to-green-500 opacity-20' 
+                                                    : 'bg-gradient-to-r from-rose-500 to-red-500 opacity-20'
+                                            }`}></div>
+                                            
+                                            {/* Switch Knob */}
+                                            <motion.div
+                                                layout
+                                                transition={{ type: "spring", stiffness: 500, damping: 30 }}
+                                                className={`relative z-10 w-1/2 h-12 rounded-xl flex items-center justify-center font-bold text-sm backdrop-blur-sm ${
+                                                    formData.publish 
+                                                        ? 'bg-gradient-to-r from-emerald-400 to-green-400 text-white shadow-lg shadow-emerald-500/25' 
+                                                        : 'bg-gradient-to-r from-rose-400 to-red-400 text-white shadow-lg shadow-rose-500/25'
+                                                }`}
+                                            >
+                                                {formData.publish ? (
+                                                    <motion.div
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        <span>✅</span>
+                                                        <span>منشور</span>
+                                                    </motion.div>
+                                                ) : (
+                                                    <motion.div
+                                                        initial={{ scale: 0 }}
+                                                        animate={{ scale: 1 }}
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        <span>❌</span>
+                                                        <span>مسودة</span>
+                                                    </motion.div>
+                                                )}
+                                            </motion.div>
+
+                                            {/* Labels */}
+                                            <div className="absolute inset-0 flex items-center justify-between px-4 pointer-events-none">
+                                                <span className={`text-sm font-bold transition-all duration-300 ${
+                                                    formData.publish ? 'text-emerald-300' : 'text-rose-300 opacity-60'
+                                                }`}>
+                                                    مسودة
+                                                </span>
+                                                <span className={`text-sm font-bold transition-all duration-300 ${
+                                                    !formData.publish ? 'text-rose-300' : 'text-emerald-300 opacity-60'
+                                                }`}>
+                                                    منشور
+                                                </span>
+                                            </div>
+                                        </motion.div>
+                                    </div>
                                 </div>
 
                                 <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-indigo-500/30">

@@ -14,6 +14,8 @@ type NewsItem = {
     subjectId: number;
     groupId: number;
     week: number;
+    publish: boolean;
+    priorty: string; // Add priority field
 };
 
 export default function HomePage() {
@@ -156,7 +158,71 @@ export default function HomePage() {
         };
     }, []);
 
+    // Function to get priority background style
+    const getPriorityBackground = (priority: string) => {
+        switch (priority?.toLowerCase()) {
+            case "high":
+                return {
+                    background: "linear-gradient(135deg, rgba(239, 68, 68, 0.08) 0%, rgba(220, 38, 38, 0.12) 100%)",
+                    border: "1px solid rgba(239, 68, 68, 0.2)",
+                    glow: "rgba(239, 68, 68, 0.15)"
+                };
+            case "medium":
+                return {
+                    background: "linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(22, 163, 74, 0.12) 100%)",
+                    border: "1px solid rgba(34, 197, 94, 0.2)",
+                    glow: "rgba(34, 197, 94, 0.15)"
+                };
+            case "low":
+                return {
+                    background: "linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(37, 99, 235, 0.12) 100%)",
+                    border: "1px solid rgba(59, 130, 246, 0.2)",
+                    glow: "rgba(59, 130, 246, 0.15)"
+                };
+            default:
+                return {
+                    background: "linear-gradient(135deg, rgba(156, 163, 175, 0.08) 0%, rgba(107, 114, 128, 0.12) 100%)",
+                    border: "1px solid rgba(156, 163, 175, 0.2)",
+                    glow: "rgba(156, 163, 175, 0.15)"
+                };
+        }
+    };
+
+    // Function to get priority badge info
+    const getPriorityBadgeInfo = (priority: string) => {
+        switch (priority?.toLowerCase()) {
+            case "high":
+                return {
+                    color: "red",
+                    text: "High",
+                    icon: "🔴"
+                };
+            case "medium":
+                return {
+                    color: "emerald",
+                    text: "Medium",
+                    icon: "🟢"
+                };
+            case "low":
+                return {
+                    color: "blue",
+                    text: "Low",
+                    icon: "🔵"
+                };
+            default:
+                return {
+                    color: "gray",
+                    text: "Normal",
+                    icon: "⚪"
+                };
+        }
+    };
+
+    // Filter news to only show published items (publish === true)
     const filteredNews = news.filter((item) => {
+        // First filter by publish status
+        if (item.publish !== true) return false;
+
         const subjectName = subjects[item.subjectId - 1] || "Global";
         const group = item.groupId?.toString() || "";
         const query = searchQuery.trim().toLowerCase();
@@ -175,6 +241,7 @@ export default function HomePage() {
         );
     });
 
+    // Group news by week, but only include weeks that have at least one published item
     const groupedNews = filteredNews.reduce((acc: any, item: any) => {
         const week = item.week ?? "غير محدد";
         if (!acc[week]) acc[week] = [];
@@ -182,6 +249,7 @@ export default function HomePage() {
         return acc;
     }, {} as Record<string | number, any[]>);
 
+    // Sort weeks, but only include weeks that have published news
     const sortedWeeks = Object.keys(groupedNews)
         .map((k) => (isNaN(Number(k)) ? k : Number(k)))
         .sort((a: any, b: any) =>
@@ -722,10 +790,12 @@ export default function HomePage() {
                             : 'bg-gradient-to-br from-white/90 to-gray-100/90 border border-indigo-400/60'} 
                             backdrop-blur-2xl px-8 sm:px-12 py-8 sm:py-10 rounded-3xl shadow-2xl text-center max-w-lg mx-4`}>
                             <h3 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-indigo-400 to-purple-400 bg-clip-text text-transparent mb-4">
-                                No Matching News Found
+                                {news.length === 0 ? "No News Available" : "No Published News Found"}
                             </h3>
                             <p className={`text-lg sm:text-xl ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                                Try searching with different keywords or check your spelling.
+                                {news.length === 0 
+                                    ? "There are no news items available at the moment." 
+                                    : "All news items are currently in draft mode. Please check back later."}
                             </p>
                         </div>
                     </motion.div>
@@ -733,6 +803,11 @@ export default function HomePage() {
                     sortedWeeks.map((week, weekIndex) => {
                         const weekKey = typeof week === "number" ? week : week;
                         const items = groupedNews[weekKey];
+
+                        // Only render the section if there are published items for this week
+                        if (!items || items.length === 0) {
+                            return null;
+                        }
 
                         return (
                             <motion.section
@@ -805,125 +880,150 @@ export default function HomePage() {
 
                                 {/* Enhanced News Cards with Beautiful Borders */}
                                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-                                    {items.map((item: any, index: number) => (
-                                        <motion.article
-                                            key={item.id}
-                                            initial={{ opacity: 0, y: 50, rotateX: 45 }}
-                                            animate={{ opacity: 1, y: 0, rotateX: 0 }}
-                                            transition={{ duration: 0.6, delay: index * 0.15 }}
-                                            whileHover={{
-                                                y: -12,
-                                                scale: 1.03,
-                                                rotateY: 5,
-                                                transition: { duration: 0.3 }
-                                            }}
-                                            className={`group relative overflow-hidden rounded-3xl ${isDarkMode 
-                                                ? 'bg-gradient-to-br from-gray-800/95 to-gray-900/95' 
-                                                : 'bg-gradient-to-br from-white/95 to-gray-100/95'} 
-                                                backdrop-blur-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 flex flex-col perspective-1000 h-full`}
-                                        >
-                                            {/* Beautiful Animated Border */}
-                                            <motion.div
-                                                animate={{
-                                                    opacity: [0.3, 0.7, 0.3],
-                                                    background: [
-                                                        "linear-gradient(45deg, #4f46e5, #7c3aed, #ec4899, #06b6d4)",
-                                                        "linear-gradient(45deg, #06b6d4, #4f46e5, #7c3aed, #ec4899)",
-                                                        "linear-gradient(45deg, #ec4899, #06b6d4, #4f46e5, #7c3aed)",
-                                                        "linear-gradient(45deg, #7c3aed, #ec4899, #06b6d4, #4f46e5)",
-                                                    ]
+                                    {items.map((item: any, index: number) => {
+                                        const priorityStyle = getPriorityBackground(item.priorty);
+                                        const priorityBadge = getPriorityBadgeInfo(item.priorty);
+                                        
+                                        return (
+                                            <motion.article
+                                                key={item.id}
+                                                initial={{ opacity: 0, y: 50, rotateX: 45 }}
+                                                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                                                transition={{ duration: 0.6, delay: index * 0.15 }}
+                                                whileHover={{
+                                                    y: -12,
+                                                    scale: 1.03,
+                                                    rotateY: 5,
+                                                    transition: { duration: 0.3 }
                                                 }}
-                                                transition={{
-                                                    opacity: { duration: 3, repeat: Infinity },
-                                                    background: { duration: 8, repeat: Infinity }
+                                                className={`group relative overflow-hidden rounded-3xl ${isDarkMode 
+                                                    ? 'bg-gradient-to-br from-gray-800/95 to-gray-900/95' 
+                                                    : 'bg-gradient-to-br from-white/95 to-gray-100/95'} 
+                                                    backdrop-blur-2xl shadow-2xl hover:shadow-3xl transition-all duration-500 flex flex-col perspective-1000 h-full`}
+                                                style={{
+                                                    background: priorityStyle.background,
+                                                    border: priorityStyle.border
                                                 }}
-                                                className="absolute inset-0 rounded-3xl p-[3px]"
                                             >
-                                                <div className={`w-full h-full rounded-3xl ${isDarkMode 
-                                                    ? 'bg-gradient-to-br from-gray-800 to-gray-900' 
-                                                    : 'bg-gradient-to-br from-white to-gray-100'}`}></div>
-                                            </motion.div>
-
-                                            {/* Glow Effect */}
-                                            <motion.div
-                                                animate={{
-                                                    opacity: [0.1, 0.3, 0.1],
-                                                }}
-                                                transition={{
-                                                    duration: 4,
-                                                    repeat: Infinity,
-                                                    ease: "easeInOut"
-                                                }}
-                                                className={`absolute inset-0 rounded-3xl ${isDarkMode 
-                                                    ? 'bg-gradient-to-br from-indigo-500/20 to-purple-500/20' 
-                                                    : 'bg-gradient-to-br from-indigo-400/15 to-purple-400/15'} 
-                                                    blur-xl group-hover:blur-2xl transition-all duration-500`}
-                                            />
-
-                                            <div className="relative z-10 flex flex-col flex-grow p-6 sm:p-8">
-                                                {/* Title */}
-                                                <motion.h3
-                                                    whileHover={{ scale: 1.02 }}
-                                                    className="text-xl sm:text-2xl font-black bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent mb-4 sm:mb-5 text-center leading-tight"
-                                                >
-                                                    {item.title || "No Title"}
-                                                </motion.h3>
-
-                                                {/* Content */}
-                                                <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-4 sm:mb-6 line-clamp-4 leading-relaxed flex-grow text-right text-sm sm:text-base`}>
-                                                    {item.content || "No Description"}
-                                                </p>
-
-                                                {/* Enhanced Metadata */}
-                                                <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
-                                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm">
-                                                        <span className={`${isDarkMode ? 'text-gray-400 bg-gray-700/50' : 'text-gray-600 bg-gray-200/50'} flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm`}>
-                                                            <FontAwesomeIcon icon={faBook} className="text-indigo-400" />
-                                                            <span className={`font-semibold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Subject:</span>
-                                                            <span className="text-indigo-300">{subjects[item.subjectId - 1] || "Global"}</span>
-                                                        </span>
-                                                        <span className={`${isDarkMode ? 'text-gray-400 bg-gray-700/50' : 'text-gray-600 bg-gray-200/50'} flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm`}>
-                                                            <FontAwesomeIcon icon={faCalendar} className="text-purple-400" />
-                                                            {item.createdAt ? new Date(item.createdAt).toLocaleDateString("en") : "—"}
-                                                        </span>
-                                                    </div>
-
-                                                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm">
-                                                        <span className={`${isDarkMode ? 'text-gray-400 bg-gray-700/50' : 'text-gray-600 bg-gray-200/50'} flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm`}>
-                                                            <FontAwesomeIcon icon={faStar} className="text-yellow-400" />
-                                                            <span className={`font-semibold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Week:</span>
-                                                            <span className="text-purple-300">{item.week ?? "—"}</span>
-                                                        </span>
-                                                        <span className={`${isDarkMode ? 'text-gray-400 bg-gray-700/50' : 'text-gray-600 bg-gray-200/50'} flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm`}>
-                                                            <FontAwesomeIcon icon={faUsers} className="text-green-400" />
-                                                            <span className={`font-semibold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Group:</span>
-                                                            <span className="text-green-300">{item.groupId === 0 ? "global" : item.groupId}</span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                {/* Enhanced Read More Button */}
-                                                <motion.button
-                                                    whileHover={{
-                                                        scale: 1.05,
-                                                        background: "linear-gradient(45deg, #4f46e5, #7c3aed)",
-                                                        transition: { duration: 0.2 }
+                                                {/* Priority Glow Effect */}
+                                                <motion.div
+                                                    animate={{
+                                                        opacity: [0.1, 0.2, 0.1],
                                                     }}
-                                                    whileTap={{ scale: 0.95 }}
-                                                    onClick={() => router.push(`/new/${item.id}`)}
-                                                    className="mt-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 transition-all px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-white font-bold shadow-lg hover:shadow-xl w-full border border-indigo-500/30 flex items-center justify-center gap-2 sm:gap-3 group/btn text-sm sm:text-base"
+                                                    transition={{
+                                                        duration: 3,
+                                                        repeat: Infinity,
+                                                        ease: "easeInOut"
+                                                    }}
+                                                    className="absolute inset-0 rounded-3xl"
+                                                    style={{
+                                                        boxShadow: `0 0 60px 20px ${priorityStyle.glow}`
+                                                    }}
+                                                />
+
+                                                {/* Beautiful Animated Border */}
+                                                <motion.div
+                                                    animate={{
+                                                        opacity: [0.3, 0.7, 0.3],
+                                                        background: [
+                                                            "linear-gradient(45deg, #4f46e5, #7c3aed, #ec4899, #06b6d4)",
+                                                            "linear-gradient(45deg, #06b6d4, #4f46e5, #7c3aed, #ec4899)",
+                                                            "linear-gradient(45deg, #ec4899, #06b6d4, #4f46e5, #7c3aed)",
+                                                            "linear-gradient(45deg, #7c3aed, #ec4899, #06b6d4, #4f46e5)",
+                                                        ]
+                                                    }}
+                                                    transition={{
+                                                        opacity: { duration: 3, repeat: Infinity },
+                                                        background: { duration: 8, repeat: Infinity }
+                                                    }}
+                                                    className="absolute inset-0 rounded-3xl p-[3px]"
                                                 >
-                                                    Read More
-                                                    <motion.div
-                                                        animate={{ x: [0, 5, 0] }}
-                                                        transition={{ duration: 1.5, repeat: Infinity }}
+                                                    <div className={`w-full h-full rounded-3xl ${isDarkMode 
+                                                        ? 'bg-gradient-to-br from-gray-800 to-gray-900' 
+                                                        : 'bg-gradient-to-br from-white to-gray-100'}`}></div>
+                                                </motion.div>
+
+                                                {/* Priority Badge */}
+                                                <motion.div
+                                                    initial={{ opacity: 0, scale: 0.8 }}
+                                                    animate={{ opacity: 1, scale: 1 }}
+                                                    transition={{ delay: 0.4 }}
+                                                    className={`absolute top-4 left-4 z-20 px-3 py-1.5 rounded-full backdrop-blur-sm border ${
+                                                        priorityBadge.color === 'red' ? 'bg-red-500/20 border-red-500/30 text-red-300' :
+                                                        priorityBadge.color === 'emerald' ? 'bg-emerald-500/20 border-emerald-500/30 text-emerald-300' :
+                                                        priorityBadge.color === 'blue' ? 'bg-blue-500/20 border-blue-500/30 text-blue-300' :
+                                                        'bg-gray-500/20 border-gray-500/30 text-gray-300'
+                                                    } text-xs font-bold flex items-center gap-1.5`}
+                                                >
+                                                    <span className="text-[10px]">{priorityBadge.icon}</span>
+                                                    {priorityBadge.text}
+                                                </motion.div>
+
+                                                <div className="relative z-10 flex flex-col flex-grow p-6 sm:p-8">
+                                                    {/* Title */}
+                                                    <motion.h3
+                                                        whileHover={{ scale: 1.02 }}
+                                                        className="text-xl sm:text-2xl font-black bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent mb-4 sm:mb-5 text-center leading-tight"
                                                     >
-                                                        <FontAwesomeIcon icon={faArrowRight} className="text-xs sm:text-sm group-hover/btn:translate-x-1 transition-transform" />
-                                                    </motion.div>
-                                                </motion.button>
-                                            </div>
-                                        </motion.article>
-                                    ))}
+                                                        {item.title || "No Title"}
+                                                    </motion.h3>
+
+                                                    {/* Content */}
+                                                    <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-4 sm:mb-6 line-clamp-4 leading-relaxed flex-grow text-right text-sm sm:text-base`}>
+                                                        {item.content || "No Description"}
+                                                    </p>
+
+                                                    {/* Enhanced Metadata */}
+                                                    <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+                                                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm">
+                                                            <span className={`${isDarkMode ? 'text-gray-400 bg-gray-700/50' : 'text-gray-600 bg-gray-200/50'} flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm`}>
+                                                                <FontAwesomeIcon icon={faBook} className="text-indigo-400" />
+                                                                <span className={`font-semibold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Subject:</span>
+                                                                <span className="text-indigo-300">{subjects[item.subjectId - 1] || "Global"}</span>
+                                                            </span>
+                                                            <span className={`${isDarkMode ? 'text-gray-400 bg-gray-700/50' : 'text-gray-600 bg-gray-200/50'} flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm`}>
+                                                                <FontAwesomeIcon icon={faCalendar} className="text-purple-400" />
+                                                                {item.createdAt ? new Date(item.createdAt).toLocaleDateString("en") : "—"}
+                                                            </span>
+                                                        </div>
+
+                                                        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 text-sm">
+                                                            <span className={`${isDarkMode ? 'text-gray-400 bg-gray-700/50' : 'text-gray-600 bg-gray-200/50'} flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm`}>
+                                                                <FontAwesomeIcon icon={faStar} className="text-yellow-400" />
+                                                                <span className={`font-semibold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Week:</span>
+                                                                <span className="text-purple-300">{item.week ?? "—"}</span>
+                                                            </span>
+                                                            <span className={`${isDarkMode ? 'text-gray-400 bg-gray-700/50' : 'text-gray-600 bg-gray-200/50'} flex items-center gap-2 px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm`}>
+                                                                <FontAwesomeIcon icon={faUsers} className="text-green-400" />
+                                                                <span className={`font-semibold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>Group:</span>
+                                                                <span className="text-green-300">{item.groupId === 0 ? "global" : item.groupId}</span>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                    {/* Enhanced Read More Button */}
+                                                    <motion.button
+                                                        whileHover={{
+                                                            scale: 1.05,
+                                                            background: "linear-gradient(45deg, #4f46e5, #7c3aed)",
+                                                            transition: { duration: 0.2 }
+                                                        }}
+                                                        whileTap={{ scale: 0.95 }}
+                                                        onClick={() => router.push(`/new/${item.id}`)}
+                                                        className="mt-auto bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 transition-all px-4 sm:px-6 py-3 sm:py-4 rounded-xl text-white font-bold shadow-lg hover:shadow-xl w-full border border-indigo-500/30 flex items-center justify-center gap-2 sm:gap-3 group/btn text-sm sm:text-base"
+                                                    >
+                                                        Read More
+                                                        <motion.div
+                                                            animate={{ x: [0, 5, 0] }}
+                                                            transition={{ duration: 1.5, repeat: Infinity }}
+                                                        >
+                                                            <FontAwesomeIcon icon={faArrowRight} className="text-xs sm:text-sm group-hover/btn:translate-x-1 transition-transform" />
+                                                        </motion.div>
+                                                    </motion.button>
+                                                </div>
+                                            </motion.article>
+                                        );
+                                    })}
                                 </div>
                             </motion.section>
                         );

@@ -74,6 +74,41 @@ export default function NewsDetailsPage() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
+    const getPriorityInfo = (priority: string | null) => {
+        if (priority === null) priority = "Medium";
+        
+        switch (priority?.toLowerCase()) {
+            case "high":
+                return {
+                    color: "red",
+                    bgColor: "red-500/20",
+                    textColor: "red-400",
+                    borderColor: "red-500/30"
+                };
+            case "medium":
+                return {
+                    color: "emerald",
+                    bgColor: "emerald-500/20",
+                    textColor: "emerald-400",
+                    borderColor: "emerald-500/30"
+                };
+            case "low":
+                return {
+                    color: "blue",
+                    bgColor: "blue-500/20",
+                    textColor: "blue-400",
+                    borderColor: "blue-500/30"
+                };
+            default:
+                return {
+                    color: "emerald",
+                    bgColor: "emerald-500/20",
+                    textColor: "emerald-400",
+                    borderColor: "emerald-500/30"
+                };
+        }
+    };
+
     const extractLinksFromContent = (content: string) => {
         if (!content) return [];
 
@@ -273,6 +308,8 @@ export default function NewsDetailsPage() {
                 </div>
             </div>
         );
+
+    const priorityInfo = getPriorityInfo(newsItem.priority);
 
     return (
         <div className={`news-details-page min-h-screen flex flex-col relative overflow-hidden ${isDarkMode
@@ -656,7 +693,9 @@ export default function NewsDetailsPage() {
                                         </div>
                                         <div className="flex justify-between items-center py-3">
                                             <span className={`text-sm ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>Priority</span>
-                                            <span className="bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full text-sm font-medium border border-amber-500/30">High</span>
+                                            <span className={`bg-${priorityInfo.bgColor} text-${priorityInfo.textColor} px-3 py-1 rounded-full text-sm font-medium border border-${priorityInfo.borderColor}`}>
+                                                {newsItem.priority ? newsItem.priority : "Medium"}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
