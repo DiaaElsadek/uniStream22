@@ -563,7 +563,7 @@ export default function NewsDetailsPage() {
                                                                     
                                                                     {/* Link Text */}
                                                                     <div className="flex items-center gap-2">
-                                                                        <span className="font-semibold text-sm">Chapter {linkCounter}</span>
+                                                                        <span className="font-semibold text-sm">Link {linkCounter}</span>
                                                                         <FontAwesomeIcon 
                                                                             icon={faExternalLinkAlt} 
                                                                             className={`text-xs ${isDarkMode ? 'text-cyan-400' : 'text-cyan-500'} group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5 transition-transform duration-300`} 
