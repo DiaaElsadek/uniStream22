@@ -901,10 +901,10 @@ export default function AddNewsPage() {
                                                         { icon: "👥", label: "المجموعة", value: item.groupId || "الكل", color: "emerald" },
                                                         { icon: "✍️", label: "الناشر", value: item.createdBy || "Admin", color: "purple" },
                                                         { icon: "🕒", label: "التاريخ", value: formatDateTime(item.createdAt), color: "amber" },
-                                                        { 
-                                                            icon: "🎯", 
-                                                            label: "الأولوية", 
-                                                            value: priorityInfo.label, 
+                                                        {
+                                                            icon: "🎯",
+                                                            label: "الأولوية",
+                                                            value: priorityInfo.label,
                                                             color: priorityInfo.color,
                                                             customClass: `bg-${priorityInfo.bgColor} border-${priorityInfo.borderColor} text-${priorityInfo.textColor}`
                                                         },
@@ -913,8 +913,8 @@ export default function AddNewsPage() {
                                                             label: "الحالة",
                                                             value: item.publish ? "منشور" : "مسودة",
                                                             color: item.publish ? "emerald" : "rose",
-                                                            customClass: item.publish 
-                                                                ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400" 
+                                                            customClass: item.publish
+                                                                ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
                                                                 : "bg-rose-500/20 border-rose-500/30 text-rose-400"
                                                         }
                                                     ].map((meta, i) => (
@@ -1003,13 +1003,14 @@ export default function AddNewsPage() {
                             initial={{ opacity: 0, scale: 0.8, y: 50 }}
                             animate={{ opacity: 1, scale: 1, y: 0 }}
                             exit={{ opacity: 0, scale: 0.8, y: 50 }}
-                            className="bg-gradient-to-br from-slate-900/95 to-purple-900/95 p-6 sm:p-8 rounded-3xl w-full max-w-2xl border border-indigo-500/30 shadow-2xl shadow-purple-500/20 backdrop-blur-2xl"
+                            className="bg-gradient-to-br from-slate-900/95 to-purple-900/95 p-4 sm:p-6 md:p-8 rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto border border-indigo-500/30 shadow-2xl shadow-purple-500/20 backdrop-blur-2xl mx-2"
                         >
-                            <div className="text-center mb-8">
+                            {/* تحسينات للهواتف المحمولة */}
+                            <div className="text-center mb-6 sm:mb-8">
                                 <motion.h2
                                     initial={{ opacity: 0, y: -20 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    className="text-4xl font-black bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent mb-2"
+                                    className="text-2xl sm:text-3xl md:text-4xl font-black bg-gradient-to-r from-indigo-300 to-purple-300 bg-clip-text text-transparent mb-2"
                                 >
                                     {isEdit ? "✏️ تعديل الخبر" : "📰 إضافة خبر جديد"}
                                 </motion.h2>
@@ -1017,7 +1018,7 @@ export default function AddNewsPage() {
                                     initial={{ opacity: 0 }}
                                     animate={{ opacity: 1 }}
                                     transition={{ delay: 0.1 }}
-                                    className="text-indigo-200/70"
+                                    className="text-indigo-200/70 text-sm sm:text-base"
                                 >
                                     {isEdit ? "قم بتعديل بيانات الخبر" : "املأ البيانات لإضافة خبر جديد"}
                                 </motion.p>
@@ -1027,43 +1028,46 @@ export default function AddNewsPage() {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.2 }}
-                                className="space-y-6 text-right"
+                                className="space-y-4 sm:space-y-6 text-right"
                             >
+                                {/* العنوان */}
                                 <div>
-                                    <label className="block text-sm font-bold text-indigo-200 mb-3">عنوان الخبر</label>
+                                    <label className="block text-sm font-bold text-indigo-200 mb-2 sm:mb-3">عنوان الخبر</label>
                                     <input
                                         type="text"
                                         placeholder="اكتب عنوان الخبر هنا..."
                                         value={formData.title}
                                         onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                                        className="w-full p-4 bg-white/5 border border-indigo-500/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 placeholder-indigo-200/50 transition-all duration-300 text-white backdrop-blur-sm"
+                                        className="w-full p-3 sm:p-4 bg-white/5 border border-indigo-500/30 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 placeholder-indigo-200/50 transition-all duration-300 text-white backdrop-blur-sm text-sm sm:text-base"
                                     />
                                 </div>
 
+                                {/* المحتوى */}
                                 <div>
-                                    <label className="block text-sm font-bold text-indigo-200 mb-3">محتوى الخبر</label>
+                                    <label className="block text-sm font-bold text-indigo-200 mb-2 sm:mb-3">محتوى الخبر</label>
                                     <textarea
-                                        rows={4}
+                                        rows={3}
                                         placeholder="اكتب تفاصيل الخبر..."
                                         value={formData.content}
                                         onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-                                        className="w-full p-4 bg-white/5 border border-indigo-500/30 rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 placeholder-indigo-200/50 transition-all duration-300 resize-none text-white backdrop-blur-sm"
+                                        className="w-full p-3 sm:p-4 bg-white/5 border border-indigo-500/30 rounded-xl sm:rounded-2xl focus:outline-none focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 placeholder-indigo-200/50 transition-all duration-300 resize-none text-white backdrop-blur-sm text-sm sm:text-base"
                                     />
                                 </div>
 
-                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                {/* الحقول المتعددة */}
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
                                     {[
                                         { label: "المادة", type: "select", options: subjects, value: formData.subjectId, key: "subjectId" },
                                         { label: "المجموعة", type: "select", options: groups, value: formData.groupId, key: "groupId" },
                                         { label: "الأسبوع", type: "number", value: formData.week, key: "week" }
                                     ].map((field, i) => (
                                         <div key={i}>
-                                            <label className="block text-sm font-bold text-indigo-200 mb-3">{field.label}</label>
+                                            <label className="block text-xs sm:text-sm font-bold text-indigo-200 mb-2">{field.label}</label>
                                             {field.type === "select" ? (
                                                 <select
                                                     value={field.value}
                                                     onChange={(e) => setFormData({ ...formData, [field.key]: Number(e.target.value) })}
-                                                    className="w-full p-4 bg-white/5 border border-indigo-500/30 rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300 text-white backdrop-blur-sm"
+                                                    className="w-full p-3 sm:p-4 bg-white/5 border border-indigo-500/30 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300 text-white backdrop-blur-sm text-sm sm:text-base"
                                                 >
                                                     <option value={0}>عام (Global)</option>
                                                     {field.options?.map((option, idx) => (
@@ -1078,93 +1082,88 @@ export default function AddNewsPage() {
                                                     placeholder="مثلاً: 5"
                                                     value={field.value || ""}
                                                     onChange={(e) => setFormData({ ...formData, [field.key]: Number(e.target.value) })}
-                                                    className="w-full p-4 bg-white/5 border border-indigo-500/30 rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 placeholder-indigo-200/50 transition-all duration-300 text-white backdrop-blur-sm"
+                                                    className="w-full p-3 sm:p-4 bg-white/5 border border-indigo-500/30 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 placeholder-indigo-200/50 transition-all duration-300 text-white backdrop-blur-sm text-sm sm:text-base"
                                                 />
                                             )}
                                         </div>
                                     ))}
                                 </div>
 
-                                {/* Priority and Publish Section */}
-                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                    {/* Priority Select */}
+                                {/* الأولوية والنشر */}
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                                    {/* الأولوية */}
                                     <div>
-                                        <label className="block text-sm font-bold text-indigo-200 mb-3">الأولوية</label>
+                                        <label className="block text-xs sm:text-sm font-bold text-indigo-200 mb-2">الأولوية</label>
                                         <select
                                             value={formData.priorty}
                                             onChange={(e) => setFormData({ ...formData, priorty: e.target.value })}
-                                            className="w-full p-4 bg-white/5 border border-indigo-500/30 rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300 text-white backdrop-blur-sm"
+                                            className="w-full p-3 sm:p-4 bg-white/5 border border-indigo-500/30 rounded-xl sm:rounded-2xl focus:ring-2 focus:ring-indigo-500/50 focus:border-indigo-500 transition-all duration-300 text-white backdrop-blur-sm text-sm sm:text-base"
                                         >
                                             <option value="" disabled>--Select Priority--</option>
                                             {priorities.map((priority, idx) => (
                                                 <option key={idx} value={priority}>
-                                                    {priority === "low" ? "منخفض" : 
-                                                     priority === "medium" ? "متوسط" : "عالي"}
+                                                    {priority === "low" ? "منخفض" :
+                                                        priority === "medium" ? "متوسط" : "عالي"}
                                                 </option>
                                             ))}
                                         </select>
                                     </div>
 
-                                    {/* Publish Switch */}
+                                    {/* زر النشر */}
                                     <div>
-                                        <label className="block text-sm font-bold text-indigo-200 mb-3">الحالة</label>
+                                        <label className="block text-xs sm:text-sm font-bold text-indigo-200 mb-2">الحالة</label>
                                         <motion.div
-                                            whileHover={{ scale: 1.05 }}
-                                            className={`relative inline-flex items-center w-full h-14 rounded-2xl p-1 cursor-pointer transition-all duration-300 ${
-                                                formData.publish 
-                                                    ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/30' 
+                                            whileHover={{ scale: 1.02 }}
+                                            className={`relative inline-flex items-center w-full h-12 sm:h-14 rounded-xl sm:rounded-2xl p-1 cursor-pointer transition-all duration-300 ${formData.publish
+                                                    ? 'bg-gradient-to-r from-emerald-500/20 to-green-500/20 border border-emerald-500/30'
                                                     : 'bg-gradient-to-r from-rose-500/20 to-red-500/20 border border-rose-500/30'
-                                            } backdrop-blur-sm`}
+                                                } backdrop-blur-sm`}
                                             onClick={() => setFormData({ ...formData, publish: !formData.publish })}
                                         >
-                                            {/* Switch Track */}
-                                            <div className={`absolute w-full h-full rounded-2xl transition-all duration-300 ${
-                                                formData.publish 
-                                                    ? 'bg-gradient-to-r from-emerald-500 to-green-500 opacity-20' 
+                                            {/* Track */}
+                                            <div className={`absolute w-full h-full rounded-xl sm:rounded-2xl transition-all duration-300 ${formData.publish
+                                                    ? 'bg-gradient-to-r from-emerald-500 to-green-500 opacity-20'
                                                     : 'bg-gradient-to-r from-rose-500 to-red-500 opacity-20'
-                                            }`}></div>
-                                            
-                                            {/* Switch Knob */}
+                                                }`}></div>
+
+                                            {/* Knob */}
                                             <motion.div
                                                 layout
                                                 transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                                                className={`relative z-10 w-1/2 h-12 rounded-xl flex items-center justify-center font-bold text-sm backdrop-blur-sm ${
-                                                    formData.publish 
-                                                        ? 'bg-gradient-to-r from-emerald-400 to-green-400 text-white shadow-lg shadow-emerald-500/25' 
+                                                className={`relative z-10 w-1/2 h-10 sm:h-12 rounded-lg sm:rounded-xl flex items-center justify-center font-bold text-xs sm:text-sm backdrop-blur-sm ${formData.publish
+                                                        ? 'bg-gradient-to-r from-emerald-400 to-green-400 text-white shadow-lg shadow-emerald-500/25'
                                                         : 'bg-gradient-to-r from-rose-400 to-red-400 text-white shadow-lg shadow-rose-500/25'
-                                                }`}
+                                                    }`}
                                             >
                                                 {formData.publish ? (
                                                     <motion.div
                                                         initial={{ scale: 0 }}
                                                         animate={{ scale: 1 }}
-                                                        className="flex items-center gap-2"
+                                                        className="flex items-center gap-1 sm:gap-2"
                                                     >
-                                                        <span>✅</span>
+                                                        <span className="text-xs">✅</span>
                                                         <span>منشور</span>
                                                     </motion.div>
                                                 ) : (
                                                     <motion.div
                                                         initial={{ scale: 0 }}
                                                         animate={{ scale: 1 }}
-                                                        className="flex items-center gap-2"
+                                                        className="flex items-center gap-1 sm:gap-2"
                                                     >
-                                                        <span>❌</span>
+                                                        <span className="text-xs">❌</span>
                                                         <span>مسودة</span>
                                                     </motion.div>
                                                 )}
                                             </motion.div>
 
                                             {/* Labels */}
-                                            <div className="absolute inset-0 flex items-center justify-between px-4 pointer-events-none">
-                                                <span className={`text-sm font-bold transition-all duration-300 ${
-                                                    formData.publish ? 'text-emerald-300' : 'text-rose-300 opacity-60'
-                                                }`}>
+                                            <div className="absolute inset-0 flex items-center justify-between px-2 sm:px-4 pointer-events-none">
+                                                <span className={`text-xs sm:text-sm font-bold transition-all duration-300 ${formData.publish ? 'text-emerald-300' : 'text-rose-300 opacity-60'
+                                                    }`}>
                                                     مسودة
                                                 </span>
-                                                <span className={`text-sm font-bold transition-all duration-300 ${
-                                                    !formData.publish ? 'text-rose-300' : 'text-emerald-300 opacity-60'
-                                                }`}>
+                                                <span className={`text-xs sm:text-sm font-bold transition-all duration-300 ${!formData.publish ? 'text-rose-300' : 'text-emerald-300 opacity-60'
+                                                    }`}>
                                                     منشور
                                                 </span>
                                             </div>
@@ -1172,12 +1171,13 @@ export default function AddNewsPage() {
                                     </div>
                                 </div>
 
-                                <div className="flex flex-col sm:flex-row justify-between items-center gap-4 pt-6 border-t border-indigo-500/30">
+                                {/* أزرار الإجراءات */}
+                                <div className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4 pt-4 sm:pt-6 border-t border-indigo-500/30">
                                     <motion.button
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                         onClick={() => setShowModal(false)}
-                                        className="w-full sm:w-auto bg-white/10 hover:bg-white/20 px-8 py-4 rounded-xl font-bold text-indigo-200 transition-all duration-300 border border-indigo-500/30 hover:border-indigo-400/50 backdrop-blur-sm"
+                                        className="w-full sm:w-auto bg-white/10 hover:bg-white/20 px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-indigo-200 transition-all duration-300 border border-indigo-500/30 hover:border-indigo-400/50 backdrop-blur-sm text-sm sm:text-base"
                                     >
                                         إلغاء
                                     </motion.button>
@@ -1185,7 +1185,7 @@ export default function AddNewsPage() {
                                         whileHover={{ scale: 1.05 }}
                                         whileTap={{ scale: 0.95 }}
                                         onClick={addOrEditNews}
-                                        className="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 px-8 py-4 rounded-xl font-bold text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300 backdrop-blur-sm"
+                                        className="w-full sm:w-auto bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-400 hover:to-purple-500 px-6 py-3 sm:px-8 sm:py-4 rounded-xl font-bold text-white shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 transition-all duration-300 backdrop-blur-sm text-sm sm:text-base"
                                     >
                                         <span className="flex items-center gap-2 justify-center">
                                             <motion.span
