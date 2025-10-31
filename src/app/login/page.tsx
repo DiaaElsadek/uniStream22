@@ -105,7 +105,7 @@ export default function LoginPage() {
   const onPasswordChange = (value: string) => {
     setPassword(value);
     if (value.length === 0) setPasswordError("Password is required.");
-    else if (value.length < 6) setPasswordError("Password must be at least 6 characters.");
+    else if (value.length < 6) setPasswordError("Password must be at least 8 characters.");
     else setPasswordError(null);
   };
 
