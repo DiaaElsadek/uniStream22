@@ -614,7 +614,7 @@ export default function NewsDetailsPage() {
                                                                     <div className="flex items-center gap-3">
                                                                         <div className="text-left">
                                                                             <span className="font-bold text-sm bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent group-hover/link:from-cyan-300 group-hover/link:to-blue-400 transition-all duration-500">
-                                                                                Chapter {linkCounter}
+                                                                                File {linkCounter}
                                                                             </span>
                                                                             <div className="flex items-center gap-2 mt-1">
                                                                                 <div className={`w-2 h-2 rounded-full bg-cyan-400 group-hover/link:scale-150 group-hover/link:bg-cyan-300 transition-all duration-500 ${isDarkMode ? 'bg-cyan-500' : 'bg-cyan-400'
