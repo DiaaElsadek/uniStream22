@@ -552,7 +552,7 @@ export default function LoginPage() {
               Forgot your password? {" "}
               <br/>
               <Link
-                href="https://wa.me/201065504033"
+                href="https://wa.me/201117244172"
                 target="blank"
                 className="text-green-300 font-semibold hover:text-indigo-300 underline underline-offset-4 transition-all duration-300 hover:underline-offset-2"
               >
