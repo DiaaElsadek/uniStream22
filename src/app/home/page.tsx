@@ -301,6 +301,16 @@ export default function HomePage() {
         setIsDarkMode(isDark);
     };
 
+    // Function to scroll to specific week
+    const scrollToWeek = (week: number) => {
+        const section = weekRefs.current[week];
+        if (section) {
+            const yOffset = -120; // Adjust for navbar height
+            const y = section.getBoundingClientRect().top + window.pageYOffset + yOffset;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+        }
+    };
+
     return (
         <div className={`min-h-screen bg-gradient-to-br ${isDarkMode 
             ? 'from-gray-950 via-gray-900 to-gray-950' 
@@ -692,6 +702,113 @@ export default function HomePage() {
                     )}
                 </AnimatePresence>
             </motion.nav>
+
+            {/* Week Navigation Sidebar - Right Side */}
+            {!loading && sortedWeeks.length > 0 && (
+                <motion.div
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 1.2 }}
+                    className="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-4 items-center"
+                >
+                    {/* Navigation Line */}
+                    <motion.div
+                        initial={{ scaleY: 0 }}
+                        animate={{ scaleY: 1 }}
+                        transition={{ duration: 1, delay: 1.5 }}
+                        className={`w-0.5 h-32 ${isDarkMode 
+                            ? 'bg-gradient-to-b from-indigo-500/50 to-purple-500/30' 
+                            : 'bg-gradient-to-b from-indigo-400/60 to-purple-400/40'} rounded-full`}
+                    />
+
+                    {/* Week Circles */}
+                    {sortedWeeks.map((week, index) => {
+                        const weekNumber = Number(week);
+                        const isActive = activeWeek === weekNumber;
+                        
+                        return (
+                            <motion.button
+                                key={weekNumber}
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ 
+                                    duration: 0.5, 
+                                    delay: 1.7 + (index * 0.1),
+                                    type: "spring",
+                                    stiffness: 200
+                                }}
+                                whileHover={{ 
+                                    scale: 1.2,
+                                    transition: { duration: 0.2 }
+                                }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={() => scrollToWeek(weekNumber)}
+                                className={`relative flex items-center justify-center w-12 h-12 rounded-full font-bold text-sm transition-all duration-500 ${
+                                    isActive 
+                                        ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-2xl shadow-indigo-500/50 border-2 border-white/20' 
+                                        : `${isDarkMode 
+                                            ? 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-600/50' 
+                                            : 'bg-white/80 text-gray-700 hover:bg-white border border-gray-300/60'} shadow-lg hover:shadow-xl`
+                                }`}
+                            >
+                                {/* Active Pulse Animation */}
+                                {isActive && (
+                                    <motion.div
+                                        initial={{ scale: 1, opacity: 0.7 }}
+                                        animate={{ 
+                                            scale: [1, 1.5, 1],
+                                            opacity: [0.7, 0, 0.7],
+                                        }}
+                                        transition={{
+                                            duration: 2,
+                                            repeat: Infinity,
+                                            ease: "easeInOut"
+                                        }}
+                                        className="absolute inset-0 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 blur-sm"
+                                    />
+                                )}
+
+                                {/* Hover Glow Effect */}
+                                <motion.div
+                                    whileHover={{
+                                        scale: 1.1,
+                                        transition: { duration: 0.2 }
+                                    }}
+                                    className="relative z-10"
+                                >
+                                    {weekNumber}
+                                </motion.div>
+
+                                {/* Tooltip */}
+                                <motion.div
+                                    initial={{ opacity: 0, x: 20 }}
+                                    whileHover={{ opacity: 1, x: 0 }}
+                                    className={`absolute right-full mr-3 px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap ${
+                                        isDarkMode 
+                                            ? 'bg-gray-800/95 text-gray-200 border border-gray-600/50' 
+                                            : 'bg-white/95 text-gray-800 border border-gray-300/60'
+                                    } backdrop-blur-sm shadow-lg hidden group-hover:block`}
+                                >
+                                    Week {weekNumber}
+                                    <div className={`absolute top-1/2 -right-1 -translate-y-1/2 w-2 h-2 rotate-45 ${
+                                        isDarkMode ? 'bg-gray-800/95' : 'bg-white/95'
+                                    }`} />
+                                </motion.div>
+                            </motion.button>
+                        );
+                    })}
+
+                    {/* Bottom Navigation Line */}
+                    <motion.div
+                        initial={{ scaleY: 0 }}
+                        animate={{ scaleY: 1 }}
+                        transition={{ duration: 1, delay: 1.5 }}
+                        className={`w-0.5 h-32 ${isDarkMode 
+                            ? 'bg-gradient-to-b from-purple-500/30 to-indigo-500/50' 
+                            : 'bg-gradient-to-b from-purple-400/40 to-indigo-400/60'} rounded-full`}
+                    />
+                </motion.div>
+            )}
 
             <div className="h-20" />
 
