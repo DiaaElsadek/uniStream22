@@ -29,7 +29,6 @@ export default function SchedulePage() {
     const [isDarkMode, setIsDarkMode] = useState(true);
 
     useEffect(() => {
-        // Check initial theme
         const checkTheme = () => {
             const isDark = document.documentElement.classList.contains('dark');
             setIsDarkMode(isDark);
@@ -37,7 +36,6 @@ export default function SchedulePage() {
 
         checkTheme();
 
-        // Observe theme changes
         const observer = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (mutation.attributeName === 'class') {
@@ -110,34 +108,24 @@ export default function SchedulePage() {
         return () => window.removeEventListener("pageshow", handlePageShow);
     }, []);
 
-    // Enhanced color schemes
+    // Premium color schemes with enhanced gradients
     const dayGradients = [
-        "from-violet-600/20 to-fuchsia-600/20",
-        "from-blue-600/20 to-cyan-600/20",
-        "from-emerald-600/20 to-teal-600/20",
-        "from-amber-600/20 to-orange-600/20",
-        "from-indigo-600/20 to-purple-600/20",
-        "from-rose-600/20 to-pink-600/20",
-        "from-sky-600/20 to-blue-600/20"
+        "from-purple-500/20 via-violet-500/15 to-fuchsia-500/20",
+        "from-blue-500/20 via-sky-500/15 to-cyan-500/20",
+        "from-emerald-500/20 via-teal-500/15 to-green-500/20",
+        "from-amber-500/20 via-orange-500/15 to-yellow-500/20",
+        "from-indigo-500/20 via-purple-500/15 to-pink-500/20",
+        "from-rose-500/20 via-pink-500/15 to-red-500/20",
+        "from-slate-500/20 via-gray-500/15 to-zinc-500/20"
     ];
 
     const subjectColors = [
-        "bg-gradient-to-br from-violet-500/15 to-fuchsia-500/15 border-l-4 border-violet-400",
-        "bg-gradient-to-br from-blue-500/15 to-cyan-500/15 border-l-4 border-blue-400",
-        "bg-gradient-to-br from-emerald-500/15 to-teal-500/15 border-l-4 border-emerald-400",
-        "bg-gradient-to-br from-amber-500/15 to-orange-500/15 border-l-4 border-amber-400",
-        "bg-gradient-to-br from-indigo-500/15 to-purple-500/15 border-l-4 border-indigo-400"
+        "bg-gradient-to-br from-purple-500/20 to-violet-600/20 border-l-4 border-purple-400 shadow-lg shadow-purple-500/10",
+        "bg-gradient-to-br from-blue-500/20 to-sky-600/20 border-l-4 border-blue-400 shadow-lg shadow-blue-500/10",
+        "bg-gradient-to-br from-emerald-500/20 to-teal-600/20 border-l-4 border-emerald-400 shadow-lg shadow-emerald-500/10",
+        "bg-gradient-to-br from-amber-500/20 to-orange-600/20 border-l-4 border-amber-400 shadow-lg shadow-amber-500/10",
+        "bg-gradient-to-br from-indigo-500/20 to-purple-600/20 border-l-4 border-indigo-400 shadow-lg shadow-indigo-500/10"
     ];
-
-    const getCurrentClass = (day: string, lectures: ScheduleItem[]) => {
-        const now = currentTime;
-        const currentTimeString = now.toTimeString().slice(0, 5);
-        
-        return lectures.find(lec => {
-            if (!lec.startTime || !lec.endTime) return false;
-            return currentTimeString >= lec.startTime && currentTimeString <= lec.endTime;
-        });
-    };
 
     return (
         <div className={`min-h-screen bg-gradient-to-br ${isDarkMode 
@@ -183,22 +171,6 @@ export default function SchedulePage() {
                         ? 'bg-gradient-to-r from-blue-600/10 to-cyan-600/10' 
                         : 'bg-gradient-to-r from-blue-400/15 to-cyan-400/15'} rounded-full blur-3xl`}
                 />
-                <motion.div
-                    animate={{
-                        x: [0, 80, 0],
-                        y: [0, -60, 0],
-                        scale: [1, 1.2, 1],
-                    }}
-                    transition={{
-                        duration: 18,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 6
-                    }}
-                    className={`absolute top-1/2 left-1/2 w-64 h-64 ${isDarkMode 
-                        ? 'bg-gradient-to-r from-emerald-600/10 to-teal-600/10' 
-                        : 'bg-gradient-to-r from-emerald-400/15 to-teal-400/15'} rounded-full blur-3xl`}
-                />
 
                 {/* Animated Grid */}
                 <div className="absolute inset-0 opacity-10">
@@ -207,7 +179,7 @@ export default function SchedulePage() {
                 </div>
 
                 {/* Floating Particles */}
-                {[...Array(30)].map((_, i) => (
+                {[...Array(20)].map((_, i) => (
                     <motion.div
                         key={i}
                         animate={{
@@ -232,37 +204,6 @@ export default function SchedulePage() {
                         }}
                     />
                 ))}
-
-                {/* Floating Geometric Shapes */}
-                <motion.div
-                    animate={{
-                        rotate: 360,
-                        y: [0, -40, 0],
-                        opacity: [0.3, 0.7, 0.3],
-                    }}
-                    transition={{
-                        rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-                        y: { duration: 8, repeat: Infinity, ease: "easeInOut" }
-                    }}
-                    className={`absolute top-32 right-32 w-12 h-12 border-2 ${isDarkMode 
-                        ? 'border-violet-400/30' 
-                        : 'border-violet-500/40'} rounded-lg`}
-                />
-                <motion.div
-                    animate={{
-                        rotate: -360,
-                        y: [0, 30, 0],
-                        opacity: [0.2, 0.6, 0.2],
-                        scale: [1, 1.3, 1],
-                    }}
-                    transition={{
-                        rotate: { duration: 20, repeat: Infinity, ease: "linear" },
-                        y: { duration: 6, repeat: Infinity, ease: "easeInOut" }
-                    }}
-                    className={`absolute bottom-40 left-40 w-10 h-10 border-2 ${isDarkMode 
-                        ? 'border-blue-400/20' 
-                        : 'border-blue-500/30'} rotate-45`}
-                />
             </div>
 
             {/* Premium Navigation */}
@@ -448,7 +389,7 @@ export default function SchedulePage() {
                             repeat: Infinity,
                             ease: "easeInOut"
                         }}
-                        className="text-6xl md:text-7xl font-black bg-gradient-to-r from-violet-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent bg-[length:300%_300%]"
+                        className="text-6xl md:text-7xl font-black bg-gradient-to-r from-violet-400 via-blue-400 to-cyan-400 bg-clip-text text-transparent bg-[length:300%_300%] mb-6"
                     >
                         Weekly Schedule
                     </motion.h1>
@@ -507,172 +448,138 @@ export default function SchedulePage() {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 1, delay: 0.5 }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-10"
+                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-4"
                     >
-                        {WEEK_DAYS.map((day, dayIndex) => {
-                            const currentClass = getCurrentClass(day, scheduleByDay[day] || []);
-                            
-                            return (
+                        {WEEK_DAYS.map((day, dayIndex) => (
+                            <motion.div
+                                key={day}
+                                initial={{ opacity: 0, y: 40, scale: 0.9 }}
+                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                transition={{ 
+                                    duration: 0.7, 
+                                    delay: dayIndex * 0.15,
+                                    type: "spring",
+                                    stiffness: 80
+                                }}
+                                whileHover={{ 
+                                    scale: 1.03, 
+                                    y: -8,
+                                    transition: { duration: 0.3 }
+                                }}
+                                className={`relative group ${day === WEEK_DAYS[todayIndex] ? "ring-4 ring-cyan-500/60 shadow-2xl" : ""}`}
+                            >
+                                {/* Enhanced Glow Effect */}
                                 <motion.div
-                                    key={day}
-                                    initial={{ opacity: 0, y: 40, scale: 0.9 }}
-                                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                                    transition={{ 
-                                        duration: 0.7, 
-                                        delay: dayIndex * 0.15,
-                                        type: "spring",
-                                        stiffness: 80
+                                    animate={{
+                                        opacity: [0.4, 0.8, 0.4],
                                     }}
-                                    whileHover={{ 
-                                        scale: 1.03, 
-                                        y: -8,
-                                        transition: { duration: 0.3 }
+                                    transition={{
+                                        duration: 4,
+                                        repeat: Infinity,
+                                        ease: "easeInOut"
                                     }}
-                                    className={`relative group ${day === WEEK_DAYS[todayIndex] ? "ring-4 ring-cyan-500/60 shadow-2xl" : ""}`}
-                                >
-                                    {/* Enhanced Glow Effect */}
-                                    <motion.div
-                                        animate={{
-                                            opacity: [0.4, 0.8, 0.4],
-                                        }}
-                                        transition={{
-                                            duration: 4,
-                                            repeat: Infinity,
-                                            ease: "easeInOut"
-                                        }}
-                                        className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${dayGradients[dayIndex]} blur-2xl group-hover:blur-3xl transition-all duration-700`}
-                                    />
+                                    className={`absolute inset-0 rounded-3xl bg-gradient-to-br ${dayGradients[dayIndex]} blur-2xl group-hover:blur-3xl transition-all duration-700`}
+                                />
 
-                                    <div className={`relative ${isDarkMode 
-                                        ? 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-700/40' 
-                                        : 'bg-gradient-to-br from-white/80 to-slate-100/80 border border-slate-300/40'} backdrop-blur-3xl rounded-3xl p-7 shadow-2xl hover:shadow-4xl transition-all duration-500 h-full overflow-hidden ${dayGradients[dayIndex].replace('20', '15')}`}>
-                                        {/* Current Class Indicator */}
-                                        {currentClass && (
-                                            <motion.div
-                                                initial={{ opacity: 0, scale: 0 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                className="absolute top-4 right-4"
-                                            >
-                                                <div className="flex items-center gap-2 bg-gradient-to-r from-green-500 to-emerald-500 px-3 py-1 rounded-full text-white text-xs font-bold shadow-lg">
+                                <div className={`relative ${isDarkMode 
+                                    ? 'bg-gradient-to-br from-slate-800/90 to-slate-900/90 border border-slate-700/40' 
+                                    : 'bg-gradient-to-br from-white/80 to-slate-100/80 border border-slate-300/40'} backdrop-blur-3xl rounded-3xl p-7 shadow-2xl hover:shadow-4xl transition-all duration-500 h-full overflow-hidden ${dayGradients[dayIndex].replace('20', '15')}`}>
+                                    
+                                    {/* Day Header */}
+                                    <motion.div
+                                        whileHover={{ scale: 1.05 }}
+                                        className="text-center mb-8"
+                                    >
+                                        <h2 className={`text-2xl font-black ${
+                                            day === WEEK_DAYS[todayIndex] 
+                                                ? "bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent" 
+                                                : isDarkMode 
+                                                ? "text-slate-100" 
+                                                : "text-slate-800"
+                                        }`}>
+                                            {day}
+                                            {day === WEEK_DAYS[todayIndex] && (
+                                                <motion.span
+                                                    animate={{ scale: [1, 1.3, 1] }}
+                                                    transition={{ duration: 2, repeat: Infinity }}
+                                                    className="ml-3 text-cyan-400 text-2xl"
+                                                >
+                                                    ✨
+                                                </motion.span>
+                                            )}
+                                        </h2>
+                                    </motion.div>
+
+                                    {/* Schedule Items */}
+                                    <div className="space-y-5">
+                                        {scheduleByDay[day] && scheduleByDay[day].length > 0 ? (
+                                            scheduleByDay[day]
+                                                .sort((a, b) => {
+                                                    const indexA = startTimes.indexOf(a.startTime ?? "");
+                                                    const indexB = startTimes.indexOf(b.startTime ?? "");
+                                                    return indexA - indexB;
+                                                })
+                                                .map((lec, lecIndex) => (
                                                     <motion.div
-                                                        animate={{ scale: [1, 1.2, 1] }}
-                                                        transition={{ duration: 2, repeat: Infinity }}
-                                                        className="w-2 h-2 bg-white rounded-full"
-                                                    />
-                                                    LIVE
-                                                </div>
+                                                        key={lec.id}
+                                                        initial={{ opacity: 0, x: -30 }}
+                                                        animate={{ opacity: 1, x: 0 }}
+                                                        transition={{ delay: 0.3 + lecIndex * 0.15 }}
+                                                        whileHover={{ scale: 1.08, x: 8 }}
+                                                        className={`p-5 rounded-2xl backdrop-blur-sm shadow-lg hover:shadow-2xl transition-all duration-500 transform-gpu ${
+                                                            subjectColors[lec.subjectId - 1] || subjectColors[0]
+                                                        }`}
+                                                    >
+                                                        <div className="flex items-start justify-between mb-3">
+                                                            <h3 className={`font-bold text-lg leading-tight flex-1 ${isDarkMode ? 'text-slate-100' : 'text-slate-800'}`}>
+                                                                {subjects_name[lec.subjectId - 1] ?? `Subject ${lec.subjectId}`}
+                                                            </h3>
+                                                        </div>
+                                                        
+                                                        <div className="space-y-3 text-sm">
+                                                            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                                                                <div className="p-2 bg-blue-500/20 rounded-lg">
+                                                                    <FontAwesomeIcon icon={faClock} className="w-3 h-3 text-blue-400" />
+                                                                </div>
+                                                                <span className="font-semibold">{lec.startTime ?? "-"} - {lec.endTime ?? "-"}</span>
+                                                            </div>
+                                                            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                                                                <div className="p-2 bg-green-500/20 rounded-lg">
+                                                                    <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3 h-3 text-green-400" />
+                                                                </div>
+                                                                <span>Room: {lec.location ?? "-"}</span>
+                                                            </div>
+                                                            <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
+                                                                <div className="p-2 bg-purple-500/20 rounded-lg">
+                                                                    <FontAwesomeIcon icon={faUsers} className="w-3 h-3 text-purple-400" />
+                                                                </div>
+                                                                <span>Group: {lec.groupId ?? "-"}</span>
+                                                            </div>
+                                                            {lec.description && (
+                                                                <p className={`text-xs mt-3 leading-relaxed ${isDarkMode 
+                                                                    ? 'text-slate-400 bg-slate-800/30' 
+                                                                    : 'text-slate-600 bg-slate-200/50'} p-3 rounded-xl`}>
+                                                                    {lec.description}
+                                                                </p>
+                                                            )}
+                                                        </div>
+                                                    </motion.div>
+                                                ))
+                                        ) : (
+                                            <motion.div
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                className="text-center py-12"
+                                            >
+                                                <div className="text-5xl mb-4">🎯</div>
+                                                <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>No classes scheduled</p>
+                                                <p className={`text-sm mt-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>Enjoy your free time!</p>
                                             </motion.div>
                                         )}
-
-                                        {/* Day Header */}
-                                        <motion.div
-                                            whileHover={{ scale: 1.05 }}
-                                            className="text-center mb-8"
-                                        >
-                                            <h2 className={`text-2xl font-black ${
-                                                day === WEEK_DAYS[todayIndex] 
-                                                    ? "bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent" 
-                                                    : isDarkMode 
-                                                    ? "text-slate-100" 
-                                                    : "text-slate-800"
-                                            }`}>
-                                                {day}
-                                                {day === WEEK_DAYS[todayIndex] && (
-                                                    <motion.span
-                                                        animate={{ scale: [1, 1.3, 1] }}
-                                                        transition={{ duration: 2, repeat: Infinity }}
-                                                        className="ml-3 text-cyan-400 text-2xl"
-                                                    >
-                                                        ✨
-                                                    </motion.span>
-                                                )}
-                                            </h2>
-                                        </motion.div>
-
-                                        {/* Schedule Items */}
-                                        <div className="space-y-5">
-                                            {scheduleByDay[day] && scheduleByDay[day].length > 0 ? (
-                                                scheduleByDay[day]
-                                                    .sort((a, b) => {
-                                                        const indexA = startTimes.indexOf(a.startTime ?? "");
-                                                        const indexB = startTimes.indexOf(b.startTime ?? "");
-                                                        return indexA - indexB;
-                                                    })
-                                                    .map((lec, lecIndex) => {
-                                                        const isCurrent = currentClass?.id === lec.id;
-                                                        
-                                                        return (
-                                                            <motion.div
-                                                                key={lec.id}
-                                                                initial={{ opacity: 0, x: -30 }}
-                                                                animate={{ opacity: 1, x: 0 }}
-                                                                transition={{ delay: 0.3 + lecIndex * 0.15 }}
-                                                                whileHover={{ scale: 1.08, x: 8 }}
-                                                                className={`p-5 rounded-2xl backdrop-blur-sm shadow-lg hover:shadow-2xl transition-all duration-500 transform-gpu ${
-                                                                    subjectColors[lec.subjectId - 1] || subjectColors[0]
-                                                                } ${isCurrent ? 'ring-2 ring-green-400/50 scale-105' : ''}`}
-                                                            >
-                                                                <div className="flex items-start justify-between mb-3">
-                                                                    <h3 className={`font-bold text-lg leading-tight flex-1 ${isDarkMode ? 'text-slate-100' : 'text-slate-800'}`}>
-                                                                        {subjects_name[lec.subjectId - 1] ?? `Subject ${lec.subjectId}`}
-                                                                    </h3>
-                                                                    {isCurrent && (
-                                                                        <motion.div
-                                                                            animate={{ rotate: [0, 360] }}
-                                                                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                                                                            className="text-green-400 text-2xl ml-2"
-                                                                        >
-                                                                            ●
-                                                                        </motion.div>
-                                                                    )}
-                                                                </div>
-                                                                
-                                                                <div className="space-y-3 text-sm">
-                                                                    <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                                                                        <div className="p-2 bg-blue-500/20 rounded-lg">
-                                                                            <FontAwesomeIcon icon={faClock} className="w-3 h-3 text-blue-400" />
-                                                                        </div>
-                                                                        <span className="font-semibold">{lec.startTime ?? "-"} - {lec.endTime ?? "-"}</span>
-                                                                    </div>
-                                                                    <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                                                                        <div className="p-2 bg-green-500/20 rounded-lg">
-                                                                            <FontAwesomeIcon icon={faMapMarkerAlt} className="w-3 h-3 text-green-400" />
-                                                                        </div>
-                                                                        <span>Room: {lec.location ?? "-"}</span>
-                                                                    </div>
-                                                                    <div className={`flex items-center gap-3 ${isDarkMode ? 'text-slate-300' : 'text-slate-600'}`}>
-                                                                        <div className="p-2 bg-purple-500/20 rounded-lg">
-                                                                            <FontAwesomeIcon icon={faUsers} className="w-3 h-3 text-purple-400" />
-                                                                        </div>
-                                                                        <span>Group: {lec.groupId ?? "-"}</span>
-                                                                    </div>
-                                                                    {lec.description && (
-                                                                        <p className={`text-xs mt-3 leading-relaxed ${isDarkMode 
-                                                                            ? 'text-slate-400 bg-slate-800/30' 
-                                                                            : 'text-slate-600 bg-slate-200/50'} p-3 rounded-xl`}>
-                                                                            {lec.description}
-                                                                        </p>
-                                                                    )}
-                                                                </div>
-                                                            </motion.div>
-                                                        );
-                                                    })
-                                            ) : (
-                                                <motion.div
-                                                    initial={{ opacity: 0 }}
-                                                    animate={{ opacity: 1 }}
-                                                    className="text-center py-12"
-                                                >
-                                                    <div className="text-5xl mb-4">🎯</div>
-                                                    <p className={`text-lg ${isDarkMode ? 'text-slate-400' : 'text-slate-600'}`}>No classes scheduled</p>
-                                                    <p className={`text-sm mt-2 ${isDarkMode ? 'text-slate-500' : 'text-slate-500'}`}>Enjoy your free time!</p>
-                                                </motion.div>
-                                            )}
-                                        </div>
                                     </div>
-                                </motion.div>
-                            );
-                        })}
+                                </div>
+                            </motion.div>
+                        ))}
                     </motion.div>
                 )}
             </main>
