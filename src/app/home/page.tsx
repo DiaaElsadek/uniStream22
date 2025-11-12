@@ -743,7 +743,7 @@ export default function HomePage() {
                                 }}
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => scrollToWeek(weekNumber)}
-                                className={`relative flex items-center justify-center w-12 h-12 rounded-full font-bold text-sm transition-all duration-500 ${
+                                className={`cursor-pointer relative flex items-center justify-center w-12 h-12 rounded-full font-bold text-sm transition-all duration-500 ${
                                     isActive 
                                         ? 'bg-gradient-to-br from-indigo-500 to-purple-600 text-white shadow-2xl shadow-indigo-500/50 border-2 border-white/20' 
                                         : `${isDarkMode 
