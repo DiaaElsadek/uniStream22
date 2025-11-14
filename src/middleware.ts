@@ -6,18 +6,21 @@ const SUPA_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY!;
 
 async function checkUser(userToken: string) {
     try {
-        const res = await fetch(`${SUPA_URL}/rest/v1/AppUser?userToken=eq.${userToken}`, {
-            headers: {
-                apikey: SUPA_SERVICE_KEY,
-                Authorization: `Bearer ${SUPA_SERVICE_KEY}`,
-            },
-            cache: "no-store",
-        });
+        const res = await fetch(
+            `${SUPA_URL}/rest/v1/AppUser?userToken=eq.${userToken}`,
+            {
+                headers: {
+                    apikey: SUPA_SERVICE_KEY,
+                    Authorization: `Bearer ${SUPA_SERVICE_KEY}`,
+                },
+                cache: "no-store",
+            }
+        );
 
         const data = await res.json();
 
         if (!Array.isArray(data) || data.length === 0) return null;
-        else return data[0];
+        return data[0];
     } catch {
         return null;
     }
@@ -28,39 +31,45 @@ export async function middleware(req: NextRequest) {
 
     const publicRoutes = ["/login", "/signup", "/"];
 
-    // ✅ الصفحات العامة
+    // صفحات عامة (مسموح بالدخول ليها)
     if (publicRoutes.includes(pathname)) {
         return NextResponse.next();
     }
 
+    // قراءة userToken من الـ cookies
     const userToken = req.cookies.get("userToken")?.value || null;
-    // const userTokenLocal = localStorage.getItem("userToken") || null;
 
-    // ✅ لو مفيش userToken
+    // لو مفيش userToken أصلاً → رجّعه للوجين
     if (!userToken) {
         return NextResponse.redirect(new URL("/login", req.url));
     }
 
+    // تحقق من المستخدم
     const user = await checkUser(userToken);
 
-    // if((userToken === userTokenLocal) && user && (pathname.startsWith("/login") || pathname.startsWith("/signup"))){
-    //     return NextResponse.redirect(new URL("/home", req.url));
-    // }
-
+    // لو التوكن قديم أو المستخدم اتحذف
     if (!user) {
-        return NextResponse.redirect(new URL("/login", req.url));
+        const res = NextResponse.redirect(new URL("/login", req.url));
+        res.cookies.set("userToken", "", { maxAge: -1 });
+        return res;
     }
 
-    // ✅ لو مش أدمن وداخل على Dashboard
+    // لو المستخدم مسجّل دخول وبيحاول يفتح login أو signup
     if (
-        user.Role !== "admin" &&
-        (pathname.startsWith("/dashboard") || pathname.startsWith("/dashboard/addnews"))
+        user &&
+        (pathname.startsWith("/login") || pathname.startsWith("/signup"))
     ) {
         return NextResponse.redirect(new URL("/home", req.url));
     }
 
-    if(user && (pathname.startsWith("/login") || pathname.startsWith("/signup"))){
-        return NextResponse.redirect(new URL("/home", req.url));
+    // حماية صفحات الأدمن
+    if (
+        pathname.startsWith("/dashboard") ||
+        pathname.startsWith("/dashboard/addnews")
+    ) {
+        if (user.Role !== "admin") {
+            return NextResponse.redirect(new URL("/home", req.url));
+        }
     }
 
     return NextResponse.next();
@@ -68,7 +77,6 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
     matcher: [
-        "/((?!_next/static|_next/image|icons/UniStream22-dark-logo.png|manifest.json|sw.js|api).*)",
+        "/((?!_next/static|_next/image|/icons|/manifest.json|/sw.js|/api).*)",
     ],
 };
-
