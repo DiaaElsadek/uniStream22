@@ -6,7 +6,7 @@ export const metadata: Metadata = {
     title: "uniStream22",
     description: "كل أخبار وجداول الدفعة في مكان واحد.",
     icons: {
-        icon: "/uniStream.png",
+        icon: "/icons/UniStream22-dark-logo.png",
     },
 };
 
