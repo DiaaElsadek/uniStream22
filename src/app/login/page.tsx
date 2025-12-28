@@ -143,6 +143,36 @@ export default function LoginPage() {
     }
   };
 
+  const handleGuest = async (email: string, password: string) => {;
+    setLoading(true);
+    setError(null);
+
+    try {
+      const res = await handelLogin(email, password);
+
+      if (res.status && res.user) {
+        localStorage.setItem("savedEmail", email.trim());
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("academicId", res.user.academicId);
+        localStorage.setItem("email", res.user.email);
+        localStorage.setItem("fullName", res.user.fullName);
+        localStorage.setItem("userToken", res.user.userToken);
+        document.cookie = `role=${encodeURIComponent(res.user.role)}; path=/; Secure; SameSite=Lax`;
+
+        sessionStorage.setItem("hasReloadedSignup", "false");
+        sessionStorage.setItem("hasReloadedLogin", "false");
+        router.replace("/home");
+      } else {
+        setError(res.message);
+      }
+    } catch (err) {
+      console.error("submit error:", err);
+      setError("Unexpected error");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     const hasReloaded = sessionStorage.getItem("hasReloadedLogin");
     if (!hasReloaded) {
@@ -297,14 +327,14 @@ export default function LoginPage() {
               <label htmlFor="email" className="block text-gray-300 font-semibold mb-3 text-base">
                 Email Address
               </label>
-              <motion.div 
-                whileHover={{ scale: 1.02 }} 
+              <motion.div
+                whileHover={{ scale: 1.02 }}
                 whileFocus={{ scale: 1.02 }}
                 className="relative group"
               >
-                <motion.div 
+                <motion.div
                   className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
-                  animate={{ 
+                  animate={{
                     scale: email ? 1.1 : 1,
                     color: email ? "#a78bfa" : "#9ca3af"
                   }}
@@ -324,9 +354,9 @@ export default function LoginPage() {
                   className="w-full pl-12 pr-4 py-4 rounded-xl bg-gray-800/60 border-2 border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-100 transition-all duration-300 outline-none"
                 />
                 {/* Animated Border Effect */}
-                <motion.div 
+                <motion.div
                   className="absolute inset-0 rounded-xl border-2 border-transparent pointer-events-none"
-                  animate={{ 
+                  animate={{
                     boxShadow: email ? "0 0 0 2px rgba(139, 92, 246, 0.3)" : "none"
                   }}
                   transition={{ duration: 0.3 }}
@@ -355,14 +385,14 @@ export default function LoginPage() {
               <label htmlFor="password" className="block text-gray-300 font-semibold mb-3 text-base">
                 Password
               </label>
-              <motion.div 
-                whileHover={{ scale: 1.02 }} 
+              <motion.div
+                whileHover={{ scale: 1.02 }}
                 whileFocus={{ scale: 1.02 }}
                 className="relative group"
               >
-                <motion.div 
+                <motion.div
                   className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none"
-                  animate={{ 
+                  animate={{
                     scale: password ? 1.1 : 1,
                     color: password ? "#a78bfa" : "#9ca3af"
                   }}
@@ -381,7 +411,7 @@ export default function LoginPage() {
                   placeholder="Enter your password"
                   className="w-full pl-12 pr-12 py-4 rounded-xl bg-gray-800/60 border-2 border-gray-700 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/20 text-gray-100 transition-all duration-300 outline-none"
                 />
-                
+
                 {/* Password Toggle Button */}
                 <motion.button
                   type="button"
@@ -422,7 +452,7 @@ export default function LoginPage() {
                   className="p-4 rounded-xl bg-red-500/20 border border-red-500/30 text-red-300 text-center"
                 >
                   <motion.div
-                    animate={{ 
+                    animate={{
                       scale: [1, 1.05, 1],
                       rotate: [0, -2, 2, 0]
                     }}
@@ -444,12 +474,11 @@ export default function LoginPage() {
               <motion.button
                 type="submit"
                 disabled={loading || !formValid}
-                className={`w-full py-4 rounded-xl font-bold text-base relative overflow-hidden ${
-                  loading || !formValid
+                className={`w-full py-4 rounded-xl font-bold text-base relative overflow-hidden ${loading || !formValid
                     ? "bg-gray-700 text-gray-400 cursor-not-allowed"
                     : "bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg hover:shadow-xl"
-                } transition-all duration-300`}
-                whileHover={!loading && formValid ? { 
+                  } transition-all duration-300`}
+                whileHover={!loading && formValid ? {
                   scale: 1.02,
                 } : {}}
                 whileTap={!loading && formValid ? { scale: 0.98 } : {}}
@@ -487,7 +516,7 @@ export default function LoginPage() {
 
                 {/* Button Text */}
                 <motion.span
-                  animate={{ 
+                  animate={{
                     opacity: loading ? 0 : 1,
                     y: loading ? 10 : 0
                   }}
@@ -518,6 +547,89 @@ export default function LoginPage() {
               </motion.button>
             </motion.div>
           </motion.form>
+
+          {/* Continue as Guest Button */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1.5 }}
+          >
+            <motion.button
+              type="button"
+              onClick={async () => await handleGuest("guest@mail.com", "12345678")}
+              disabled={loading}
+              className={`w-full mt-5 cursor-pointer py-4 rounded-xl font-bold text-base relative overflow-hidden ${loading
+                  ? "bg-gray-400 text-gray-600 cursor-not-allowed"
+                  : "bg-gradient-to-r from-gray-500 to-gray-700 text-white shadow-lg hover:shadow-xl"
+                } transition-all duration-300`}
+              whileHover={!loading ? {
+                scale: 1.02,
+              } : {}}
+              whileTap={!loading ? { scale: 0.98 } : {}}
+              onHoverStart={() => setIsHovered(true)}
+              onHoverEnd={() => setIsHovered(false)}
+            >
+              {/* Loading Animation */}
+              {loading && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-gray-500 to-gray-700"
+                >
+                  <motion.div
+                    animate={{
+                      rotate: 360,
+                      scale: [1, 1.2, 1],
+                    }}
+                    transition={{
+                      rotate: {
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear"
+                      },
+                      scale: {
+                        duration: 0.5,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }
+                    }}
+                    className="w-6 h-6 border-2 border-white border-t-transparent rounded-full"
+                  />
+                </motion.div>
+              )}
+
+              {/* Button Text */}
+              <motion.span
+                animate={{
+                  opacity: loading ? 0 : 1,
+                  y: loading ? 10 : 0
+                }}
+                transition={{ duration: 0.2 }}
+                className="flex items-center justify-center gap-2"
+              >
+                {loading ? "Continuing..." : "Continue as Guest"}
+                {!loading && (
+                  <motion.div
+                    initial={{ x: -5, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <ArrowRightIcon className="w-4 h-4" />
+                  </motion.div>
+                )}
+              </motion.span>
+
+              {/* Shimmer Effect on Hover */}
+              {!loading && (
+                <motion.div
+                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: "100%" }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                />
+              )}
+            </motion.button>
+          </motion.div>
 
           {/* Enhanced Sign Up Link */}
           <motion.div
@@ -550,7 +662,7 @@ export default function LoginPage() {
           >
             <p className="text-gray-400 text-base">
               Forgot your password? {" "}
-              <br/>
+              <br />
               <Link
                 href="https://wa.me/201117244172"
                 target="blank"
