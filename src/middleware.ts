@@ -28,7 +28,7 @@ export async function middleware(req: NextRequest) {
 
     const publicRoutes = ["/login", "/signup", "/"];
 
-    // ✅ الصفحات العامة
+    // الصفحات العامة
     if (publicRoutes.includes(pathname)) {
         return NextResponse.next();
     }
