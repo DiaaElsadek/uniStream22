@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
     try {
         const { userToken, stickyNotes } = await req.json();
-        if (!userToken)
+        if (!userToken || userToken === "guestUser")
             return NextResponse.json({ message: "Missing userToken" }, { status: 400 });
 
         const res = await fetch(`${SUPA_URL}/rest/v1/AppUser?userToken=eq.${userToken}`, {
