@@ -3,26 +3,27 @@ import AuthProvider from "./AuthProvider";
 import { ThemeProvider } from "./ThemeProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Inter, Plus_Jakarta_Sans, Cairo } from "next/font/google";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
+import { Plus_Jakarta_Sans, IBM_Plex_Sans_Arabic, Cairo } from "next/font/google";
 
 const jakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  variable: "--font-jakarta",
+  variable: "--font-sans",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500", "600", "700", "800"],
+});
+
+const ibmPlexArabic = IBM_Plex_Sans_Arabic({
+  subsets: ["arabic"],
+  variable: "--font-arabic",
+  display: "swap",
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 const cairo = Cairo({
   subsets: ["latin", "arabic"],
   variable: "--font-cairo",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "600", "700"],
 });
 
 export const metadata = {
@@ -64,7 +65,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="rtl" suppressHydrationWarning>
+    <html
+      lang="ar"
+      dir="rtl"
+      className={`${jakarta.variable} ${ibmPlexArabic.variable} ${cairo.variable}`}
+      suppressHydrationWarning
+    >
       <head>
         <meta name="theme-color" content="#091f42" />
         <link
@@ -102,7 +108,7 @@ export default function RootLayout({
         />
         <meta property="og:url" content="https://unistream22.vercel.app" />
       </head>
-      <body className={`${jakarta.variable} ${inter.variable} ${cairo.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-primary/20 selection:text-primary`}>
+      <body className="antialiased bg-background text-foreground min-h-screen selection:bg-primary/20 selection:text-primary">
         <ThemeProvider>
           <LanguageProvider>
             <AuthProvider>{children}</AuthProvider>
