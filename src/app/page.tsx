@@ -197,12 +197,12 @@ export default function LandingPage() {
                     <span>{t("landing.signIn")}</span>
                   </Button>
                 </Link>
-                <Link href="/signup">
+                {/* <Link href="/signup">
                   <Button variant="primary" size="sm" className="gap-1.5">
                     <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />
                     <span>{t("landing.register")}</span>
                   </Button>
-                </Link>
+                </Link> */}
               </div>
             )}
           </div>

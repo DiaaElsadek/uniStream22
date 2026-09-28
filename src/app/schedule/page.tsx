@@ -4,10 +4,13 @@ import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import PageLayout from "@/components/PageLayout";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import EmptyState from "@/components/EmptyState";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   Clock,
   MapPin,
@@ -16,6 +19,9 @@ import {
   CalendarDays,
   AlertCircle,
   Sparkles,
+  BookOpen,
+  LayoutGrid,
+  Calendar,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
@@ -69,9 +75,9 @@ export default function SchedulePage() {
   const [isAdmin, setIsAdmin] = useState(false);
 
   // Today index in WEEK_DAYS (JavaScript getDay: 0=Sun, 1=Mon, ..., 6=Sat)
-  // Saturday is index 0 in WEEK_DAYS
   const todayIndex = (new Date().getDay() + 1) % 7;
   const todayName = WEEK_DAYS[todayIndex];
+  const [selectedDayTab, setSelectedDayTab] = useState<string>("all");
 
   useEffect(() => {
     let isMounted = true;
@@ -98,23 +104,26 @@ export default function SchedulePage() {
 
         const url = `/api/schedule?academicId=${encodeURIComponent(
           academicId
-        )}&userToken=${encodeURIComponent(userToken ?? "")}`;
+        )}&userToken=${encodeURIComponent(userToken || "")}`;
+
         const res = await fetch(url);
         const data = await res.json();
 
-        if (res.status !== 200) {
-          throw new Error(data.message || "Failed to fetch timetable.");
-        }
+        if (!isMounted) return;
 
-        if (isMounted) {
+        if (data.status) {
           setScheduleByDay(data.scheduleByDay || {});
-          setIsAdmin(data.isAdmin || false);
-          localStorage.setItem("cachedSchedule", JSON.stringify(data.scheduleByDay || {}));
-          setError(null);
+          setIsAdmin(data.role === "admin");
+          localStorage.setItem(
+            "cachedSchedule",
+            JSON.stringify(data.scheduleByDay || {})
+          );
+        } else {
+          setError(data.message || "Failed to load your timetable");
         }
-      } catch (err: any) {
-        console.error("Schedule fetch error:", err);
-        if (isMounted) setError(err?.message || "Failed to load schedule");
+      } catch (err) {
+        console.error("Fetch schedule error:", err);
+        if (isMounted) setError("Failed to connect to the timetable server");
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -126,6 +135,9 @@ export default function SchedulePage() {
       isMounted = false;
     };
   }, [router]);
+
+  // Days to display based on selected tab
+  const displayedDays = selectedDayTab === "all" ? WEEK_DAYS : [selectedDayTab];
 
   return (
     <PageLayout
@@ -141,9 +153,47 @@ export default function SchedulePage() {
         </Link>
       }
     >
+      {/* Day Filter Tabs */}
+      <div className="mb-6 overflow-x-auto pb-1">
+        <Tabs value={selectedDayTab} onValueChange={setSelectedDayTab}>
+          <TabsList className="inline-flex h-auto p-1 gap-1">
+            <TabsTrigger value="all" className="gap-1.5 px-3 py-1.5 text-xs sm:text-sm">
+              <LayoutGrid className="h-3.5 w-3.5" />
+              <span>{t("home.allNews") || "All Days"}</span>
+            </TabsTrigger>
+            {WEEK_DAYS.map((day) => {
+              const isToday = day === todayName;
+              return (
+                <TabsTrigger
+                  key={day}
+                  value={day}
+                  className="gap-1.5 px-3 py-1.5 text-xs sm:text-sm relative"
+                >
+                  <span>{t(`schedule.days.${day}`)}</span>
+                  {isToday && (
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                  )}
+                </TabsTrigger>
+              );
+            })}
+          </TabsList>
+        </Tabs>
+      </div>
+
       {loading ? (
-        <div className="py-20">
-          <LoadingSpinner size="lg" label={t("schedule.loading")} />
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          {Array.from({ length: 3 }).map((_, i) => (
+            <div key={i} className="rounded-2xl border border-border/80 p-5 space-y-4 bg-card/60">
+              <div className="flex justify-between items-center pb-3 border-b border-border/60">
+                <Skeleton className="h-6 w-28 rounded-md" />
+                <Skeleton className="h-5 w-16 rounded-full" />
+              </div>
+              <div className="space-y-3">
+                <Skeleton className="h-24 w-full rounded-xl" />
+                <Skeleton className="h-24 w-full rounded-xl" />
+              </div>
+            </div>
+          ))}
         </div>
       ) : error ? (
         <div className="max-w-md mx-auto my-12 p-6 rounded-2xl border border-destructive/20 bg-destructive/10 text-center space-y-3">
@@ -168,8 +218,13 @@ export default function SchedulePage() {
       ) : (
         <div className="space-y-6">
           {/* Days Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {WEEK_DAYS.map((day) => {
+          <div className={cn(
+            "grid gap-6",
+            selectedDayTab === "all"
+              ? "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+              : "grid-cols-1 max-w-2xl mx-auto"
+          )}>
+            {displayedDays.map((day) => {
               const lectures = scheduleByDay[day] || [];
               const isToday = day === todayName;
 
@@ -188,12 +243,12 @@ export default function SchedulePage() {
                     "flex flex-col h-full rounded-2xl border transition-all duration-200 overflow-hidden",
                     isToday
                       ? "border-primary/50 shadow-md shadow-primary/10 ring-2 ring-primary/20 bg-card"
-                      : "border-border/80 shadow-2xs hover:border-border-strong"
+                      : "border-border/80 shadow-2xs hover:border-border-strong bg-card/95"
                   )}
                 >
                   <CardHeader className={cn(
                     "pb-3.5 border-b border-border/80",
-                    isToday ? "bg-primary/5" : "bg-secondary/40"
+                    isToday ? "bg-primary/5" : "bg-secondary/30"
                   )}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
@@ -201,24 +256,24 @@ export default function SchedulePage() {
                           {t(`schedule.days.${day}`)}
                         </CardTitle>
                         {isToday && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary text-primary-foreground shadow-xs animate-pulse">
+                          <Badge variant="default" size="sm" className="gap-1 font-bold animate-pulse shadow-xs">
                             <Sparkles className="w-3 h-3" />
                             <span>{t("schedule.todayBadge")}</span>
-                          </span>
+                          </Badge>
                         )}
                       </div>
-                      <span className="text-xs font-medium text-muted-foreground px-2 py-0.5 rounded-full bg-secondary/80">
+                      <Badge variant="secondary" size="sm" className="font-medium">
                         {lectures.length}{" "}
                         {lectures.length === 1
                           ? t("schedule.lectureSingular")
                           : t("schedule.lecturePlural")}
-                      </span>
+                      </Badge>
                     </div>
                   </CardHeader>
 
                   <CardContent className="flex-1 p-4 space-y-3">
                     {sortedLectures.length === 0 ? (
-                      <div className="py-10 text-center text-xs text-muted-foreground">
+                      <div className="py-12 text-center text-xs text-muted-foreground">
                         {t("schedule.noLectures")}
                       </div>
                     ) : (
@@ -227,42 +282,51 @@ export default function SchedulePage() {
                           SUBJECTS[lec.subjectId - 1] || `Course ${lec.subjectId}`;
                         const groupText =
                           lec.groupId === 0 ? t("schedule.global") : `${t("schedule.groupPrefix")} ${lec.groupId}`;
+                        const initial = subjectTitle.charAt(0);
 
                         return (
                           <div
                             key={lec.id}
-                            className="rounded-xl border border-border/70 border-s-4 border-s-primary bg-card p-4 space-y-2.5 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-150 shadow-2xs"
+                            className="rounded-xl border border-border/80 border-s-4 border-s-primary bg-card/80 p-4 space-y-2.5 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-150 shadow-2xs group"
                           >
-                            <div className="flex items-start justify-between gap-2">
-                              <h4 className="text-sm font-bold text-foreground leading-snug">
-                                {subjectTitle}
-                              </h4>
+                            <div className="flex items-start justify-between gap-2.5">
+                              <div className="flex items-center gap-2">
+                                <Avatar className="h-7 w-7 rounded-lg border-primary/20 bg-primary/10">
+                                  <AvatarFallback className="rounded-lg bg-primary/10 text-primary text-xs font-bold">
+                                    {initial}
+                                  </AvatarFallback>
+                                </Avatar>
+                                <h4 className="text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
+                                  {subjectTitle}
+                                </h4>
+                              </div>
+
                               {lec.groupId !== undefined && (
-                                <span className="inline-flex items-center gap-1 shrink-0 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-secondary/80 text-muted-foreground">
+                                <Badge variant="secondary" size="sm" className="gap-1 shrink-0 font-medium">
                                   <Users className="w-3 h-3" aria-hidden="true" />
                                   <span>{groupText}</span>
-                                </span>
+                                </Badge>
                               )}
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-y-1 gap-x-3 text-xs text-muted-foreground">
-                              <span className="inline-flex items-center gap-1 font-semibold text-foreground px-2 py-0.5 rounded bg-secondary/60">
-                                <Clock className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                            <div className="flex flex-wrap items-center gap-y-1 gap-x-2 text-xs text-muted-foreground pt-1">
+                              <Badge variant="accent" size="sm" className="gap-1.5 font-semibold font-mono">
+                                <Clock className="w-3 h-3 text-primary" aria-hidden="true" />
                                 <span>
                                   {lec.startTime ?? "—"} - {lec.endTime ?? "—"}
                                 </span>
-                              </span>
+                              </Badge>
 
                               {lec.location && (
-                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary/60">
-                                  <MapPin className="w-3.5 h-3.5 text-muted-foreground" aria-hidden="true" />
+                                <Badge variant="outline" size="sm" className="gap-1">
+                                  <MapPin className="w-3 h-3 text-muted-foreground" aria-hidden="true" />
                                   <span>{lec.location}</span>
-                                </span>
+                                </Badge>
                               )}
                             </div>
 
                             {lec.description && (
-                              <p className="text-xs text-muted-foreground pt-1.5 border-t border-border/60 leading-relaxed">
+                              <p className="text-xs text-muted-foreground pt-2 border-t border-border/60 leading-relaxed" dir="auto">
                                 {lec.description}
                               </p>
                             )}

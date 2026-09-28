@@ -4,11 +4,14 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import PageLayout from "@/components/PageLayout";
-import LoadingSpinner from "@/components/LoadingSpinner";
 import EmptyState from "@/components/EmptyState";
 import Toast from "@/components/Toast";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   ArrowLeft,
   ArrowRight,
@@ -35,23 +38,23 @@ const SUBJECTS = [
 const priorityConfig = {
   high: {
     key: "home.highPriority",
-    badge: "bg-destructive/10 text-destructive border-destructive/20",
-    dot: "bg-destructive",
+    variant: "destructive" as const,
+    dotColor: "bg-destructive animate-pulse",
   },
   medium: {
     key: "home.mediumPriority",
-    badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
-    dot: "bg-emerald-500",
+    variant: "success" as const,
+    dotColor: "bg-emerald-500",
   },
   low: {
     key: "home.lowPriority",
-    badge: "bg-primary/10 text-primary border-primary/20",
-    dot: "bg-primary",
+    variant: "accent" as const,
+    dotColor: "bg-primary",
   },
   default: {
     key: "home.generalNotice",
-    badge: "bg-secondary text-muted-foreground border-border",
-    dot: "bg-muted-foreground",
+    variant: "secondary" as const,
+    dotColor: "bg-muted-foreground",
   },
 };
 
@@ -163,6 +166,8 @@ export default function NewsDetailsPage() {
       })
     : null;
 
+  const subjectInitial = subjectName.charAt(0);
+
   return (
     <PageLayout isAdmin={isAdmin} maxWidth="narrow">
       <Toast
@@ -174,7 +179,7 @@ export default function NewsDetailsPage() {
       />
 
       {/* Navigation & Action Bar */}
-      <div className="flex items-center justify-between pb-6 mb-6 border-b border-border">
+      <div className="flex items-center justify-between pb-5 mb-6 border-b border-border/70">
         <Link href="/home">
           <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
             <BackArrow className="h-4 w-4" aria-hidden="true" />
@@ -187,7 +192,7 @@ export default function NewsDetailsPage() {
             variant="outline"
             size="sm"
             onClick={handleShare}
-            className="gap-2"
+            className="gap-2 shadow-2xs"
             aria-label="Share this announcement"
           >
             {copied ? (
@@ -201,8 +206,18 @@ export default function NewsDetailsPage() {
       </div>
 
       {loading ? (
-        <div className="py-24">
-          <LoadingSpinner size="lg" label={t("common.loading")} />
+        <div className="space-y-6 py-4">
+          <div className="flex gap-2">
+            <Skeleton className="h-6 w-24 rounded-full" />
+            <Skeleton className="h-6 w-20 rounded-md" />
+            <Skeleton className="h-6 w-20 rounded-md" />
+          </div>
+          <Skeleton className="h-10 w-3/4" />
+          <div className="flex gap-4">
+            <Skeleton className="h-5 w-32" />
+            <Skeleton className="h-5 w-40" />
+          </div>
+          <Skeleton className="h-64 w-full rounded-2xl" />
         </div>
       ) : !newsItem ? (
         <EmptyState
@@ -220,48 +235,57 @@ export default function NewsDetailsPage() {
           {/* Header Metadata */}
           <div className="space-y-4">
             <div className="flex flex-wrap items-center gap-2">
-              <span
-                className={cn(
-                  "inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium border",
-                  priority.badge
-                )}
+              <Badge
+                variant={priority.variant}
+                dotColor={priority.dotColor}
+                size="sm"
+                className="font-semibold shadow-2xs"
               >
-                <span className={cn("w-1.5 h-1.5 rounded-full", priority.dot)} aria-hidden="true" />
                 {t(priority.key)}
-              </span>
+              </Badge>
 
-              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground px-2.5 py-0.5 rounded-md bg-secondary border border-border">
-                <Hash className="w-3 h-3" aria-hidden="true" />
+              <Badge variant="outline" size="sm" className="gap-1 font-mono text-muted-foreground bg-secondary/40">
+                <Hash className="w-3 h-3 text-muted-foreground" aria-hidden="true" />
                 {t("home.week")} {newsItem.week}
-              </span>
+              </Badge>
 
-              <span className="inline-flex items-center gap-1 text-xs text-muted-foreground px-2.5 py-0.5 rounded-md bg-secondary border border-border">
+              <Badge variant="secondary" size="sm" className="gap-1 font-medium">
                 <Users className="w-3 h-3" aria-hidden="true" />
                 {groupText}
-              </span>
+              </Badge>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground leading-tight">
-              {newsItem.title || "Untitled Announcement"}
-            </h1>
+            <div className="flex items-start gap-3 pt-1">
+              <Avatar className="h-11 w-11 shrink-0 mt-1 border-primary/20 bg-primary/10">
+                <AvatarFallback className="bg-primary/10 text-primary font-bold text-base">
+                  {subjectInitial}
+                </AvatarFallback>
+              </Avatar>
 
-            <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground pt-2">
-              <span className="inline-flex items-center gap-1.5">
-                <BookOpen className="w-4 h-4 text-primary" aria-hidden="true" />
-                <span className="font-medium text-foreground">{subjectName}</span>
-              </span>
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground leading-tight">
+                {newsItem.title || "Untitled Announcement"}
+              </h1>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground pt-2">
+              <Badge variant="secondary" size="sm" className="gap-1.5 font-medium">
+                <BookOpen className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                <span className="font-semibold text-foreground">{subjectName}</span>
+              </Badge>
 
               {formattedDate && (
-                <span className="inline-flex items-center gap-1.5">
-                  <Calendar className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
+                <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+                  <Calendar className="w-3.5 h-3.5 text-muted-foreground" aria-hidden="true" />
                   <span>{t("newsDetail.publishedOn")} {formattedDate}</span>
                 </span>
               )}
             </div>
           </div>
 
+          <Separator />
+
           {/* Article Body */}
-          <Card className="border-border">
+          <Card className="border-border/80 bg-card/95 shadow-sm rounded-2xl">
             <CardContent className="p-6 sm:p-8">
               <div
                 dir="auto"
@@ -274,7 +298,7 @@ export default function NewsDetailsPage() {
 
           {/* Extracted External Resources */}
           {extractedLinks.length > 0 && (
-            <Card className="border-border bg-secondary/30">
+            <Card className="border-border/80 bg-secondary/30 rounded-2xl">
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
                   <ExternalLink className="w-4 h-4 text-primary" aria-hidden="true" />
@@ -288,7 +312,7 @@ export default function NewsDetailsPage() {
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-between p-3 rounded-md bg-card border border-border hover:border-primary/50 transition-colors text-sm text-foreground group"
+                    className="flex items-center justify-between p-3 rounded-xl bg-card border border-border/80 hover:border-primary/50 transition-colors text-sm text-foreground group shadow-2xs"
                   >
                     <span className="truncate pr-4 font-medium text-primary group-hover:underline underline-offset-4">
                       {link.url}
