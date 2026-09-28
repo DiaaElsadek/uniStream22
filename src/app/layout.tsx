@@ -42,9 +42,9 @@ export const metadata = {
     siteName: "UniStream22",
     images: [
       {
-        url: "/icons/UniStream22-dark-logo.png",
-        width: 800,
-        height: 600,
+        url: "/icons/icon-512x512.png",
+        width: 512,
+        height: 512,
         alt: "UniStream22 Logo",
       },
     ],
@@ -52,9 +52,15 @@ export const metadata = {
     type: "website",
   },
   icons: {
-    icon: [{ url: "/icons/UniStream22-dark-logo.png", type: "image/png" }],
-    shortcut: [{ url: "/icons/UniStream22-dark-logo.png", type: "image/png" }],
-    apple: [{ url: "/icons/UniStream22-dark-logo.png", type: "image/png" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/icons/icon-192x192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icons/icon-512x512.png", sizes: "512x512", type: "image/png" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [
+      { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
   manifest: "/manifest.json",
 };
@@ -73,17 +79,15 @@ export default function RootLayout({
     >
       <head>
         <meta name="theme-color" content="#091f42" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
         <link
           rel="icon"
-          href="/icons/UniStream22-dark-logo.png"
+          href="/icons/icon-192x192.png"
           type="image/png"
+          sizes="192x192"
         />
-        <link
-          rel="shortcut icon"
-          href="/icons/UniStream22-dark-logo.png"
-          type="image/png"
-        />
-        <link rel="apple-touch-icon" href="/icons/UniStream22-dark-logo.png" />
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <link rel="manifest" href="/manifest.json" />
 
         <meta
           name="description"

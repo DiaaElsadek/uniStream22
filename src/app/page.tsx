@@ -30,6 +30,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import ThemeToggle from "@/components/ThemeToggle";
 import LanguageToggle from "@/components/LanguageToggle";
+import UniStreamLogo from "@/components/UniStreamLogo";
 import { useLanguage } from "@/context/LanguageContext";
 
 export default function LandingPage() {
@@ -148,9 +149,7 @@ export default function LandingPage() {
             href="/"
             className="group flex items-center gap-2.5 text-base font-bold tracking-tight text-foreground hover:text-primary transition-colors"
           >
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-blue-500 text-primary-foreground shadow-sm shadow-primary/30 group-hover:scale-105 transition-transform duration-200">
-              <GraduationCap className="h-5 w-5" aria-hidden="true" />
-            </div>
+            <UniStreamLogo size={36} />
             <div className="flex flex-col">
               <span className="leading-tight font-extrabold tracking-tight">{t("common.appName")}</span>
               <span className="text-[10px] text-muted-foreground font-medium">
@@ -559,9 +558,7 @@ export default function LandingPage() {
       <footer className="border-t border-border bg-card/60 py-10 text-xs text-muted-foreground">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2.5">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-primary text-primary-foreground font-bold text-xs shadow-2xs">
-              U
-            </div>
+            <UniStreamLogo size={24} imageClassName="rounded-md" />
             <span>{t("common.copyright", { year: new Date().getFullYear() })}</span>
           </div>
 

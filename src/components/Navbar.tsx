@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 import LanguageToggle from "./LanguageToggle";
+import UniStreamLogo from "./UniStreamLogo";
 import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
@@ -76,9 +77,7 @@ export default function Navbar({ isAdmin }: NavbarProps) {
           href="/home"
           className="group flex items-center gap-2.5 text-base font-bold tracking-tight text-foreground hover:text-primary transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-lg px-1 py-0.5"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-tr from-primary to-blue-500 text-primary-foreground shadow-xs shadow-primary/25 group-hover:scale-105 transition-transform duration-200">
-            <GraduationCap className="h-4.5 w-4.5" aria-hidden="true" />
-          </div>
+          <UniStreamLogo size={32} />
           <span className="font-extrabold tracking-tight">UniStream22</span>
         </Link>
 

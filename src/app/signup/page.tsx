@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/card";
 import ThemeToggle from "@/components/ThemeToggle";
 import LanguageToggle from "@/components/LanguageToggle";
+import UniStreamLogo from "@/components/UniStreamLogo";
 import { useLanguage } from "@/context/LanguageContext";
 
 type SignupResponse = {
@@ -213,9 +214,7 @@ export default function SignupPage() {
           href="/"
           className="group flex items-center gap-2.5 text-base font-bold tracking-tight text-foreground hover:text-primary transition-colors"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-blue-500 text-primary-foreground shadow-xs shadow-primary/25 group-hover:scale-105 transition-transform duration-200">
-            <GraduationCap className="h-4.5 w-4.5" aria-hidden="true" />
-          </div>
+          <UniStreamLogo size={32} />
           <span className="font-extrabold tracking-tight">UniStream22</span>
         </Link>
         <div className="flex items-center gap-2">

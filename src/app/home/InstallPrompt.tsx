@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Download, X, Smartphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import UniStreamLogo from "@/components/UniStreamLogo";
 
 export default function InstallPrompt() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
@@ -55,9 +56,7 @@ export default function InstallPrompt() {
     >
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-2.5">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary/10 text-primary">
-            <Smartphone className="h-4 w-4" aria-hidden="true" />
-          </div>
+          <UniStreamLogo size={32} />
           <div>
             <h4 className="text-sm font-semibold text-foreground">Install UniStream22</h4>
             <p className="text-xs text-muted-foreground">Faster offline access to your schedule</p>
