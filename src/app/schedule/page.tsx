@@ -17,6 +17,7 @@ import {
   CalendarDays,
   AlertCircle,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
 type ScheduleItem = {
@@ -61,6 +62,7 @@ const START_TIMES = [
 
 export default function SchedulePage() {
   const router = useRouter();
+  const { t } = useLanguage();
   const [scheduleByDay, setScheduleByDay] = useState<Record<string, ScheduleItem[]>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -128,38 +130,38 @@ export default function SchedulePage() {
   return (
     <PageLayout
       isAdmin={isAdmin}
-      title="Weekly Class Schedule"
-      description="View your weekly lectures, lab locations, and timing based on your selected groups."
+      title={t("schedule.title")}
+      description={t("schedule.subtitle")}
       action={
         <Link href="/selectschedule">
           <Button variant="outline" size="sm" className="gap-2">
             <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
-            <span>Edit Groups</span>
+            <span>{t("schedule.editGroups")}</span>
           </Button>
         </Link>
       }
     >
       {loading ? (
         <div className="py-20">
-          <LoadingSpinner size="lg" label="Loading class schedule..." />
+          <LoadingSpinner size="lg" label={t("schedule.loading")} />
         </div>
       ) : error ? (
         <div className="max-w-md mx-auto my-12 p-6 rounded-lg border border-destructive/20 bg-destructive/10 text-center space-y-3">
           <AlertCircle className="w-8 h-8 text-destructive mx-auto" aria-hidden="true" />
-          <h3 className="text-base font-semibold text-destructive">Schedule Unavailable</h3>
+          <h3 className="text-base font-semibold text-destructive">{t("schedule.unavailableTitle")}</h3>
           <p className="text-sm text-muted-foreground">{error}</p>
           <Button variant="outline" size="sm" onClick={() => window.location.reload()}>
-            Retry
+            {t("common.retry")}
           </Button>
         </div>
       ) : Object.keys(scheduleByDay).length === 0 ? (
         <EmptyState
           icon={CalendarDays}
-          title="No schedule configured"
-          description="You haven't selected your subject groups yet. Select your groups to view your timetable."
+          title={t("schedule.noScheduleTitle")}
+          description={t("schedule.noScheduleDesc")}
           action={
             <Link href="/selectschedule">
-              <Button variant="primary">Select Groups Now</Button>
+              <Button variant="primary">{t("schedule.selectGroupsNow")}</Button>
             </Link>
           }
         />
@@ -191,16 +193,19 @@ export default function SchedulePage() {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <CardTitle className="text-base font-bold text-foreground">
-                          {day}
+                          {t(`schedule.days.${day}`)}
                         </CardTitle>
                         {isToday && (
                           <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary text-primary-foreground">
-                            Today
+                            {t("schedule.todayBadge")}
                           </span>
                         )}
                       </div>
                       <span className="text-xs text-muted-foreground">
-                        {lectures.length} {lectures.length === 1 ? "lecture" : "lectures"}
+                        {lectures.length}{" "}
+                        {lectures.length === 1
+                          ? t("schedule.lectureSingular")
+                          : t("schedule.lecturePlural")}
                       </span>
                     </div>
                   </CardHeader>
@@ -208,14 +213,14 @@ export default function SchedulePage() {
                   <CardContent className="flex-1 p-4 space-y-3">
                     {sortedLectures.length === 0 ? (
                       <div className="py-8 text-center text-xs text-muted-foreground">
-                        No lectures scheduled for this day
+                        {t("schedule.noLectures")}
                       </div>
                     ) : (
                       sortedLectures.map((lec) => {
                         const subjectTitle =
                           SUBJECTS[lec.subjectId - 1] || `Course ${lec.subjectId}`;
                         const groupText =
-                          lec.groupId === 0 ? "Global" : `Group ${lec.groupId}`;
+                          lec.groupId === 0 ? t("schedule.global") : `${t("schedule.groupPrefix")} ${lec.groupId}`;
 
                         return (
                           <div

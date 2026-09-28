@@ -3,6 +3,7 @@
 import React from "react";
 import Modal from "@/components/Modal";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/context/LanguageContext";
 
 const SUBJECTS = [
   "معالجة الصور الرقمية",
@@ -44,12 +45,14 @@ export default function NewsFormModal({
   onClose,
   saving,
 }: NewsFormModalProps) {
+  const { t } = useLanguage();
+
   return (
     <Modal
       isOpen={isOpen}
       onClose={onClose}
-      title={isEdit ? "Edit Announcement" : "Create New Announcement"}
-      description="Enter the announcement details to notify students."
+      title={isEdit ? t("dashboard.modalEditTitle") : t("dashboard.modalCreateTitle")}
+      description={t("dashboard.modalSubtitle")}
       maxWidth="xl"
     >
       <form onSubmit={onSubmit} className="space-y-4 pt-2">
@@ -59,7 +62,7 @@ export default function NewsFormModal({
             htmlFor="modal-title-input"
             className="block text-xs font-semibold uppercase text-foreground"
           >
-            Announcement Title *
+            {t("dashboard.formTitle")} *
           </label>
           <input
             id="modal-title-input"
@@ -67,7 +70,7 @@ export default function NewsFormModal({
             required
             value={formData.title}
             onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-            placeholder="e.g. Lab Assignment #3 Submission Deadline"
+            placeholder={t("dashboard.formTitlePlaceholder")}
             className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
           />
         </div>
@@ -79,7 +82,7 @@ export default function NewsFormModal({
               htmlFor="modal-subject"
               className="block text-xs font-semibold text-muted-foreground"
             >
-              Course
+              {t("dashboard.formCourse")}
             </label>
             <select
               id="modal-subject"
@@ -89,7 +92,7 @@ export default function NewsFormModal({
               }
               className="w-full rounded-md border border-border bg-card px-2.5 py-1.5 text-xs text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
             >
-              <option value={0}>Global (All Courses)</option>
+              <option value={0}>{t("home.globalNotice")}</option>
               {SUBJECTS.map((subj, idx) => (
                 <option key={idx + 1} value={idx + 1}>
                   {subj}
@@ -103,7 +106,7 @@ export default function NewsFormModal({
               htmlFor="modal-group"
               className="block text-xs font-semibold text-muted-foreground"
             >
-              Group
+              {t("dashboard.formGroup")}
             </label>
             <select
               id="modal-group"
@@ -113,10 +116,10 @@ export default function NewsFormModal({
               }
               className="w-full rounded-md border border-border bg-card px-2.5 py-1.5 text-xs text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer"
             >
-              <option value={0}>Global (All Groups)</option>
+              <option value={0}>{t("home.globalNotice")}</option>
               {GROUPS.map((g) => (
                 <option key={g} value={g}>
-                  Group {g}
+                  {t("home.groupPrefix")} {g}
                 </option>
               ))}
             </select>
@@ -127,7 +130,7 @@ export default function NewsFormModal({
               htmlFor="modal-week"
               className="block text-xs font-semibold text-muted-foreground"
             >
-              Week
+              {t("dashboard.formWeek")}
             </label>
             <select
               id="modal-week"
@@ -139,7 +142,7 @@ export default function NewsFormModal({
             >
               {Array.from({ length: 15 }, (_, i) => i + 1).map((w) => (
                 <option key={w} value={w}>
-                  Week {w}
+                  {t("home.week")} {w}
                 </option>
               ))}
             </select>
@@ -150,7 +153,7 @@ export default function NewsFormModal({
               htmlFor="modal-priority"
               className="block text-xs font-semibold text-muted-foreground"
             >
-              Priority
+              {t("dashboard.formPriority")}
             </label>
             <select
               id="modal-priority"
@@ -160,7 +163,11 @@ export default function NewsFormModal({
             >
               {PRIORITIES.map((p) => (
                 <option key={p} value={p}>
-                  {p.charAt(0).toUpperCase() + p.slice(1)}
+                  {p === "high"
+                    ? t("home.highPriority")
+                    : p === "low"
+                    ? t("home.lowPriority")
+                    : t("home.mediumPriority")}
                 </option>
               ))}
             </select>
@@ -173,7 +180,7 @@ export default function NewsFormModal({
             htmlFor="modal-content-input"
             className="block text-xs font-semibold uppercase text-foreground"
           >
-            Announcement Body *
+            {t("dashboard.formContent")} *
           </label>
           <textarea
             id="modal-content-input"
@@ -182,7 +189,7 @@ export default function NewsFormModal({
             dir="auto"
             value={formData.content}
             onChange={(e) => setFormData({ ...formData, content: e.target.value })}
-            placeholder="Enter announcement text, assignment details, or links..."
+            placeholder={t("dashboard.formContentPlaceholder")}
             className="w-full rounded-md border border-border bg-card p-3 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary leading-relaxed"
           />
         </div>
@@ -194,13 +201,13 @@ export default function NewsFormModal({
             id="modal-publish"
             checked={formData.publish}
             onChange={(e) => setFormData({ ...formData, publish: e.target.checked })}
-            className="h-4 w-4 rounded border-border text-primary focus:ring-primary"
+            className="h-4 w-4 rounded border-border text-primary focus:ring-primary cursor-pointer"
           />
           <label
             htmlFor="modal-publish"
             className="text-sm font-medium text-foreground cursor-pointer"
           >
-            Publish immediately (visible to students)
+            {t("dashboard.formPublish")}
           </label>
         </div>
 
@@ -212,10 +219,10 @@ export default function NewsFormModal({
             onClick={onClose}
             disabled={saving}
           >
-            Cancel
+            {t("dashboard.cancelBtn")}
           </Button>
           <Button type="submit" variant="primary" isLoading={saving}>
-            {isEdit ? "Update Announcement" : "Publish Announcement"}
+            {isEdit ? t("dashboard.saveChangesBtn") : t("dashboard.publishBtn")}
           </Button>
         </div>
       </form>

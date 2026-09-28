@@ -12,6 +12,7 @@ import {
   Eye,
   EyeOff,
   ArrowRight,
+  ArrowLeft,
   Check,
   X,
   AlertCircle,
@@ -26,6 +27,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import ThemeToggle from "@/components/ThemeToggle";
+import LanguageToggle from "@/components/LanguageToggle";
+import { useLanguage } from "@/context/LanguageContext";
 
 type SignupResponse = {
   message: string;
@@ -77,9 +80,11 @@ export default function SignupPage() {
   const [pwLettersDigitsOk, setPwLettersDigitsOk] = useState(false);
 
   const router = useRouter();
+  const { t, isRTL } = useLanguage();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const academicRegex = /^4202[234]\d{3}$/;
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
   useEffect(() => {
     setPwLenOk(password.length === 8);
@@ -88,13 +93,13 @@ export default function SignupPage() {
     if (password.length === 0) {
       setPasswordError(null);
     } else if (password.length !== 8) {
-      setPasswordError("Password must be exactly 8 characters.");
+      setPasswordError(t("auth.passwordExact8"));
     } else if (!onlyLettersDigits.test(password)) {
-      setPasswordError("Password must only contain letters and digits.");
+      setPasswordError(t("auth.passwordAlphanumeric"));
     } else {
       setPasswordError(null);
     }
-  }, [password]);
+  }, [password, t]);
 
   const onFullNameChange = (value: string) => {
     const sanitizedValue = sanitizeFullName(value);
@@ -102,9 +107,9 @@ export default function SignupPage() {
     setFullName(sanitizedValue);
 
     if (sanitizedValue.length === 0) {
-      setFullNameError("Full Name is required.");
+      setFullNameError(t("auth.fullNameRequired"));
     } else if (sanitizedValue.length < 3) {
-      setFullNameError("Full Name must be at least 3 characters.");
+      setFullNameError(t("auth.fullNameMin"));
     } else {
       setFullNameError(null);
     }
@@ -117,9 +122,9 @@ export default function SignupPage() {
     if (sanitizedValue.length === 0) {
       setAcademicError(null);
     } else if (sanitizedValue.length < 8) {
-      setAcademicError("Academic ID must be 8 digits long.");
+      setAcademicError(t("auth.academicIdRequired"));
     } else if (!academicRegex.test(sanitizedValue)) {
-      setAcademicError("Academic ID must start with 4202 followed by 4 digits.");
+      setAcademicError(t("auth.academicIdInvalid"));
     } else {
       setAcademicError(null);
     }
@@ -132,7 +137,7 @@ export default function SignupPage() {
     if (sanitizedValue.length === 0) {
       setEmailError(null);
     } else if (!emailRegex.test(sanitizedValue)) {
-      setEmailError("Invalid email format.");
+      setEmailError(t("auth.emailInvalid"));
     } else {
       setEmailError(null);
     }
@@ -161,13 +166,13 @@ export default function SignupPage() {
 
     if (!formValid) {
       if (!academicRegex.test(academicId)) {
-        setAcademicError("Academic ID must be 8 digits and start with 4202.");
+        setAcademicError(t("auth.academicIdInvalid"));
       }
       if (!emailRegex.test(email)) {
-        setEmailError("Invalid email format.");
+        setEmailError(t("auth.emailInvalid"));
       }
       if (!(password.length === 8 && onlyLettersDigits.test(password))) {
-        setPasswordError("Password must be exactly 8 letters/digits.");
+        setPasswordError(t("auth.passwordExact8"));
       }
       return;
     }
@@ -202,10 +207,10 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 selection:bg-primary/20 selection:text-primary">
-      {/* Top Bar with Brand & Theme Toggle */}
+      {/* Top Bar with Brand, Language Toggle & Theme Toggle */}
       <div className="w-full max-w-6xl mx-auto flex items-center justify-between py-2">
         <Link
-          href="/signup"
+          href="/"
           className="flex items-center gap-2.5 text-base font-bold tracking-tight text-foreground hover:text-primary transition-colors"
         >
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
@@ -213,7 +218,10 @@ export default function SignupPage() {
           </div>
           <span>UniStream22</span>
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
       </div>
 
       {/* Main Signup Card */}
@@ -224,10 +232,10 @@ export default function SignupPage() {
               <GraduationCap className="h-5 w-5" aria-hidden="true" />
             </div>
             <CardTitle className="text-2xl font-bold tracking-tight text-foreground">
-              Create Student Account
+              {t("auth.signupTitle")}
             </CardTitle>
             <CardDescription className="text-sm text-muted-foreground mt-1">
-              Join HTI Year 4 CS platform to view your schedule and announcements
+              {t("auth.signupSubtitle")}
             </CardDescription>
           </CardHeader>
 
@@ -249,11 +257,11 @@ export default function SignupPage() {
                   htmlFor="fullName"
                   className="block text-sm font-medium text-foreground"
                 >
-                  Full Name
+                  {t("auth.fullNameLabel")}
                 </label>
                 <div className="relative">
                   <User
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
                     aria-hidden="true"
                   />
                   <input
@@ -263,10 +271,10 @@ export default function SignupPage() {
                     required
                     value={fullName}
                     onChange={(e) => onFullNameChange(e.target.value)}
-                    placeholder="Ahmed Mohamed"
+                    placeholder={t("auth.fullNamePlaceholder")}
                     aria-invalid={Boolean(fullNameError)}
                     aria-describedby={fullNameError ? "fullName-error" : undefined}
-                    className="w-full rounded-md border border-border bg-background pl-9 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
+                    className="w-full rounded-md border border-border bg-background ps-9 pe-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
                   />
                 </div>
                 {fullNameError && (
@@ -283,13 +291,13 @@ export default function SignupPage() {
                     htmlFor="academicId"
                     className="block text-sm font-medium text-foreground"
                   >
-                    Academic ID
+                    {t("auth.academicIdLabel")}
                   </label>
-                  <span className="text-xs text-muted-foreground">e.g. 42022xxx</span>
+                  <span className="text-xs text-muted-foreground">{t("auth.academicIdHint")}</span>
                 </div>
                 <div className="relative">
                   <Hash
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
                     aria-hidden="true"
                   />
                   <input
@@ -300,10 +308,10 @@ export default function SignupPage() {
                     maxLength={8}
                     value={academicId}
                     onChange={(e) => onAcademicChange(e.target.value)}
-                    placeholder="42022001"
+                    placeholder={t("auth.academicIdPlaceholder")}
                     aria-invalid={Boolean(academicError)}
                     aria-describedby={academicError ? "academic-error" : undefined}
-                    className="w-full rounded-md border border-border bg-background pl-9 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
+                    className="w-full rounded-md border border-border bg-background ps-9 pe-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
                   />
                 </div>
                 {academicError && (
@@ -319,11 +327,11 @@ export default function SignupPage() {
                   htmlFor="email"
                   className="block text-sm font-medium text-foreground"
                 >
-                  Email Address
+                  {t("auth.emailLabel")}
                 </label>
                 <div className="relative">
                   <Mail
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
                     aria-hidden="true"
                   />
                   <input
@@ -337,7 +345,7 @@ export default function SignupPage() {
                     placeholder="student@hti.edu.eg"
                     aria-invalid={Boolean(emailError)}
                     aria-describedby={emailError ? "email-error" : undefined}
-                    className="w-full rounded-md border border-border bg-background pl-9 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
+                    className="w-full rounded-md border border-border bg-background ps-9 pe-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
                   />
                 </div>
                 {emailError && (
@@ -353,11 +361,11 @@ export default function SignupPage() {
                   htmlFor="password"
                   className="block text-sm font-medium text-foreground"
                 >
-                  Password
+                  {t("auth.passwordLabel")}
                 </label>
                 <div className="relative">
                   <Lock
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
                     aria-hidden="true"
                   />
                   <input
@@ -369,15 +377,15 @@ export default function SignupPage() {
                     maxLength={8}
                     value={password}
                     onChange={(e) => onPasswordChange(e.target.value)}
-                    placeholder="8 characters (letters & digits)"
+                    placeholder={t("auth.signupPasswordHint")}
                     aria-invalid={Boolean(passwordError)}
                     aria-describedby="password-rules"
-                    className="w-full rounded-md border border-border bg-background pl-9 pr-10 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
+                    className="w-full rounded-md border border-border bg-background ps-9 pe-10 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                    className="absolute end-2 top-1/2 -translate-y-1/2 p-1 rounded text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? (
@@ -397,7 +405,7 @@ export default function SignupPage() {
                       <X className="h-3.5 w-3.5 text-muted-foreground" aria-hidden="true" />
                     )}
                     <span className={pwLenOk ? "text-foreground font-medium" : "text-muted-foreground"}>
-                      Exactly 8 characters
+                      {t("auth.ruleLength")}
                     </span>
                   </div>
                   <div className="flex items-center gap-2 text-xs">
@@ -413,7 +421,7 @@ export default function SignupPage() {
                           : "text-muted-foreground"
                       }
                     >
-                      Letters and numbers only (no special characters)
+                      {t("auth.ruleChars")}
                     </span>
                   </div>
                 </div>
@@ -431,20 +439,20 @@ export default function SignupPage() {
                 disabled={!formValid}
                 className="w-full h-10 mt-3 font-medium"
               >
-                <span>Complete Registration</span>
-                {!loading && <ArrowRight className="h-4 w-4 ml-1" aria-hidden="true" />}
+                <span>{loading ? t("auth.registering") : t("auth.registerBtn")}</span>
+                {!loading && <ArrowIcon className="h-4 w-4 ms-1" aria-hidden="true" />}
               </Button>
             </form>
           </CardContent>
 
           <CardFooter className="flex flex-col gap-2 pt-2 pb-6 text-center text-xs text-muted-foreground">
             <p>
-              Already registered?{" "}
+              {t("auth.hasAccount")}{" "}
               <Link
                 href="/login"
                 className="font-semibold text-primary hover:underline underline-offset-4"
               >
-                Sign In Instead
+                {t("auth.signInInstead")}
               </Link>
             </p>
           </CardFooter>
@@ -453,7 +461,7 @@ export default function SignupPage() {
 
       {/* Footer */}
       <footer className="text-center text-xs text-muted-foreground py-4">
-        <p>© {new Date().getFullYear()} UniStream22 — HTI Computer Science</p>
+        <p>{t("common.copyright", { year: new Date().getFullYear() })}</p>
       </footer>
     </div>
   );

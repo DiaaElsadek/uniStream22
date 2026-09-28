@@ -5,9 +5,10 @@ import { useRouter } from "next/navigation";
 import PageLayout from "@/components/PageLayout";
 import Modal from "@/components/Modal";
 import Toast from "@/components/Toast";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { BookOpen, Users, Check, AlertCircle, Save } from "lucide-react";
+import { BookOpen, Users, Check, Save } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 const SUBJECTS = [
   "معالجة الصور الرقمية",
@@ -35,6 +36,7 @@ export default function SelectSchedulePage() {
   });
 
   const router = useRouter();
+  const { t } = useLanguage();
 
   const handleSelect = (subject: string, value: string) => {
     setSelected((prev) => ({
@@ -51,8 +53,8 @@ export default function SelectSchedulePage() {
         setToast({
           isOpen: true,
           type: "error",
-          title: "Session Expired",
-          message: "Please sign in again to save your schedule.",
+          title: t("selectSchedule.sessionExpiredTitle"),
+          message: t("selectSchedule.sessionExpiredMsg"),
         });
         setTimeout(() => router.replace("/login"), 1500);
         return;
@@ -69,8 +71,8 @@ export default function SelectSchedulePage() {
         setToast({
           isOpen: true,
           type: "success",
-          title: "Selections Saved",
-          message: "Your schedule groups have been updated successfully.",
+          title: t("selectSchedule.savedSuccessTitle"),
+          message: t("selectSchedule.savedSuccessMsg"),
         });
         setShowModal(false);
         setTimeout(() => router.replace("/home"), 1000);
@@ -78,7 +80,7 @@ export default function SelectSchedulePage() {
         setToast({
           isOpen: true,
           type: "error",
-          title: "Save Failed",
+          title: t("selectSchedule.savedFailedTitle"),
           message: data.message || "Failed to update your groups. Please try again.",
         });
       }
@@ -87,7 +89,7 @@ export default function SelectSchedulePage() {
       setToast({
         isOpen: true,
         type: "error",
-        title: "Unexpected Error",
+        title: t("common.error"),
         message: "A network error occurred while saving your choices.",
       });
     } finally {
@@ -98,8 +100,8 @@ export default function SelectSchedulePage() {
   return (
     <PageLayout
       maxWidth="narrow"
-      title="Select Course Groups"
-      description="Choose your assigned section and lab group for each course to configure your personalized timetable."
+      title={t("selectSchedule.title")}
+      description={t("selectSchedule.subtitle")}
     >
       <Toast
         isOpen={toast.isOpen}
@@ -123,10 +125,12 @@ export default function SelectSchedulePage() {
                       <BookOpen className="h-4 w-4" aria-hidden="true" />
                     </div>
                     <div>
-                      <h3 className="text-base font-semibold text-foreground" dir="rtl">
+                      <h3 className="text-base font-semibold text-foreground">
                         {subj}
                       </h3>
-                      <p className="text-xs text-muted-foreground">Course #{index + 1}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {t("selectSchedule.coursePrefix")} #{index + 1}
+                      </p>
                     </div>
                   </div>
 
@@ -141,10 +145,10 @@ export default function SelectSchedulePage() {
                         onChange={(e) => handleSelect(subj, e.target.value)}
                         className="w-full rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors cursor-pointer"
                       >
-                        <option value="null">None (Not Registered)</option>
+                        <option value="null">{t("selectSchedule.noneOption")}</option>
                         {GROUP_OPTIONS.map((num) => (
                           <option key={num} value={num}>
-                            Group {num} (المجموعة {num})
+                            {t("selectSchedule.groupOption", { num })}
                           </option>
                         ))}
                       </select>
@@ -165,7 +169,7 @@ export default function SelectSchedulePage() {
             className="w-full sm:w-auto gap-2"
           >
             <Save className="h-4 w-4" aria-hidden="true" />
-            <span>Review & Save Schedule</span>
+            <span>{t("selectSchedule.saveSchedule")}</span>
           </Button>
         </div>
       </div>
@@ -174,8 +178,8 @@ export default function SelectSchedulePage() {
       <Modal
         isOpen={showModal}
         onClose={() => setShowModal(false)}
-        title="Confirm Group Selections"
-        description="Please review your selected groups before saving your schedule."
+        title={t("selectSchedule.modalTitle")}
+        description={t("selectSchedule.modalDesc")}
         footer={
           <>
             <Button
@@ -183,7 +187,7 @@ export default function SelectSchedulePage() {
               onClick={() => setShowModal(false)}
               disabled={saving}
             >
-              Cancel
+              {t("selectSchedule.cancelBtn")}
             </Button>
             <Button
               variant="primary"
@@ -192,7 +196,7 @@ export default function SelectSchedulePage() {
               className="gap-1.5"
             >
               <Check className="h-4 w-4" aria-hidden="true" />
-              <span>Confirm & Save</span>
+              <span>{t("selectSchedule.confirmBtn")}</span>
             </Button>
           </>
         }
@@ -203,12 +207,14 @@ export default function SelectSchedulePage() {
               key={subj}
               className="flex items-center justify-between p-3 text-sm bg-card"
             >
-              <span className="font-medium text-foreground" dir="rtl">
+              <span className="font-medium text-foreground">
                 {subj}
               </span>
               <span className="inline-flex items-center gap-1 text-xs font-semibold px-2 py-0.5 rounded bg-secondary text-foreground">
                 <Users className="w-3 h-3 text-muted-foreground" aria-hidden="true" />
-                {selected[subj] ? `Group ${selected[subj]}` : "None"}
+                {selected[subj]
+                  ? t("selectSchedule.groupOption", { num: selected[subj] })
+                  : t("selectSchedule.noneOption")}
               </span>
             </div>
           ))}

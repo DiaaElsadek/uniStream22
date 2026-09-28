@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export interface WeekNavProps {
@@ -16,6 +17,8 @@ export default function WeekNav({
   onSelectWeek,
   className,
 }: WeekNavProps) {
+  const { t } = useLanguage();
+
   if (weeks.length <= 1) return null;
 
   return (
@@ -39,7 +42,7 @@ export default function WeekNav({
             : "bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80 border border-border"
         )}
       >
-        All Weeks
+        {t("common.all")}
       </button>
 
       {weeks.map((week) => {
@@ -60,7 +63,7 @@ export default function WeekNav({
                 : "bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80 border border-border"
             )}
           >
-            Week {week}
+            {t("home.week")} {week}
           </button>
         );
       })}

@@ -19,8 +19,10 @@ import {
   FileText,
   AlertTriangle,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function AddNewsPage() {
+  const { t } = useLanguage();
   const [news, setNews] = useState<DashboardNewsItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
@@ -66,7 +68,7 @@ export default function AddNewsPage() {
       setToast({
         isOpen: true,
         type: "error",
-        title: "Load Error",
+        title: t("common.error"),
         message: "Failed to fetch announcements list.",
       });
     } finally {
@@ -114,7 +116,7 @@ export default function AddNewsPage() {
       setToast({
         isOpen: true,
         type: "error",
-        title: "Required Fields",
+        title: t("common.error"),
         message: "Title and content are required.",
       });
       return;
@@ -140,7 +142,7 @@ export default function AddNewsPage() {
         setToast({
           isOpen: true,
           type: "success",
-          title: isEdit ? "Announcement Updated" : "Announcement Published",
+          title: isEdit ? t("dashboard.saveChangesBtn") : t("dashboard.publishBtn"),
           message: isEdit
             ? "Your changes have been saved."
             : "The announcement is now visible on the student feed.",
@@ -151,7 +153,7 @@ export default function AddNewsPage() {
         setToast({
           isOpen: true,
           type: "error",
-          title: "Save Failed",
+          title: t("common.error"),
           message: json.message || "Failed to save announcement.",
         });
       }
@@ -160,7 +162,7 @@ export default function AddNewsPage() {
       setToast({
         isOpen: true,
         type: "error",
-        title: "Error",
+        title: t("common.error"),
         message: "An unexpected error occurred.",
       });
     } finally {
@@ -184,7 +186,7 @@ export default function AddNewsPage() {
         setToast({
           isOpen: true,
           type: "success",
-          title: "Deleted",
+          title: t("common.delete"),
           message: "Announcement was removed successfully.",
         });
         setNews((prev) => prev.filter((n) => n.id !== deleteConfirmId));
@@ -193,7 +195,7 @@ export default function AddNewsPage() {
         setToast({
           isOpen: true,
           type: "error",
-          title: "Delete Error",
+          title: t("common.error"),
           message: json.message || "Failed to delete item.",
         });
       }
@@ -202,7 +204,7 @@ export default function AddNewsPage() {
       setToast({
         isOpen: true,
         type: "error",
-        title: "Error",
+        title: t("common.error"),
         message: "Failed to delete announcement.",
       });
     } finally {
@@ -242,12 +244,12 @@ export default function AddNewsPage() {
   return (
     <PageLayout
       isAdmin={true}
-      title="Announcements Dashboard"
-      description="Create, publish, and manage course announcements for HTI Year 4 students."
+      title={t("dashboard.title")}
+      description={t("dashboard.subtitle")}
       action={
         <Button variant="primary" onClick={openCreateModal} className="gap-2">
           <Plus className="h-4 w-4" aria-hidden="true" />
-          <span>New Announcement</span>
+          <span>{t("dashboard.newAnnouncement")}</span>
         </Button>
       }
     >
@@ -265,7 +267,7 @@ export default function AddNewsPage() {
           <CardContent className="p-4 flex items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
-                Total Items
+                {t("dashboard.totalItems")}
               </p>
               <h3 className="text-2xl font-bold text-foreground mt-1">{stats.total}</h3>
             </div>
@@ -279,7 +281,7 @@ export default function AddNewsPage() {
           <CardContent className="p-4 flex items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
-                Published
+                {t("dashboard.published")}
               </p>
               <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">
                 {stats.published}
@@ -295,7 +297,7 @@ export default function AddNewsPage() {
           <CardContent className="p-4 flex items-center justify-between">
             <div>
               <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
-                Drafts
+                {t("dashboard.drafts")}
               </p>
               <h3 className="text-2xl font-bold text-muted-foreground mt-1">{stats.drafts}</h3>
             </div>
@@ -310,51 +312,51 @@ export default function AddNewsPage() {
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
         <div className="relative flex-1">
           <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+            className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
             aria-hidden="true"
           />
           <input
             type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search by title, group, or author..."
-            className="w-full rounded-md border border-border bg-card pl-9 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+            placeholder={t("dashboard.searchPlaceholder")}
+            className="w-full rounded-md border border-border bg-card ps-9 pe-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
           />
         </div>
 
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as any)}
-          className="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer sm:w-44"
+          className="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer sm:w-48"
         >
-          <option value="all">All Announcements</option>
-          <option value="published">Published Only</option>
-          <option value="draft">Drafts Only</option>
+          <option value="all">{t("dashboard.filterAll")}</option>
+          <option value="published">{t("dashboard.filterPublished")}</option>
+          <option value="draft">{t("dashboard.filterDrafts")}</option>
         </select>
       </div>
 
       {/* Main Table Content */}
       {loading ? (
         <div className="py-20">
-          <LoadingSpinner size="lg" label="Loading announcements..." />
+          <LoadingSpinner size="lg" label={t("dashboard.loading")} />
         </div>
       ) : filteredList.length === 0 ? (
         <EmptyState
           icon={FileText}
-          title="No announcements found"
+          title={t("dashboard.noFoundTitle")}
           description={
             searchTerm
-              ? "No items match your search criteria. Try a different query."
-              : "No announcements created yet. Click 'New Announcement' to create one."
+              ? t("dashboard.noFoundDescSearch")
+              : t("dashboard.noFoundDescEmpty")
           }
           action={
             searchTerm ? (
               <Button variant="outline" size="sm" onClick={() => setSearchTerm("")}>
-                Clear Search
+                {t("dashboard.clearSearch")}
               </Button>
             ) : (
               <Button variant="primary" size="sm" onClick={openCreateModal}>
-                Create Announcement
+                {t("dashboard.createAnnouncement")}
               </Button>
             )
           }
@@ -382,8 +384,8 @@ export default function AddNewsPage() {
       <Modal
         isOpen={deleteConfirmId !== null}
         onClose={() => setDeleteConfirmId(null)}
-        title="Confirm Deletion"
-        description="Are you sure you want to permanently delete this announcement? This action cannot be undone."
+        title={t("dashboard.deleteModalTitle")}
+        description={t("dashboard.deleteModalDesc")}
         maxWidth="sm"
         footer={
           <>
@@ -392,21 +394,21 @@ export default function AddNewsPage() {
               onClick={() => setDeleteConfirmId(null)}
               disabled={deleting}
             >
-              Cancel
+              {t("dashboard.cancelBtn")}
             </Button>
             <Button
               variant="danger"
               onClick={handleDelete}
               isLoading={deleting}
             >
-              Delete
+              {t("dashboard.deleteBtn")}
             </Button>
           </>
         }
       >
         <div className="flex items-center gap-3 p-3 rounded-md bg-destructive/10 text-destructive text-sm">
           <AlertTriangle className="h-5 w-5 shrink-0" aria-hidden="true" />
-          <span>The announcement will be immediately removed from student feeds.</span>
+          <span>{t("dashboard.deleteWarning")}</span>
         </div>
       </Modal>
     </PageLayout>

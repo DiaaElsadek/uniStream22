@@ -14,6 +14,8 @@ import {
   X,
 } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
+import LanguageToggle from "./LanguageToggle";
+import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export interface NavbarProps {
@@ -23,6 +25,7 @@ export interface NavbarProps {
 export default function Navbar({ isAdmin }: NavbarProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useLanguage();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [resolvedIsAdmin, setResolvedIsAdmin] = useState(Boolean(isAdmin));
 
@@ -41,11 +44,11 @@ export default function Navbar({ isAdmin }: NavbarProps) {
   }, [pathname]);
 
   const navItems = [
-    { name: "Home", href: "/home", icon: Home },
-    { name: "Schedule", href: "/schedule", icon: Calendar },
-    { name: "Notes", href: "/notes", icon: StickyNote },
+    { name: t("nav.home"), href: "/home", icon: Home },
+    { name: t("nav.schedule"), href: "/schedule", icon: Calendar },
+    { name: t("nav.notes"), href: "/notes", icon: StickyNote },
     ...(resolvedIsAdmin
-      ? [{ name: "Dashboard", href: "/dashboard/addnews", icon: LayoutDashboard }]
+      ? [{ name: t("nav.dashboard"), href: "/dashboard/addnews", icon: LayoutDashboard }]
       : []),
   ];
 
@@ -103,22 +106,24 @@ export default function Navbar({ isAdmin }: NavbarProps) {
           })}
         </nav>
 
-        {/* Desktop Controls (Theme & Logout) */}
+        {/* Desktop Controls (Language, Theme & Logout) */}
         <div className="hidden md:flex items-center gap-2">
+          <LanguageToggle />
           <ThemeToggle />
           <button
             type="button"
             onClick={handleLogout}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-md text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-destructive cursor-pointer"
-            title="Log out of UniStream22"
+            title={t("nav.logout")}
           >
             <LogOut className="h-4 w-4" aria-hidden="true" />
-            <span>Logout</span>
+            <span>{t("nav.logout")}</span>
           </button>
         </div>
 
-        {/* Mobile Controls (Theme + Hamburger) */}
-        <div className="flex items-center gap-1 md:hidden">
+        {/* Mobile Controls (Language + Theme + Hamburger) */}
+        <div className="flex items-center gap-1.5 md:hidden">
+          <LanguageToggle />
           <ThemeToggle />
           <button
             type="button"
@@ -168,7 +173,7 @@ export default function Navbar({ isAdmin }: NavbarProps) {
               className="flex w-full items-center gap-2.5 px-3 py-2 rounded-md text-sm font-medium text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
             >
               <LogOut className="h-4 w-4" aria-hidden="true" />
-              <span>Logout</span>
+              <span>{t("nav.logout")}</span>
             </button>
           </div>
         </div>

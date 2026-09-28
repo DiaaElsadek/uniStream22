@@ -14,6 +14,7 @@ import {
   Save,
   StickyNote,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export type NoteColor = "amber" | "sky" | "emerald" | "purple" | "rose";
@@ -80,6 +81,7 @@ export default function NotesPage() {
   });
 
   const nextIdRef = useRef<number>(1);
+  const { t, isRTL } = useLanguage();
 
   // Normalize legacy note color names to new NoteColor palette
   const normalizeColor = (c: string): NoteColor => {
@@ -111,7 +113,7 @@ export default function NotesPage() {
             isPinned: Boolean(n.isPinned),
             date:
               n.date ||
-              new Date().toLocaleDateString("en-US", {
+              new Date().toLocaleDateString(isRTL ? "ar-EG" : "en-US", {
                 month: "short",
                 day: "numeric",
               }),
@@ -135,7 +137,7 @@ export default function NotesPage() {
           content: n.content || "",
           color: normalizeColor(n.color || "amber"),
           isPinned: Boolean(n.isPinned),
-          date: n.date || "Today",
+          date: n.date || t("common.today"),
         }));
         setNotes(formatted);
         nextIdRef.current = Math.max(...formatted.map((n) => n.id), 0) + 1;
@@ -166,8 +168,8 @@ export default function NotesPage() {
         setToast({
           isOpen: true,
           type: "success",
-          title: "Notes Saved",
-          message: "All your changes have been securely saved.",
+          title: t("notes.toastSavedTitle"),
+          message: t("notes.toastSavedMsg"),
         });
       }
     } catch (err) {
@@ -175,8 +177,8 @@ export default function NotesPage() {
       setToast({
         isOpen: true,
         type: "error",
-        title: "Sync Error",
-        message: "Saved locally. Server sync will retry later.",
+        title: t("notes.toastSyncErrorTitle"),
+        message: t("notes.toastSyncErrorMsg"),
       });
     } finally {
       setSaving(false);
@@ -197,7 +199,7 @@ export default function NotesPage() {
       content: "",
       color: randomColor,
       isPinned: false,
-      date: new Date().toLocaleDateString("en-US", {
+      date: new Date().toLocaleDateString(isRTL ? "ar-EG" : "en-US", {
         month: "short",
         day: "numeric",
       }),
@@ -240,7 +242,7 @@ export default function NotesPage() {
   };
 
   const deleteAll = () => {
-    if (window.confirm("Are you sure you want to delete all notes?")) {
+    if (window.confirm(t("notes.clearConfirm"))) {
       setNotes([]);
       saveNotesToServer([]);
     }
@@ -272,13 +274,13 @@ export default function NotesPage() {
               type="button"
               onClick={() => togglePin(note.id)}
               className={cn(
-                "p-1 rounded-md transition-colors",
+                "p-1 rounded-md transition-colors cursor-pointer",
                 note.isPinned
                   ? "text-primary bg-primary/10"
                   : "text-muted-foreground hover:text-foreground hover:bg-secondary"
               )}
-              title={note.isPinned ? "Unpin note" : "Pin note to top"}
-              aria-label={note.isPinned ? "Unpin note" : "Pin note to top"}
+              title={note.isPinned ? t("notes.unpinTooltip") : t("notes.pinTooltip")}
+              aria-label={note.isPinned ? t("notes.unpinTooltip") : t("notes.pinTooltip")}
             >
               {note.isPinned ? (
                 <Pin className="h-3.5 w-3.5 fill-primary text-primary" aria-hidden="true" />
@@ -290,9 +292,9 @@ export default function NotesPage() {
             <button
               type="button"
               onClick={() => changeColor(note.id)}
-              className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors"
-              title="Change note color"
-              aria-label="Change note color"
+              className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer"
+              title={t("notes.colorTooltip")}
+              aria-label={t("notes.colorTooltip")}
             >
               <Palette className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
@@ -300,9 +302,9 @@ export default function NotesPage() {
             <button
               type="button"
               onClick={() => deleteNote(note.id)}
-              className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors"
-              title="Delete note"
-              aria-label="Delete note"
+              className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+              title={t("notes.deleteTooltip")}
+              aria-label={t("notes.deleteTooltip")}
             >
               <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />
             </button>
@@ -314,7 +316,7 @@ export default function NotesPage() {
           value={note.content}
           onChange={(e) => updateContent(note.id, e.target.value)}
           onBlur={() => saveNotesToServer(notes)}
-          placeholder="Write your note, reminder, or task..."
+          placeholder={t("notes.textareaPlaceholder")}
           dir="auto"
           className={cn(
             "flex-1 w-full bg-transparent resize-none p-1 pt-2.5 text-sm leading-relaxed focus:outline-none",
@@ -328,8 +330,8 @@ export default function NotesPage() {
   return (
     <PageLayout
       isAdmin={isAdmin}
-      title="Personal Notes & Sticky Wall"
-      description="Quick study notes, lecture reminders, and project tasks organized in one place."
+      title={t("notes.title")}
+      description={t("notes.subtitle")}
       action={
         <div className="flex items-center gap-2">
           <Button
@@ -340,12 +342,12 @@ export default function NotesPage() {
             className="gap-1.5"
           >
             <Save className="h-4 w-4" aria-hidden="true" />
-            <span>Save All</span>
+            <span>{t("notes.saveAll")}</span>
           </Button>
 
           <Button variant="primary" size="sm" onClick={addNewNote} className="gap-1.5">
             <Plus className="h-4 w-4" aria-hidden="true" />
-            <span>New Note</span>
+            <span>{t("notes.newNote")}</span>
           </Button>
         </div>
       }
@@ -361,12 +363,12 @@ export default function NotesPage() {
       {notes.length === 0 ? (
         <EmptyState
           icon={StickyNote}
-          title="Your notes wall is empty"
-          description="Create your first note to keep track of assignments, exam dates, or project ideas."
+          title={t("notes.emptyTitle")}
+          description={t("notes.emptyDesc")}
           action={
             <Button variant="primary" onClick={addNewNote} className="gap-1.5">
               <Plus className="h-4 w-4" aria-hidden="true" />
-              <span>Create Note</span>
+              <span>{t("notes.createNoteBtn")}</span>
             </Button>
           }
         />
@@ -378,7 +380,7 @@ export default function NotesPage() {
               <div className="flex items-center gap-2 pb-1 border-b border-border">
                 <Pin className="h-4 w-4 text-primary fill-primary" aria-hidden="true" />
                 <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                  Pinned Notes ({pinnedNotes.length})
+                  {t("notes.pinnedNotes")} ({pinnedNotes.length})
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -392,7 +394,7 @@ export default function NotesPage() {
             {pinnedNotes.length > 0 && (
               <div className="flex items-center justify-between pb-1 border-b border-border">
                 <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">
-                  All Notes ({unpinnedNotes.length})
+                  {t("notes.allNotes")} ({unpinnedNotes.length})
                 </h2>
                 {notes.length > 3 && (
                   <button
@@ -400,7 +402,7 @@ export default function NotesPage() {
                     onClick={deleteAll}
                     className="text-xs text-destructive hover:underline cursor-pointer"
                   >
-                    Clear all notes
+                    {t("notes.clearAll")}
                   </button>
                 )}
               </div>

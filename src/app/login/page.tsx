@@ -10,6 +10,7 @@ import {
   EyeOff,
   GraduationCap,
   ArrowRight,
+  ArrowLeft,
   User,
   AlertCircle,
   MessageCircle,
@@ -24,6 +25,8 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import ThemeToggle from "@/components/ThemeToggle";
+import LanguageToggle from "@/components/LanguageToggle";
+import { useLanguage } from "@/context/LanguageContext";
 
 type LoginResponse = {
   message: string;
@@ -70,8 +73,10 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [guestLoading, setGuestLoading] = useState(false);
   const router = useRouter();
+  const { t, isRTL } = useLanguage();
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
   useEffect(() => {
     const savedEmail = localStorage.getItem("savedEmail") || localStorage.getItem("email");
@@ -81,9 +86,9 @@ export default function LoginPage() {
   const onEmailChange = (value: string) => {
     setEmail(value);
     if (value.length === 0) {
-      setEmailError("Email is required.");
+      setEmailError(t("auth.emailRequired"));
     } else if (!emailRegex.test(value)) {
-      setEmailError("Invalid email format.");
+      setEmailError(t("auth.emailInvalid"));
     } else {
       setEmailError(null);
     }
@@ -92,9 +97,9 @@ export default function LoginPage() {
   const onPasswordChange = (value: string) => {
     setPassword(value);
     if (value.length === 0) {
-      setPasswordError("Password is required.");
+      setPasswordError(t("auth.passwordRequired"));
     } else if (value.length < 6) {
-      setPasswordError("Password must be at least 6 characters.");
+      setPasswordError(t("auth.passwordMin"));
     } else {
       setPasswordError(null);
     }
@@ -166,10 +171,10 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 selection:bg-primary/20 selection:text-primary">
-      {/* Top Bar with Brand & Theme Toggle */}
+      {/* Top Bar with Brand, Language Toggle & Theme Toggle */}
       <div className="w-full max-w-6xl mx-auto flex items-center justify-between py-2">
         <Link
-          href="/login"
+          href="/"
           className="flex items-center gap-2.5 text-base font-bold tracking-tight text-foreground hover:text-primary transition-colors"
         >
           <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
@@ -177,7 +182,10 @@ export default function LoginPage() {
           </div>
           <span>UniStream22</span>
         </Link>
-        <ThemeToggle />
+        <div className="flex items-center gap-2">
+          <LanguageToggle />
+          <ThemeToggle />
+        </div>
       </div>
 
       {/* Main Login Card */}
@@ -188,10 +196,10 @@ export default function LoginPage() {
               <Lock className="h-5 w-5" aria-hidden="true" />
             </div>
             <CardTitle className="text-2xl font-bold tracking-tight text-foreground">
-              Welcome Back
+              {t("auth.loginTitle")}
             </CardTitle>
             <CardDescription className="text-sm text-muted-foreground mt-1">
-              Sign in to access your HTI courses, schedules, and notes
+              {t("auth.loginSubtitle")}
             </CardDescription>
           </CardHeader>
 
@@ -213,11 +221,11 @@ export default function LoginPage() {
                   htmlFor="email"
                   className="block text-sm font-medium text-foreground"
                 >
-                  Email Address
+                  {t("auth.emailLabel")}
                 </label>
                 <div className="relative">
                   <Mail
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
                     aria-hidden="true"
                   />
                   <input
@@ -228,10 +236,10 @@ export default function LoginPage() {
                     required
                     value={email}
                     onChange={(e) => onEmailChange(e.target.value)}
-                    placeholder="student@hti.edu.eg"
+                    placeholder={t("auth.emailPlaceholder")}
                     aria-invalid={Boolean(emailError)}
                     aria-describedby={emailError ? "email-error" : undefined}
-                    className="w-full rounded-md border border-border bg-background pl-9 pr-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
+                    className="w-full rounded-md border border-border bg-background ps-9 pe-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
                   />
                 </div>
                 {emailError && (
@@ -248,7 +256,7 @@ export default function LoginPage() {
                     htmlFor="password"
                     className="block text-sm font-medium text-foreground"
                   >
-                    Password
+                    {t("auth.passwordLabel")}
                   </label>
                   <Link
                     href="https://wa.me/201117244172"
@@ -257,12 +265,12 @@ export default function LoginPage() {
                     className="text-xs text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
                   >
                     <MessageCircle className="h-3 w-3" aria-hidden="true" />
-                    <span>Forgot password?</span>
+                    <span>{t("auth.forgotPassword")}</span>
                   </Link>
                 </div>
                 <div className="relative">
                   <Lock
-                    className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
                     aria-hidden="true"
                   />
                   <input
@@ -273,15 +281,15 @@ export default function LoginPage() {
                     required
                     value={password}
                     onChange={(e) => onPasswordChange(e.target.value)}
-                    placeholder="Enter your password"
+                    placeholder={t("auth.passwordPlaceholder")}
                     aria-invalid={Boolean(passwordError)}
                     aria-describedby={passwordError ? "password-error" : undefined}
-                    className="w-full rounded-md border border-border bg-background pl-9 pr-10 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
+                    className="w-full rounded-md border border-border bg-background ps-9 pe-10 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                    className="absolute end-2 top-1/2 -translate-y-1/2 p-1 rounded text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? (
@@ -306,8 +314,8 @@ export default function LoginPage() {
                 disabled={!formValid || guestLoading}
                 className="w-full h-10 mt-2 font-medium"
               >
-                <span>Sign In</span>
-                {!loading && <ArrowRight className="h-4 w-4 ml-1" aria-hidden="true" />}
+                <span>{loading ? t("auth.signingIn") : t("auth.signInBtn")}</span>
+                {!loading && <ArrowIcon className="h-4 w-4 ms-1" aria-hidden="true" />}
               </Button>
             </form>
 
@@ -316,7 +324,7 @@ export default function LoginPage() {
                 <div className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">or</span>
+                <span className="bg-card px-2 text-muted-foreground">{t("auth.or")}</span>
               </div>
             </div>
 
@@ -329,19 +337,19 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full h-10 font-medium"
             >
-              <User className="h-4 w-4 mr-1.5" aria-hidden="true" />
-              <span>Continue as Guest</span>
+              <User className="h-4 w-4 me-1.5" aria-hidden="true" />
+              <span>{t("auth.guestBtn")}</span>
             </Button>
           </CardContent>
 
           <CardFooter className="flex flex-col gap-2 pt-2 pb-6 text-center text-xs text-muted-foreground">
             <p>
-              Don&apos;t have an account?{" "}
+              {t("auth.noAccount")}{" "}
               <Link
                 href="/signup"
                 className="font-semibold text-primary hover:underline underline-offset-4"
               >
-                Sign Up Now
+                {t("auth.signUpNow")}
               </Link>
             </p>
           </CardFooter>
@@ -350,7 +358,7 @@ export default function LoginPage() {
 
       {/* Footer */}
       <footer className="text-center text-xs text-muted-foreground py-4">
-        <p>© {new Date().getFullYear()} UniStream22 — HTI Computer Science</p>
+        <p>{t("common.copyright", { year: new Date().getFullYear() })}</p>
       </footer>
     </div>
   );

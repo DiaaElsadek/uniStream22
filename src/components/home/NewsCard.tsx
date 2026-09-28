@@ -2,8 +2,9 @@
 
 import React from "react";
 import Link from "next/link";
-import { BookOpen, Calendar, Users, Hash, ArrowRight } from "lucide-react";
+import { BookOpen, Calendar, Users, Hash, ArrowRight, ArrowLeft } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card";
+import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export interface NewsItem {
@@ -28,38 +29,41 @@ const SUBJECTS = [
 
 const priorityConfig = {
   high: {
-    label: "High Priority",
+    key: "home.highPriority",
     badge: "bg-destructive/10 text-destructive border-destructive/20",
     dot: "bg-destructive",
   },
   medium: {
-    label: "Medium",
+    key: "home.mediumPriority",
     badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     dot: "bg-emerald-500",
   },
   low: {
-    label: "Low",
+    key: "home.lowPriority",
     badge: "bg-primary/10 text-primary border-primary/20",
     dot: "bg-primary",
   },
   default: {
-    label: "General",
+    key: "home.generalNotice",
     badge: "bg-secondary text-muted-foreground border-border",
     dot: "bg-muted-foreground",
   },
 };
 
 export default function NewsCard({ item }: { item: NewsItem }) {
+  const { t, isRTL } = useLanguage();
   const priorityKey = (item.priorty?.toLowerCase() as keyof typeof priorityConfig) || "default";
   const priority = priorityConfig[priorityKey] || priorityConfig.default;
-  const subjectName = SUBJECTS[item.subjectId - 1] || "Global";
-  const groupName = item.groupId === 0 ? "Global" : `Group ${item.groupId}`;
+  const subjectName = SUBJECTS[item.subjectId - 1] || t("home.globalNotice");
+  const groupName = item.groupId === 0 ? t("home.globalNotice") : `${t("home.groupPrefix")} ${item.groupId}`;
   const formattedDate = item.createdAt
-    ? new Date(item.createdAt).toLocaleDateString("en-US", {
+    ? new Date(item.createdAt).toLocaleDateString(isRTL ? "ar-EG" : "en-US", {
         month: "short",
         day: "numeric",
       })
     : null;
+
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
   return (
     <Card hoverable className="flex flex-col h-full overflow-hidden transition-all duration-150">
@@ -73,12 +77,12 @@ export default function NewsCard({ item }: { item: NewsItem }) {
             )}
           >
             <span className={cn("w-1.5 h-1.5 rounded-full", priority.dot)} aria-hidden="true" />
-            {priority.label}
+            {t(priority.key)}
           </span>
 
           <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
             <Hash className="w-3 h-3" aria-hidden="true" />
-            Week {item.week}
+            {t("home.week")} {item.week}
           </span>
         </div>
 
@@ -105,7 +109,7 @@ export default function NewsCard({ item }: { item: NewsItem }) {
           </span>
 
           {formattedDate && (
-            <span className="inline-flex items-center gap-1 ml-auto">
+            <span className="inline-flex items-center gap-1 ms-auto">
               <Calendar className="w-3.5 h-3.5" aria-hidden="true" />
               <span>{formattedDate}</span>
             </span>
@@ -118,8 +122,8 @@ export default function NewsCard({ item }: { item: NewsItem }) {
           href={`/new/${item.id}`}
           className="inline-flex w-full items-center justify-center gap-1.5 rounded-md border border-border bg-secondary/50 px-3 py-2 text-xs font-medium text-foreground hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
-          <span>Read Full Details</span>
-          <ArrowRight className="w-3.5 h-3.5" aria-hidden="true" />
+          <span>{t("home.readMore")}</span>
+          <ArrowIcon className="w-3.5 h-3.5" aria-hidden="true" />
         </Link>
       </CardFooter>
     </Card>

@@ -11,6 +11,7 @@ import {
   Smartphone,
   ShieldCheck,
   ArrowRight,
+  ArrowLeft,
   CheckCircle2,
   Clock,
   Users,
@@ -20,112 +21,20 @@ import {
   MapPin,
   Hash,
   ChevronRight,
+  ChevronLeft,
   LogIn,
   UserPlus,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import ThemeToggle from "@/components/ThemeToggle";
-
-const COURSES = [
-  {
-    code: "CS401",
-    nameEn: "Digital Image Processing",
-    nameAr: "معالجة الصور الرقمية",
-    description: "Image enhancement, spatial filtering, frequency domain, and edge detection.",
-  },
-  {
-    code: "CS402",
-    nameEn: "Cloud Computing",
-    nameAr: "الحوسبة السحابية",
-    description: "Cloud architectures, virtualization, serverless models, and distributed systems.",
-  },
-  {
-    code: "CS403",
-    nameEn: "Data Mining",
-    nameAr: "التنقيب على البيانات",
-    description: "Pattern evaluation, classification algorithms, clustering, and association rules.",
-  },
-  {
-    code: "CS404",
-    nameEn: "Data Communications",
-    nameAr: "اتصالات البيانات",
-    description: "Network protocols, OSI reference model, transmission media, and routing logic.",
-  },
-  {
-    code: "CS405",
-    nameEn: "Graduation Project 1",
-    nameAr: "مشروع تخرج 1",
-    description: "Problem formulation, literature review, systems architecture, and milestones.",
-  },
-];
-
-const FEATURES = [
-  {
-    icon: Newspaper,
-    title: "Centralized Academic Feed",
-    description:
-      "All lecture slides, assignment deadlines, and department alerts published directly by faculty, sorted by week and priority.",
-    badge: "Announcements",
-  },
-  {
-    icon: Calendar,
-    title: "Personalized Timetable",
-    description:
-      "A weekly class schedule built automatically from your assigned lab and lecture groups, highlighting today's upcoming sessions.",
-    badge: "Schedule",
-  },
-  {
-    icon: Users,
-    title: "Group-Specific Filtering",
-    description:
-      "Never miss an announcement meant for your section. Filter feeds and classes by Group 1 through 6 or global announcements.",
-    badge: "Smart Routing",
-  },
-  {
-    icon: StickyNote,
-    title: "Personal Study Scratchpad",
-    description:
-      "Create study notes, checklist items, and exam reminders on a clean personal board with color tags and instant cloud sync.",
-    badge: "Productivity",
-  },
-  {
-    icon: Smartphone,
-    title: "Instant PWA & Offline Support",
-    description:
-      "Install UniStream22 directly onto your phone or laptop. Fast loading and reliable offline access even in poor campus connectivity.",
-    badge: "Progressive Web App",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Secure & Student-Focused",
-    description:
-      "Verified student accounts tied to your HTI Academic ID. Clean, calm academic interface with zero ads and zero visual clutter.",
-    badge: "Privacy First",
-  },
-];
-
-const STEPS = [
-  {
-    step: "01",
-    title: "Create Student Profile",
-    description: "Register with your 8-digit HTI academic ID (4202xxxx) and set up your secure password.",
-  },
-  {
-    step: "02",
-    title: "Select Course Sections",
-    description: "Choose your assigned section and lab group for each of the 5 Fourth-Year CS courses.",
-  },
-  {
-    step: "03",
-    title: "Access Everything in One Place",
-    description: "View your personalized timetable, read course updates, and manage your study notes.",
-  },
-];
+import LanguageToggle from "@/components/LanguageToggle";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function LandingPage() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
+  const { t, isRTL } = useLanguage();
 
   useEffect(() => {
     const token = localStorage.getItem("userToken");
@@ -133,6 +42,94 @@ export default function LandingPage() {
       setIsLoggedIn(true);
     }
   }, []);
+
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
+  const ChevronIcon = isRTL ? ChevronLeft : ChevronRight;
+
+  const COURSES = [
+    {
+      code: "CS401",
+      name: t("landing.course1Name"),
+      description: t("landing.course1Desc"),
+    },
+    {
+      code: "CS402",
+      name: t("landing.course2Name"),
+      description: t("landing.course2Desc"),
+    },
+    {
+      code: "CS403",
+      name: t("landing.course3Name"),
+      description: t("landing.course3Desc"),
+    },
+    {
+      code: "CS404",
+      name: t("landing.course4Name"),
+      description: t("landing.course4Desc"),
+    },
+    {
+      code: "CS405",
+      name: t("landing.course5Name"),
+      description: t("landing.course5Desc"),
+    },
+  ];
+
+  const FEATURES = [
+    {
+      icon: Newspaper,
+      title: t("landing.feat1Title"),
+      description: t("landing.feat1Desc"),
+      badge: t("landing.feat1Badge"),
+    },
+    {
+      icon: Calendar,
+      title: t("landing.feat2Title"),
+      description: t("landing.feat2Desc"),
+      badge: t("landing.feat2Badge"),
+    },
+    {
+      icon: Users,
+      title: t("landing.feat3Title"),
+      description: t("landing.feat3Desc"),
+      badge: t("landing.feat3Badge"),
+    },
+    {
+      icon: StickyNote,
+      title: t("landing.feat4Title"),
+      description: t("landing.feat4Desc"),
+      badge: t("landing.feat4Badge"),
+    },
+    {
+      icon: Smartphone,
+      title: t("landing.feat5Title"),
+      description: t("landing.feat5Desc"),
+      badge: t("landing.feat5Badge"),
+    },
+    {
+      icon: ShieldCheck,
+      title: t("landing.feat6Title"),
+      description: t("landing.feat6Desc"),
+      badge: t("landing.feat6Badge"),
+    },
+  ];
+
+  const STEPS = [
+    {
+      step: t("landing.step1Number"),
+      title: t("landing.step1Title"),
+      description: t("landing.step1Desc"),
+    },
+    {
+      step: t("landing.step2Number"),
+      title: t("landing.step2Title"),
+      description: t("landing.step2Desc"),
+    },
+    {
+      step: t("landing.step3Number"),
+      title: t("landing.step3Title"),
+      description: t("landing.step3Desc"),
+    },
+  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col selection:bg-primary/20 selection:text-primary">
@@ -148,29 +145,32 @@ export default function LandingPage() {
               <GraduationCap className="h-5 w-5" aria-hidden="true" />
             </div>
             <div className="flex flex-col">
-              <span className="leading-tight">UniStream22</span>
-              <span className="text-[10px] text-muted-foreground font-medium">HTI Computer Science</span>
+              <span className="leading-tight">{t("common.appName")}</span>
+              <span className="text-[10px] text-muted-foreground font-medium">
+                {t("common.appSubtitle")}
+              </span>
             </div>
           </Link>
 
           {/* Center Navigation Links (Desktop) */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-muted-foreground">
             <a href="#features" className="hover:text-foreground transition-colors">
-              Features
+              {t("landing.navFeatures")}
             </a>
             <a href="#preview" className="hover:text-foreground transition-colors">
-              Interface
+              {t("landing.navPreview")}
             </a>
             <a href="#courses" className="hover:text-foreground transition-colors">
-              Curriculum
+              {t("landing.navCurriculum")}
             </a>
             <a href="#workflow" className="hover:text-foreground transition-colors">
-              How It Works
+              {t("landing.navWorkflow")}
             </a>
           </nav>
 
           {/* Right Actions */}
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2">
+            <LanguageToggle />
             <ThemeToggle />
 
             {isLoggedIn ? (
@@ -180,21 +180,21 @@ export default function LandingPage() {
                 onClick={() => router.push("/home")}
                 className="gap-1.5"
               >
-                <span>Go to Dashboard</span>
-                <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                <span>{t("landing.goToDashboard")}</span>
+                <ArrowIcon className="h-4 w-4" aria-hidden="true" />
               </Button>
             ) : (
               <div className="flex items-center gap-2">
                 <Link href="/login">
                   <Button variant="ghost" size="sm" className="hidden sm:inline-flex gap-1.5">
                     <LogIn className="h-3.5 w-3.5" aria-hidden="true" />
-                    <span>Sign In</span>
+                    <span>{t("landing.signIn")}</span>
                   </Button>
                 </Link>
                 <Link href="/signup">
                   <Button variant="primary" size="sm" className="gap-1.5">
                     <UserPlus className="h-3.5 w-3.5" aria-hidden="true" />
-                    <span>Register</span>
+                    <span>{t("landing.register")}</span>
                   </Button>
                 </Link>
               </div>
@@ -211,18 +211,17 @@ export default function LandingPage() {
               {/* Academic Badge */}
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-secondary border border-border text-foreground">
                 <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
-                <span>Higher Technological Institute • CS Class of 2026</span>
+                <span>{t("landing.heroBadge")}</span>
               </div>
 
               {/* Headline */}
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.15]">
-                Your Entire Academic Semester in One Calm, Focused Space.
+              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.2]">
+                {t("landing.heroTitle")}
               </h1>
 
               {/* Subtitle */}
               <p className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto">
-                UniStream22 organizes departmental announcements, personalized weekly lecture schedules, lab
-                groups, and study notes for 4th-year computer science students — fast, clean, and distraction-free.
+                {t("landing.heroSubtitle")}
               </p>
 
               {/* Action Buttons */}
@@ -234,20 +233,20 @@ export default function LandingPage() {
                     onClick={() => router.push("/home")}
                     className="w-full sm:w-auto gap-2 px-6 h-11 text-base"
                   >
-                    <span>Launch Student Feed</span>
-                    <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                    <span>{t("landing.launchFeed")}</span>
+                    <ArrowIcon className="h-4 w-4" aria-hidden="true" />
                   </Button>
                 ) : (
                   <>
                     <Link href="/signup" className="w-full sm:w-auto">
                       <Button size="lg" variant="primary" className="w-full gap-2 px-6 h-11 text-base">
-                        <span>Get Started Free</span>
-                        <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                        <span>{t("landing.getStarted")}</span>
+                        <ArrowIcon className="h-4 w-4" aria-hidden="true" />
                       </Button>
                     </Link>
                     <Link href="/login" className="w-full sm:w-auto">
                       <Button size="lg" variant="outline" className="w-full gap-2 px-6 h-11 text-base">
-                        <span>Sign In to Account</span>
+                        <span>{t("landing.signInAccount")}</span>
                       </Button>
                     </Link>
                   </>
@@ -258,15 +257,15 @@ export default function LandingPage() {
               <div className="pt-4 flex flex-wrap items-center justify-center gap-6 text-xs text-muted-foreground">
                 <span className="inline-flex items-center gap-1.5">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
-                  <span>Verified 4202 ID Access</span>
+                  <span>{t("landing.trustId")}</span>
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
-                  <span>No Ads or Clutter</span>
+                  <span>{t("landing.trustNoAds")}</span>
                 </span>
                 <span className="inline-flex items-center gap-1.5">
                   <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
-                  <span>Installable PWA</span>
+                  <span>{t("landing.trustPwa")}</span>
                 </span>
               </div>
             </div>
@@ -284,7 +283,9 @@ export default function LandingPage() {
                   <div className="px-3 py-1 rounded-md bg-secondary text-[11px] font-mono text-muted-foreground truncate max-w-xs sm:max-w-md">
                     unistream22.vercel.app/home
                   </div>
-                  <div className="text-[11px] font-medium text-foreground">Semester 2 Preview</div>
+                  <div className="text-[11px] font-medium text-foreground">
+                    {t("landing.previewSemester")}
+                  </div>
                 </div>
 
                 {/* Mock Content Layout */}
@@ -293,38 +294,40 @@ export default function LandingPage() {
                   <div className="md:col-span-2 space-y-3">
                     <div className="flex items-center justify-between text-xs text-muted-foreground pb-1">
                       <span className="font-semibold text-foreground uppercase tracking-wider">
-                        Latest Announcement (Week 4)
+                        {t("landing.previewLatestAnnounce")}
                       </span>
-                      <span className="text-primary font-medium">Just Published</span>
+                      <span className="text-primary font-medium">
+                        {t("landing.previewJustPublished")}
+                      </span>
                     </div>
 
                     <div className="rounded-lg border border-border bg-card p-5 space-y-3">
                       <div className="flex items-center justify-between gap-2">
                         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20">
                           <span className="w-1.5 h-1.5 rounded-full bg-destructive" />
-                          High Priority
+                          {t("landing.previewHighPriority")}
                         </span>
                         <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
-                          <Hash className="w-3 h-3" /> Week 4
+                          <Hash className="w-3 h-3" /> {t("landing.previewWeek")}
                         </span>
                       </div>
 
                       <h4 className="text-base font-bold text-foreground">
-                        Digital Image Processing — Lab Assignment #3 Guidelines
+                        {t("landing.previewAnnounceTitle")}
                       </h4>
 
-                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2" dir="rtl">
-                        برجاء تسليم كود الفلترة المكانية (Spatial Filtering) على منصة المعهد قبل يوم الخميس القادم الساعة 11:59 مساءً.
+                      <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+                        {t("landing.previewAnnounceContent")}
                       </p>
 
                       <div className="flex items-center gap-4 text-xs text-muted-foreground pt-2 border-t border-border">
                         <span className="inline-flex items-center gap-1 font-medium text-foreground">
-                          <BookOpen className="w-3.5 h-3.5 text-primary" /> معالجة الصور الرقمية
+                          <BookOpen className="w-3.5 h-3.5 text-primary" /> {t("landing.previewCourseName")}
                         </span>
                         <span className="inline-flex items-center gap-1">
-                          <Users className="w-3.5 h-3.5" /> Group 2
+                          <Users className="w-3.5 h-3.5" /> {t("landing.previewGroupName")}
                         </span>
-                        <span className="inline-flex items-center gap-1 ml-auto">
+                        <span className="inline-flex items-center gap-1 ms-auto">
                           <Calendar className="w-3.5 h-3.5" /> Oct 24
                         </span>
                       </div>
@@ -335,33 +338,35 @@ export default function LandingPage() {
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
-                        Today&apos;s Lecture
+                        {t("landing.previewTodayLecture")}
                       </span>
                       <div className="rounded-lg border border-primary/40 bg-card p-3.5 space-y-1.5">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-foreground">Cloud Computing</span>
+                          <span className="text-xs font-bold text-foreground">
+                            {t("landing.previewCloudComputing")}
+                          </span>
                           <span className="text-[10px] px-1.5 py-0.5 rounded bg-primary text-primary-foreground font-semibold">
-                            Today
+                            {t("common.today")}
                           </span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <Clock className="w-3 h-3 text-primary" />
-                          <span>9:00 AM - 10:40 AM</span>
+                          <span>{t("landing.previewLectureTime")}</span>
                         </div>
                         <div className="flex items-center gap-2 text-xs text-muted-foreground">
                           <MapPin className="w-3 h-3" />
-                          <span>Hall B3 (Faculty Building)</span>
+                          <span>{t("landing.previewLectureHall")}</span>
                         </div>
                       </div>
                     </div>
 
                     <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 space-y-1">
                       <div className="flex items-center justify-between text-xs text-amber-800 dark:text-amber-300 font-semibold">
-                        <span>Project Note</span>
+                        <span>{t("landing.previewProjectNote")}</span>
                         <StickyNote className="w-3.5 h-3.5" />
                       </div>
                       <p className="text-xs text-foreground leading-snug">
-                        Finalize dataset preprocessing for Data Mining project with team before Sunday.
+                        {t("landing.previewNoteContent")}
                       </p>
                     </div>
                   </div>
@@ -375,12 +380,14 @@ export default function LandingPage() {
         <section id="features" className="py-16 sm:py-24 border-b border-border bg-background">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 sm:mb-16">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">Features Built for Focus</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {t("landing.featuresBadge")}
+              </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-                Engineered for Academic Clarity
+                {t("landing.featuresTitle")}
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Every tool is intentionally crafted to save you time and remove distractions throughout your final academic year.
+                {t("landing.featuresSubtitle")}
               </p>
             </div>
 
@@ -416,12 +423,14 @@ export default function LandingPage() {
         <section id="courses" className="py-16 sm:py-24 border-b border-border bg-secondary/20">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 sm:mb-16">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">4th Year CS Curriculum</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {t("landing.curriculumBadge")}
+              </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-                Courses Supported
+                {t("landing.curriculumTitle")}
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground">
-                Full integration for all Semester 2 lecture schedules, lab sections, and assignments.
+                {t("landing.curriculumSubtitle")}
               </p>
             </div>
 
@@ -435,13 +444,10 @@ export default function LandingPage() {
                     <span className="text-xs font-mono font-bold text-primary px-2 py-0.5 rounded bg-primary/10">
                       {course.code}
                     </span>
-                    <span className="text-xs text-muted-foreground font-medium">Course #{idx + 1}</span>
+                    <span className="text-xs text-muted-foreground font-medium">#{idx + 1}</span>
                   </div>
 
-                  <h3 className="text-base font-bold text-foreground">{course.nameEn}</h3>
-                  <p className="text-sm font-semibold text-primary/90" dir="rtl">
-                    {course.nameAr}
-                  </p>
+                  <h3 className="text-base font-bold text-foreground">{course.name}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed pt-1 border-t border-border">
                     {course.description}
                   </p>
@@ -454,15 +460,15 @@ export default function LandingPage() {
                   <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
                     <Layers className="h-4 w-4" />
                   </div>
-                  <h3 className="text-base font-bold text-foreground">Lab & Section Groups</h3>
+                  <h3 className="text-base font-bold text-foreground">{t("landing.groupsCardTitle")}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Custom group allocation for Groups 1 to 6. Switch your section anytime to update your schedule instantly.
+                    {t("landing.groupsCardDesc")}
                   </p>
                 </div>
                 <Link href={isLoggedIn ? "/selectschedule" : "/signup"} className="pt-4">
                   <Button variant="outline" size="sm" className="w-full gap-1 text-xs">
-                    <span>Configure Groups</span>
-                    <ChevronRight className="h-3.5 w-3.5" />
+                    <span>{t("landing.configureGroups")}</span>
+                    <ChevronIcon className="h-3.5 w-3.5" />
                   </Button>
                 </Link>
               </div>
@@ -474,12 +480,14 @@ export default function LandingPage() {
         <section id="workflow" className="py-16 sm:py-24 border-b border-border bg-background">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 sm:mb-16">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">Simple Onboarding</span>
+              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+                {t("landing.workflowBadge")}
+              </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
-                Up and Running in 30 Seconds
+                {t("landing.workflowTitle")}
               </h2>
               <p className="text-sm sm:text-base text-muted-foreground">
-                No complex verification or complicated setup. Designed specifically for HTI CS students.
+                {t("landing.workflowSubtitle")}
               </p>
             </div>
 
@@ -499,10 +507,10 @@ export default function LandingPage() {
         <section className="py-16 sm:py-20 bg-secondary/30">
           <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
             <h2 className="text-2xl sm:text-4xl font-bold tracking-tight text-foreground">
-              Ready for a Smoother Semester?
+              {t("landing.ctaTitle")}
             </h2>
             <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
-              Join your fellow HTI Fourth-Year CS colleagues and stay on top of all your lectures and notices.
+              {t("landing.ctaSubtitle")}
             </p>
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
               {isLoggedIn ? (
@@ -512,20 +520,20 @@ export default function LandingPage() {
                   onClick={() => router.push("/home")}
                   className="w-full sm:w-auto gap-2 px-8 h-11"
                 >
-                  <span>Open Your Feed</span>
-                  <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                  <span>{t("landing.ctaOpenFeed")}</span>
+                  <ArrowIcon className="h-4 w-4" aria-hidden="true" />
                 </Button>
               ) : (
                 <>
                   <Link href="/signup" className="w-full sm:w-auto">
                     <Button size="lg" variant="primary" className="w-full gap-2 px-8 h-11">
-                      <span>Create Account</span>
-                      <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                      <span>{t("landing.ctaCreateAccount")}</span>
+                      <ArrowIcon className="h-4 w-4" aria-hidden="true" />
                     </Button>
                   </Link>
                   <Link href="/login" className="w-full sm:w-auto">
                     <Button size="lg" variant="outline" className="w-full gap-2 px-8 h-11">
-                      <span>Sign In</span>
+                      <span>{t("landing.ctaSignIn")}</span>
                     </Button>
                   </Link>
                 </>
@@ -542,7 +550,7 @@ export default function LandingPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded bg-primary text-primary-foreground font-bold text-xs">
               U
             </div>
-            <span>© {new Date().getFullYear()} UniStream22 • Higher Technological Institute</span>
+            <span>{t("common.copyright", { year: new Date().getFullYear() })}</span>
           </div>
 
           <div className="flex items-center gap-6">
@@ -552,13 +560,13 @@ export default function LandingPage() {
               rel="noopener noreferrer"
               className="text-foreground hover:text-primary transition-colors underline-offset-4 hover:underline"
             >
-              Created by Diaa Elsadek
+              {t("common.developedBy")} {t("common.authorName")}
             </a>
             <Link href="/login" className="hover:text-foreground transition-colors">
-              Student Login
+              {t("landing.footerStudentLogin")}
             </Link>
             <Link href="/signup" className="hover:text-foreground transition-colors">
-              Registration
+              {t("landing.footerRegistration")}
             </Link>
           </div>
         </div>

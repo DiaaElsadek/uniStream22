@@ -11,6 +11,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
   ArrowLeft,
+  ArrowRight,
   Share2,
   Calendar,
   BookOpen,
@@ -20,6 +21,7 @@ import {
   FileQuestion,
   Check,
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
 const SUBJECTS = [
@@ -32,22 +34,22 @@ const SUBJECTS = [
 
 const priorityConfig = {
   high: {
-    label: "High Priority",
+    key: "home.highPriority",
     badge: "bg-destructive/10 text-destructive border-destructive/20",
     dot: "bg-destructive",
   },
   medium: {
-    label: "Medium",
+    key: "home.mediumPriority",
     badge: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20",
     dot: "bg-emerald-500",
   },
   low: {
-    label: "Low",
+    key: "home.lowPriority",
     badge: "bg-primary/10 text-primary border-primary/20",
     dot: "bg-primary",
   },
   default: {
-    label: "General Notice",
+    key: "home.generalNotice",
     badge: "bg-secondary text-muted-foreground border-border",
     dot: "bg-muted-foreground",
   },
@@ -57,6 +59,7 @@ export default function NewsDetailsPage() {
   const router = useRouter();
   const params = useParams();
   const id = params?.id as string;
+  const { t, isRTL } = useLanguage();
 
   const [newsItem, setNewsItem] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
@@ -64,6 +67,8 @@ export default function NewsDetailsPage() {
   const [extractedLinks, setExtractedLinks] = useState<{ url: string; displayText: string }[]>([]);
   const [toastOpen, setToastOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  const BackArrow = isRTL ? ArrowRight : ArrowLeft;
 
   const extractLinksFromContent = (content: string) => {
     if (!content) return [];
@@ -148,10 +153,10 @@ export default function NewsDetailsPage() {
 
   const priorityKey = (newsItem?.priorty?.toLowerCase() as keyof typeof priorityConfig) || "default";
   const priority = priorityConfig[priorityKey] || priorityConfig.default;
-  const subjectName = newsItem ? SUBJECTS[newsItem.subjectId - 1] || "Global Announcement" : "";
-  const groupText = newsItem ? (newsItem.groupId === 0 ? "Global" : `Group ${newsItem.groupId}`) : "";
+  const subjectName = newsItem ? SUBJECTS[newsItem.subjectId - 1] || t("home.globalNotice") : "";
+  const groupText = newsItem ? (newsItem.groupId === 0 ? t("home.globalNotice") : `${t("home.groupPrefix")} ${newsItem.groupId}`) : "";
   const formattedDate = newsItem?.createdAt
-    ? new Date(newsItem.createdAt).toLocaleDateString("en-US", {
+    ? new Date(newsItem.createdAt).toLocaleDateString(isRTL ? "ar-EG" : "en-US", {
         year: "numeric",
         month: "long",
         day: "numeric",
@@ -164,16 +169,16 @@ export default function NewsDetailsPage() {
         isOpen={toastOpen}
         onClose={() => setToastOpen(false)}
         type="success"
-        title="Link Copied"
-        message="Announcement link has been copied to your clipboard."
+        title={t("newsDetail.linkCopiedTitle")}
+        message={t("newsDetail.linkCopiedMsg")}
       />
 
       {/* Navigation & Action Bar */}
       <div className="flex items-center justify-between pb-6 mb-6 border-b border-border">
         <Link href="/home">
           <Button variant="ghost" size="sm" className="gap-2 text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
-            <span>Back to Announcements</span>
+            <BackArrow className="h-4 w-4" aria-hidden="true" />
+            <span>{t("newsDetail.backToAnnouncements")}</span>
           </Button>
         </Link>
 
@@ -190,23 +195,23 @@ export default function NewsDetailsPage() {
             ) : (
               <Share2 className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
             )}
-            <span>{copied ? "Copied" : "Share"}</span>
+            <span>{copied ? t("newsDetail.copied") : t("newsDetail.share")}</span>
           </Button>
         )}
       </div>
 
       {loading ? (
         <div className="py-24">
-          <LoadingSpinner size="lg" label="Loading announcement..." />
+          <LoadingSpinner size="lg" label={t("common.loading")} />
         </div>
       ) : !newsItem ? (
         <EmptyState
           icon={FileQuestion}
-          title="Announcement Not Found"
-          description="The announcement you are looking for does not exist or may have been unpublished."
+          title={t("newsDetail.notFoundTitle")}
+          description={t("newsDetail.notFoundDesc")}
           action={
             <Link href="/home">
-              <Button variant="primary">Return to Feed</Button>
+              <Button variant="primary">{t("newsDetail.returnToFeed")}</Button>
             </Link>
           }
         />
@@ -222,12 +227,12 @@ export default function NewsDetailsPage() {
                 )}
               >
                 <span className={cn("w-1.5 h-1.5 rounded-full", priority.dot)} aria-hidden="true" />
-                {priority.label}
+                {t(priority.key)}
               </span>
 
               <span className="inline-flex items-center gap-1 text-xs text-muted-foreground px-2.5 py-0.5 rounded-md bg-secondary border border-border">
                 <Hash className="w-3 h-3" aria-hidden="true" />
-                Week {newsItem.week}
+                {t("home.week")} {newsItem.week}
               </span>
 
               <span className="inline-flex items-center gap-1 text-xs text-muted-foreground px-2.5 py-0.5 rounded-md bg-secondary border border-border">
@@ -249,7 +254,7 @@ export default function NewsDetailsPage() {
               {formattedDate && (
                 <span className="inline-flex items-center gap-1.5">
                   <Calendar className="w-4 h-4 text-muted-foreground" aria-hidden="true" />
-                  <span>Published {formattedDate}</span>
+                  <span>{t("newsDetail.publishedOn")} {formattedDate}</span>
                 </span>
               )}
             </div>
@@ -273,7 +278,7 @@ export default function NewsDetailsPage() {
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-semibold text-foreground flex items-center gap-2">
                   <ExternalLink className="w-4 h-4 text-primary" aria-hidden="true" />
-                  <span>Attached Links & Resources</span>
+                  <span>{t("newsDetail.attachedLinks")}</span>
                 </CardTitle>
               </CardHeader>
               <CardContent className="pt-0 space-y-2">

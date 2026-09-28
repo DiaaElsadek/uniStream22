@@ -10,6 +10,7 @@ import NewsCard, { NewsItem } from "@/components/home/NewsCard";
 import WeekNav from "@/components/home/WeekNav";
 import { Newspaper, SearchX } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useLanguage } from "@/context/LanguageContext";
 
 const SUBJECTS = [
   "معالجة الصور الرقمية",
@@ -26,6 +27,7 @@ export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedWeek, setSelectedWeek] = useState<number | null>(null);
   const router = useRouter();
+  const { t } = useLanguage();
 
   useEffect(() => {
     let isMounted = true;
@@ -129,15 +131,15 @@ export default function HomePage() {
   return (
     <PageLayout
       isAdmin={isAdmin}
-      title="Academic Announcements"
-      description="Stay updated with course materials, lecture assignments, and faculty notices."
+      title={t("home.title")}
+      description={t("home.subtitle")}
     >
       {/* Search & Week Filter Controls */}
       <div className="space-y-4 mb-8">
         <SearchInput
           value={searchQuery}
           onChange={setSearchQuery}
-          placeholder="Search by course name, assignment, or group..."
+          placeholder={t("home.searchPlaceholder")}
         />
 
         {availableWeeks.length > 0 && (
@@ -152,14 +154,14 @@ export default function HomePage() {
       {/* Main Content Area */}
       {loading ? (
         <div className="py-16">
-          <LoadingSpinner size="lg" label="Loading academic feed..." />
+          <LoadingSpinner size="lg" label={t("home.loadingFeed")} />
         </div>
       ) : sortedGroupedWeekKeys.length === 0 ? (
         searchQuery || selectedWeek !== null ? (
           <EmptyState
             icon={SearchX}
-            title="No matching announcements"
-            description="We couldn't find any announcements matching your current filters."
+            title={t("home.noMatchingTitle")}
+            description={t("home.noMatchingDesc")}
             action={
               <Button
                 variant="outline"
@@ -169,15 +171,15 @@ export default function HomePage() {
                   setSelectedWeek(null);
                 }}
               >
-                Clear all filters
+                {t("home.clearFilters")}
               </Button>
             }
           />
         ) : (
           <EmptyState
             icon={Newspaper}
-            title="No announcements available"
-            description="Check back later for newly published notices from your professors and department."
+            title={t("home.noAnnouncementsTitle")}
+            description={t("home.noAnnouncementsDesc")}
           />
         )
       ) : (
@@ -192,10 +194,13 @@ export default function HomePage() {
                 <div className="flex items-center justify-between border-b border-border pb-2">
                   <div className="flex items-center gap-2">
                     <h2 className="text-lg font-bold tracking-tight text-foreground">
-                      Week {weekKey}
+                      {t("home.week")} {weekKey}
                     </h2>
                     <span className="inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full bg-secondary text-muted-foreground">
-                      {items.length} {items.length === 1 ? "announcement" : "announcements"}
+                      {items.length}{" "}
+                      {items.length === 1
+                        ? t("home.announcementSingular")
+                        : t("home.announcementPlural")}
                     </span>
                   </div>
                 </div>

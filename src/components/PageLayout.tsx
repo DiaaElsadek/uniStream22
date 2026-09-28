@@ -2,6 +2,7 @@
 
 import React from "react";
 import Navbar from "./Navbar";
+import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
 
 export interface PageLayoutProps {
@@ -33,14 +34,16 @@ export default function PageLayout({
   maxWidth = "default",
   className,
 }: PageLayoutProps) {
+  const { t } = useLanguage();
+
   return (
     <div className="flex min-h-screen flex-col bg-background text-foreground">
       {/* Skip Navigation Link for Accessibility */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-md focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:start-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:shadow-md focus:outline-none"
       >
-        Skip to main content
+        {t("landing.navWorkflow") || "Skip to main content"}
       </a>
 
       {/* Shared Navbar */}
@@ -74,20 +77,20 @@ export default function PageLayout({
         {children}
       </main>
 
-      {/* Minimal, Calm Academic Footer (replaces 430-line processor footer) */}
+      {/* Minimal, Calm Academic Footer */}
       {showFooter && (
         <footer className="border-t border-border bg-card/50 py-6 text-center text-xs text-muted-foreground">
           <div className="mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-            <p>© {new Date().getFullYear()} UniStream22 — HTI Computer Science (Class of 2026)</p>
+            <p>{t("common.copyright", { year: new Date().getFullYear() })}</p>
             <p>
-              Developed by{" "}
+              {t("common.developedBy")}{" "}
               <a
                 href="https://linkedin.com/in/diaaelsadek"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-medium text-foreground hover:text-primary transition-colors underline-offset-4 hover:underline"
               >
-                Diaa Elsadek
+                {t("common.authorName")}
               </a>
             </p>
           </div>

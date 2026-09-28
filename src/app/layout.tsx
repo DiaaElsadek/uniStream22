@@ -1,12 +1,19 @@
 import "./globals.css";
 import AuthProvider from "./AuthProvider";
 import { ThemeProvider } from "./ThemeProvider";
+import { LanguageProvider } from "@/context/LanguageContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Inter } from "next/font/google";
+import { Inter, Cairo } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const cairo = Cairo({
+  subsets: ["latin", "arabic"],
+  variable: "--font-cairo",
   display: "swap",
 });
 
@@ -49,7 +56,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" dir="ltr" suppressHydrationWarning>
+    <html lang="ar" dir="rtl" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#091f42" />
         <link
@@ -87,10 +94,12 @@ export default function RootLayout({
         />
         <meta property="og:url" content="https://unistream22.vercel.app" />
       </head>
-      <body className={`${inter.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-primary/20 selection:text-primary`}>
+      <body className={`${inter.variable} ${cairo.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-primary/20 selection:text-primary`}>
         <ThemeProvider>
-          <AuthProvider>{children}</AuthProvider>
-          <SpeedInsights />
+          <LanguageProvider>
+            <AuthProvider>{children}</AuthProvider>
+            <SpeedInsights />
+          </LanguageProvider>
         </ThemeProvider>
       </body>
     </html>
