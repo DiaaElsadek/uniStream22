@@ -9,13 +9,13 @@ import EmptyState from "@/components/EmptyState";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  Calendar,
   Clock,
   MapPin,
   Users,
   SlidersHorizontal,
   CalendarDays,
   AlertCircle,
+  Sparkles,
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { cn } from "@/lib/utils";
@@ -134,7 +134,7 @@ export default function SchedulePage() {
       description={t("schedule.subtitle")}
       action={
         <Link href="/selectschedule">
-          <Button variant="outline" size="sm" className="gap-2">
+          <Button variant="outline" size="sm" className="gap-2 shadow-2xs">
             <SlidersHorizontal className="h-4 w-4" aria-hidden="true" />
             <span>{t("schedule.editGroups")}</span>
           </Button>
@@ -146,7 +146,7 @@ export default function SchedulePage() {
           <LoadingSpinner size="lg" label={t("schedule.loading")} />
         </div>
       ) : error ? (
-        <div className="max-w-md mx-auto my-12 p-6 rounded-lg border border-destructive/20 bg-destructive/10 text-center space-y-3">
+        <div className="max-w-md mx-auto my-12 p-6 rounded-2xl border border-destructive/20 bg-destructive/10 text-center space-y-3">
           <AlertCircle className="w-8 h-8 text-destructive mx-auto" aria-hidden="true" />
           <h3 className="text-base font-semibold text-destructive">{t("schedule.unavailableTitle")}</h3>
           <p className="text-sm text-muted-foreground">{error}</p>
@@ -185,23 +185,29 @@ export default function SchedulePage() {
                 <Card
                   key={day}
                   className={cn(
-                    "flex flex-col h-full border transition-colors",
-                    isToday ? "border-primary/60 shadow-sm" : "border-border"
+                    "flex flex-col h-full rounded-2xl border transition-all duration-200 overflow-hidden",
+                    isToday
+                      ? "border-primary/50 shadow-md shadow-primary/10 ring-2 ring-primary/20 bg-card"
+                      : "border-border/80 shadow-2xs hover:border-border-strong"
                   )}
                 >
-                  <CardHeader className="pb-3 border-b border-border bg-secondary/30">
+                  <CardHeader className={cn(
+                    "pb-3.5 border-b border-border/80",
+                    isToday ? "bg-primary/5" : "bg-secondary/40"
+                  )}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <CardTitle className="text-base font-bold text-foreground">
                           {t(`schedule.days.${day}`)}
                         </CardTitle>
                         {isToday && (
-                          <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[11px] font-semibold bg-primary text-primary-foreground">
-                            {t("schedule.todayBadge")}
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-primary text-primary-foreground shadow-xs animate-pulse">
+                            <Sparkles className="w-3 h-3" />
+                            <span>{t("schedule.todayBadge")}</span>
                           </span>
                         )}
                       </div>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs font-medium text-muted-foreground px-2 py-0.5 rounded-full bg-secondary/80">
                         {lectures.length}{" "}
                         {lectures.length === 1
                           ? t("schedule.lectureSingular")
@@ -212,7 +218,7 @@ export default function SchedulePage() {
 
                   <CardContent className="flex-1 p-4 space-y-3">
                     {sortedLectures.length === 0 ? (
-                      <div className="py-8 text-center text-xs text-muted-foreground">
+                      <div className="py-10 text-center text-xs text-muted-foreground">
                         {t("schedule.noLectures")}
                       </div>
                     ) : (
@@ -225,14 +231,14 @@ export default function SchedulePage() {
                         return (
                           <div
                             key={lec.id}
-                            className="rounded-md border border-border bg-card p-3.5 space-y-2 hover:border-primary/40 transition-colors"
+                            className="rounded-xl border border-border/70 border-s-4 border-s-primary bg-card p-4 space-y-2.5 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-150 shadow-2xs"
                           >
                             <div className="flex items-start justify-between gap-2">
-                              <h4 className="text-sm font-semibold text-foreground leading-snug">
+                              <h4 className="text-sm font-bold text-foreground leading-snug">
                                 {subjectTitle}
                               </h4>
                               {lec.groupId !== undefined && (
-                                <span className="inline-flex items-center gap-1 shrink-0 px-2 py-0.5 rounded text-[11px] font-medium bg-secondary text-muted-foreground">
+                                <span className="inline-flex items-center gap-1 shrink-0 px-2 py-0.5 rounded-md text-[11px] font-semibold bg-secondary/80 text-muted-foreground">
                                   <Users className="w-3 h-3" aria-hidden="true" />
                                   <span>{groupText}</span>
                                 </span>
@@ -240,7 +246,7 @@ export default function SchedulePage() {
                             </div>
 
                             <div className="flex flex-wrap items-center gap-y-1 gap-x-3 text-xs text-muted-foreground">
-                              <span className="inline-flex items-center gap-1 font-medium text-foreground">
+                              <span className="inline-flex items-center gap-1 font-semibold text-foreground px-2 py-0.5 rounded bg-secondary/60">
                                 <Clock className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
                                 <span>
                                   {lec.startTime ?? "—"} - {lec.endTime ?? "—"}
@@ -248,7 +254,7 @@ export default function SchedulePage() {
                               </span>
 
                               {lec.location && (
-                                <span className="inline-flex items-center gap-1">
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded bg-secondary/60">
                                   <MapPin className="w-3.5 h-3.5 text-muted-foreground" aria-hidden="true" />
                                   <span>{lec.location}</span>
                                 </span>
@@ -256,7 +262,7 @@ export default function SchedulePage() {
                             </div>
 
                             {lec.description && (
-                              <p className="text-xs text-muted-foreground pt-1 border-t border-border/60">
+                              <p className="text-xs text-muted-foreground pt-1.5 border-t border-border/60 leading-relaxed">
                                 {lec.description}
                               </p>
                             )}

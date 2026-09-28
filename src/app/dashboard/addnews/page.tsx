@@ -247,7 +247,7 @@ export default function AddNewsPage() {
       title={t("dashboard.title")}
       description={t("dashboard.subtitle")}
       action={
-        <Button variant="primary" onClick={openCreateModal} className="gap-2">
+        <Button variant="primary" onClick={openCreateModal} className="gap-2 shadow-sm shadow-primary/20">
           <Plus className="h-4 w-4" aria-hidden="true" />
           <span>{t("dashboard.newAnnouncement")}</span>
         </Button>
@@ -263,45 +263,45 @@ export default function AddNewsPage() {
 
       {/* Summary Statistics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <Card className="border-border">
-          <CardContent className="p-4 flex items-center justify-between">
+        <Card className="rounded-2xl border-border/80 shadow-2xs hover:border-primary/30 transition-all">
+          <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                 {t("dashboard.totalItems")}
               </p>
-              <h3 className="text-2xl font-bold text-foreground mt-1">{stats.total}</h3>
+              <h3 className="text-3xl font-extrabold text-foreground mt-1.5">{stats.total}</h3>
             </div>
-            <div className="p-2.5 rounded-lg bg-secondary text-foreground">
-              <Layers className="h-5 w-5" aria-hidden="true" />
+            <div className="p-3 rounded-xl bg-secondary text-foreground">
+              <Layers className="h-5 w-5 text-primary" aria-hidden="true" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border">
-          <CardContent className="p-4 flex items-center justify-between">
+        <Card className="rounded-2xl border-border/80 shadow-2xs hover:border-emerald-500/30 transition-all">
+          <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                 {t("dashboard.published")}
               </p>
-              <h3 className="text-2xl font-bold text-emerald-600 dark:text-emerald-400 mt-1">
+              <h3 className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1.5">
                 {stats.published}
               </h3>
             </div>
-            <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
               <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="border-border">
-          <CardContent className="p-4 flex items-center justify-between">
+        <Card className="rounded-2xl border-border/80 shadow-2xs hover:border-amber-500/30 transition-all">
+          <CardContent className="p-5 flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
+              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
                 {t("dashboard.drafts")}
               </p>
-              <h3 className="text-2xl font-bold text-muted-foreground mt-1">{stats.drafts}</h3>
+              <h3 className="text-3xl font-extrabold text-muted-foreground mt-1.5">{stats.drafts}</h3>
             </div>
-            <div className="p-2.5 rounded-lg bg-secondary text-muted-foreground">
+            <div className="p-3 rounded-xl bg-secondary text-muted-foreground">
               <Clock className="h-5 w-5" aria-hidden="true" />
             </div>
           </CardContent>
@@ -310,9 +310,9 @@ export default function AddNewsPage() {
 
       {/* Search & Filter Controls */}
       <div className="flex flex-col sm:flex-row gap-3 mb-6">
-        <div className="relative flex-1">
+        <div className="relative flex-1 group">
           <Search
-            className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+            className="absolute start-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors pointer-events-none"
             aria-hidden="true"
           />
           <input
@@ -320,14 +320,14 @@ export default function AddNewsPage() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder={t("dashboard.searchPlaceholder")}
-            className="w-full rounded-md border border-border bg-card ps-9 pe-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+            className="w-full rounded-xl border border-border bg-card ps-10 pe-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-all shadow-2xs hover:border-border-strong"
           />
         </div>
 
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value as any)}
-          className="rounded-md border border-border bg-card px-3 py-2 text-sm text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer sm:w-48"
+          className="rounded-xl border border-border bg-card px-3.5 py-2.5 text-sm font-medium text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-all cursor-pointer sm:w-52 shadow-2xs hover:border-border-strong"
         >
           <option value="all">{t("dashboard.filterAll")}</option>
           <option value="published">{t("dashboard.filterPublished")}</option>
@@ -406,7 +406,7 @@ export default function AddNewsPage() {
           </>
         }
       >
-        <div className="flex items-center gap-3 p-3 rounded-md bg-destructive/10 text-destructive text-sm">
+        <div className="flex items-center gap-3 p-3.5 rounded-xl bg-destructive/10 text-destructive text-sm font-medium">
           <AlertTriangle className="h-5 w-5 shrink-0" aria-hidden="true" />
           <span>{t("dashboard.deleteWarning")}</span>
         </div>

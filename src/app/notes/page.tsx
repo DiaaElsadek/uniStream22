@@ -31,37 +31,37 @@ const NOTE_COLORS: NoteColor[] = ["amber", "sky", "emerald", "purple", "rose"];
 
 const colorStyles: Record<
   NoteColor,
-  { card: string; textarea: string; badge: string; dot: string }
+  { card: string; textarea: string; dot: string; border: string }
 > = {
   amber: {
-    card: "bg-amber-500/10 border-amber-500/30",
+    card: "bg-amber-500/10 dark:bg-amber-500/15 border-amber-500/30",
     textarea: "placeholder:text-amber-700/60 dark:placeholder:text-amber-300/50 text-foreground",
-    badge: "text-amber-700 dark:text-amber-400",
     dot: "bg-amber-500",
+    border: "hover:border-amber-500/60",
   },
   sky: {
-    card: "bg-sky-500/10 border-sky-500/30",
+    card: "bg-sky-500/10 dark:bg-sky-500/15 border-sky-500/30",
     textarea: "placeholder:text-sky-700/60 dark:placeholder:text-sky-300/50 text-foreground",
-    badge: "text-sky-700 dark:text-sky-400",
     dot: "bg-sky-500",
+    border: "hover:border-sky-500/60",
   },
   emerald: {
-    card: "bg-emerald-500/10 border-emerald-500/30",
+    card: "bg-emerald-500/10 dark:bg-emerald-500/15 border-emerald-500/30",
     textarea: "placeholder:text-emerald-700/60 dark:placeholder:text-emerald-300/50 text-foreground",
-    badge: "text-emerald-700 dark:text-emerald-400",
     dot: "bg-emerald-500",
+    border: "hover:border-emerald-500/60",
   },
   purple: {
-    card: "bg-purple-500/10 border-purple-500/30",
+    card: "bg-purple-500/10 dark:bg-purple-500/15 border-purple-500/30",
     textarea: "placeholder:text-purple-700/60 dark:placeholder:text-purple-300/50 text-foreground",
-    badge: "text-purple-700 dark:text-purple-400",
     dot: "bg-purple-500",
+    border: "hover:border-purple-500/60",
   },
   rose: {
-    card: "bg-rose-500/10 border-rose-500/30",
+    card: "bg-rose-500/10 dark:bg-rose-500/15 border-rose-500/30",
     textarea: "placeholder:text-rose-700/60 dark:placeholder:text-rose-300/50 text-foreground",
-    badge: "text-rose-700 dark:text-rose-400",
     dot: "bg-rose-500",
+    border: "hover:border-rose-500/60",
   },
 };
 
@@ -258,26 +258,27 @@ export default function NotesPage() {
       <div
         key={note.id}
         className={cn(
-          "flex flex-col rounded-lg border p-4 transition-all duration-150 h-56 shadow-xs",
-          style.card
+          "group flex flex-col rounded-2xl border p-4 transition-all duration-200 h-60 shadow-2xs hover:-translate-y-1 hover:shadow-md",
+          style.card,
+          style.border
         )}
       >
         {/* Note Card Header */}
-        <div className="flex items-center justify-between gap-1 pb-2 border-b border-border/40">
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+        <div className="flex items-center justify-between gap-1 pb-2.5 border-b border-border/30">
+          <div className="flex items-center gap-2 text-xs font-semibold text-muted-foreground">
             <span className={cn("w-2 h-2 rounded-full", style.dot)} aria-hidden="true" />
             <span>{note.date}</span>
           </div>
 
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100 transition-opacity">
             <button
               type="button"
               onClick={() => togglePin(note.id)}
               className={cn(
-                "p-1 rounded-md transition-colors cursor-pointer",
+                "p-1.5 rounded-lg transition-all duration-150 cursor-pointer active:scale-95",
                 note.isPinned
-                  ? "text-primary bg-primary/10"
-                  : "text-muted-foreground hover:text-foreground hover:bg-secondary"
+                  ? "text-primary bg-primary/15"
+                  : "text-muted-foreground hover:text-foreground hover:bg-background/60"
               )}
               title={note.isPinned ? t("notes.unpinTooltip") : t("notes.pinTooltip")}
               aria-label={note.isPinned ? t("notes.unpinTooltip") : t("notes.pinTooltip")}
@@ -292,7 +293,7 @@ export default function NotesPage() {
             <button
               type="button"
               onClick={() => changeColor(note.id)}
-              className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-secondary transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-background/60 transition-all duration-150 cursor-pointer active:scale-95"
               title={t("notes.colorTooltip")}
               aria-label={t("notes.colorTooltip")}
             >
@@ -302,7 +303,7 @@ export default function NotesPage() {
             <button
               type="button"
               onClick={() => deleteNote(note.id)}
-              className="p-1 rounded-md text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-colors cursor-pointer"
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/10 transition-all duration-150 cursor-pointer active:scale-95"
               title={t("notes.deleteTooltip")}
               aria-label={t("notes.deleteTooltip")}
             >
@@ -319,7 +320,7 @@ export default function NotesPage() {
           placeholder={t("notes.textareaPlaceholder")}
           dir="auto"
           className={cn(
-            "flex-1 w-full bg-transparent resize-none p-1 pt-2.5 text-sm leading-relaxed focus:outline-none",
+            "flex-1 w-full bg-transparent resize-none p-1 pt-3 text-sm leading-relaxed focus:outline-none",
             style.textarea
           )}
         />
@@ -339,7 +340,7 @@ export default function NotesPage() {
             size="sm"
             onClick={() => saveNotesToServer(notes)}
             isLoading={saving}
-            className="gap-1.5"
+            className="gap-1.5 shadow-2xs"
           >
             <Save className="h-4 w-4" aria-hidden="true" />
             <span>{t("notes.saveAll")}</span>
@@ -379,7 +380,7 @@ export default function NotesPage() {
             <section className="space-y-3">
               <div className="flex items-center gap-2 pb-1 border-b border-border">
                 <Pin className="h-4 w-4 text-primary fill-primary" aria-hidden="true" />
-                <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">
+                <h2 className="text-xs font-bold text-foreground uppercase tracking-wider">
                   {t("notes.pinnedNotes")} ({pinnedNotes.length})
                 </h2>
               </div>
@@ -393,14 +394,14 @@ export default function NotesPage() {
           <section className="space-y-3">
             {pinnedNotes.length > 0 && (
               <div className="flex items-center justify-between pb-1 border-b border-border">
-                <h2 className="text-sm font-semibold text-foreground uppercase tracking-wider">
+                <h2 className="text-xs font-bold text-foreground uppercase tracking-wider">
                   {t("notes.allNotes")} ({unpinnedNotes.length})
                 </h2>
                 {notes.length > 3 && (
                   <button
                     type="button"
                     onClick={deleteAll}
-                    className="text-xs text-destructive hover:underline cursor-pointer"
+                    className="text-xs font-medium text-destructive hover:underline cursor-pointer"
                   >
                     {t("notes.clearAll")}
                   </button>

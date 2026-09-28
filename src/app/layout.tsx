@@ -3,7 +3,7 @@ import AuthProvider from "./AuthProvider";
 import { ThemeProvider } from "./ThemeProvider";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Inter, Cairo } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans, Cairo } from "next/font/google";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,10 +11,18 @@ const inter = Inter({
   display: "swap",
 });
 
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-jakarta",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
+});
+
 const cairo = Cairo({
   subsets: ["latin", "arabic"],
   variable: "--font-cairo",
   display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export const metadata = {
@@ -94,7 +102,7 @@ export default function RootLayout({
         />
         <meta property="og:url" content="https://unistream22.vercel.app" />
       </head>
-      <body className={`${inter.variable} ${cairo.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-primary/20 selection:text-primary`}>
+      <body className={`${jakarta.variable} ${inter.variable} ${cairo.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-primary/20 selection:text-primary`}>
         <ThemeProvider>
           <LanguageProvider>
             <AuthProvider>{children}</AuthProvider>

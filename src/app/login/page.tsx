@@ -170,17 +170,17 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 selection:bg-primary/20 selection:text-primary">
+    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 selection:bg-primary/20 selection:text-primary bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(37,99,235,0.08),transparent_70%)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(59,130,246,0.12),transparent_70%)]">
       {/* Top Bar with Brand, Language Toggle & Theme Toggle */}
       <div className="w-full max-w-6xl mx-auto flex items-center justify-between py-2">
         <Link
           href="/"
-          className="flex items-center gap-2.5 text-base font-bold tracking-tight text-foreground hover:text-primary transition-colors"
+          className="group flex items-center gap-2.5 text-base font-bold tracking-tight text-foreground hover:text-primary transition-colors"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-primary text-primary-foreground">
-            <GraduationCap className="h-5 w-5" aria-hidden="true" />
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-primary to-blue-500 text-primary-foreground shadow-xs shadow-primary/25 group-hover:scale-105 transition-transform duration-200">
+            <GraduationCap className="h-4.5 w-4.5" aria-hidden="true" />
           </div>
-          <span>UniStream22</span>
+          <span className="font-extrabold tracking-tight">UniStream22</span>
         </Link>
         <div className="flex items-center gap-2">
           <LanguageToggle />
@@ -190,15 +190,15 @@ export default function LoginPage() {
 
       {/* Main Login Card */}
       <div className="w-full max-w-md mx-auto my-8">
-        <Card className="border-border shadow-sm">
-          <CardHeader className="text-center pb-6">
-            <div className="mx-auto mb-3 flex h-11 w-11 items-center justify-center rounded-lg bg-secondary text-primary">
+        <Card className="rounded-2xl border-border/80 bg-card/95 backdrop-blur-md shadow-xl shadow-black/5 dark:shadow-black/20">
+          <CardHeader className="text-center pb-6 space-y-2">
+            <div className="mx-auto mb-1 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary border border-primary/20 shadow-2xs">
               <Lock className="h-5 w-5" aria-hidden="true" />
             </div>
-            <CardTitle className="text-2xl font-bold tracking-tight text-foreground">
+            <CardTitle className="text-2xl font-extrabold tracking-tight text-foreground">
               {t("auth.loginTitle")}
             </CardTitle>
-            <CardDescription className="text-sm text-muted-foreground mt-1">
+            <CardDescription className="text-xs sm:text-sm text-muted-foreground">
               {t("auth.loginSubtitle")}
             </CardDescription>
           </CardHeader>
@@ -207,7 +207,7 @@ export default function LoginPage() {
             {error && (
               <div
                 role="alert"
-                className="flex items-start gap-3 p-3 text-sm rounded-md bg-destructive/10 border border-destructive/20 text-destructive"
+                className="flex items-start gap-3 p-3.5 text-xs rounded-xl bg-destructive/10 border border-destructive/20 text-destructive animate-fade-in"
               >
                 <AlertCircle className="h-4 w-4 mt-0.5 shrink-0" aria-hidden="true" />
                 <span>{error}</span>
@@ -219,13 +219,13 @@ export default function LoginPage() {
               <div className="space-y-1.5">
                 <label
                   htmlFor="email"
-                  className="block text-sm font-medium text-foreground"
+                  className="block text-xs font-semibold text-foreground uppercase tracking-wider"
                 >
                   {t("auth.emailLabel")}
                 </label>
-                <div className="relative">
+                <div className="relative group">
                   <Mail
-                    className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    className="absolute start-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors pointer-events-none"
                     aria-hidden="true"
                   />
                   <input
@@ -239,11 +239,11 @@ export default function LoginPage() {
                     placeholder={t("auth.emailPlaceholder")}
                     aria-invalid={Boolean(emailError)}
                     aria-describedby={emailError ? "email-error" : undefined}
-                    className="w-full rounded-md border border-border bg-background ps-9 pe-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
+                    className="w-full rounded-xl border border-border bg-card ps-10 pe-3 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-all shadow-2xs hover:border-border-strong"
                   />
                 </div>
                 {emailError && (
-                  <p id="email-error" className="text-xs text-destructive">
+                  <p id="email-error" className="text-xs text-destructive pt-0.5">
                     {emailError}
                   </p>
                 )}
@@ -254,7 +254,7 @@ export default function LoginPage() {
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="password"
-                    className="block text-sm font-medium text-foreground"
+                    className="block text-xs font-semibold text-foreground uppercase tracking-wider"
                   >
                     {t("auth.passwordLabel")}
                   </label>
@@ -268,9 +268,9 @@ export default function LoginPage() {
                     <span>{t("auth.forgotPassword")}</span>
                   </Link>
                 </div>
-                <div className="relative">
+                <div className="relative group">
                   <Lock
-                    className="absolute start-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none"
+                    className="absolute start-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground group-focus-within:text-primary transition-colors pointer-events-none"
                     aria-hidden="true"
                   />
                   <input
@@ -284,12 +284,12 @@ export default function LoginPage() {
                     placeholder={t("auth.passwordPlaceholder")}
                     aria-invalid={Boolean(passwordError)}
                     aria-describedby={passwordError ? "password-error" : undefined}
-                    className="w-full rounded-md border border-border bg-background ps-9 pe-10 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-colors"
+                    className="w-full rounded-xl border border-border bg-card ps-10 pe-10 py-2.5 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:border-transparent transition-all shadow-2xs hover:border-border-strong"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute end-2 top-1/2 -translate-y-1/2 p-1 rounded text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
+                    className="absolute end-2.5 top-1/2 -translate-y-1/2 p-1 rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary transition-colors cursor-pointer"
                     aria-label={showPassword ? "Hide password" : "Show password"}
                   >
                     {showPassword ? (
@@ -300,7 +300,7 @@ export default function LoginPage() {
                   </button>
                 </div>
                 {passwordError && (
-                  <p id="password-error" className="text-xs text-destructive">
+                  <p id="password-error" className="text-xs text-destructive pt-0.5">
                     {passwordError}
                   </p>
                 )}
@@ -312,10 +312,10 @@ export default function LoginPage() {
                 variant="primary"
                 isLoading={loading}
                 disabled={!formValid || guestLoading}
-                className="w-full h-10 mt-2 font-medium"
+                className="w-full h-11 mt-2 text-sm font-semibold shadow-md shadow-primary/20"
               >
                 <span>{loading ? t("auth.signingIn") : t("auth.signInBtn")}</span>
-                {!loading && <ArrowIcon className="h-4 w-4 ms-1" aria-hidden="true" />}
+                {!loading && <ArrowIcon className="h-4 w-4 ms-1.5" aria-hidden="true" />}
               </Button>
             </form>
 
@@ -324,7 +324,9 @@ export default function LoginPage() {
                 <div className="w-full border-t border-border" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-2 text-muted-foreground">{t("auth.or")}</span>
+                <span className="bg-card px-2.5 text-muted-foreground font-semibold">
+                  {t("auth.or")}
+                </span>
               </div>
             </div>
 
@@ -335,9 +337,9 @@ export default function LoginPage() {
               onClick={handleGuest}
               isLoading={guestLoading}
               disabled={loading}
-              className="w-full h-10 font-medium"
+              className="w-full h-11 font-semibold shadow-2xs"
             >
-              <User className="h-4 w-4 me-1.5" aria-hidden="true" />
+              <User className="h-4 w-4 me-1.5 text-muted-foreground" aria-hidden="true" />
               <span>{t("auth.guestBtn")}</span>
             </Button>
           </CardContent>
@@ -347,7 +349,7 @@ export default function LoginPage() {
               {t("auth.noAccount")}{" "}
               <Link
                 href="/signup"
-                className="font-semibold text-primary hover:underline underline-offset-4"
+                className="font-bold text-primary hover:underline underline-offset-4"
               >
                 {t("auth.signUpNow")}
               </Link>

@@ -24,7 +24,7 @@ export default function WeekNav({
   return (
     <div
       className={cn(
-        "flex items-center gap-1.5 overflow-x-auto py-2 px-1 no-scrollbar justify-center sm:justify-start flex-wrap",
+        "flex items-center gap-1.5 overflow-x-auto py-1 px-0.5 no-scrollbar justify-center sm:justify-start flex-wrap",
         className
       )}
       role="tablist"
@@ -36,10 +36,10 @@ export default function WeekNav({
         aria-selected={activeWeek === null}
         onClick={() => onSelectWeek(null)}
         className={cn(
-          "inline-flex items-center justify-center rounded-full px-3.5 py-1 text-xs font-medium transition-colors cursor-pointer",
+          "inline-flex items-center justify-center rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all duration-150 cursor-pointer active:scale-95 select-none",
           activeWeek === null
-            ? "bg-primary text-primary-foreground shadow-xs"
-            : "bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80 border border-border"
+            ? "bg-primary text-primary-foreground shadow-xs shadow-primary/25 border border-transparent"
+            : "bg-card text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-border-strong border border-border shadow-2xs"
         )}
       >
         {t("common.all")}
@@ -57,10 +57,10 @@ export default function WeekNav({
             aria-selected={isSelected}
             onClick={() => onSelectWeek(weekNum)}
             className={cn(
-              "inline-flex items-center justify-center rounded-full px-3.5 py-1 text-xs font-medium transition-colors cursor-pointer",
+              "inline-flex items-center justify-center rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all duration-150 cursor-pointer active:scale-95 select-none",
               isSelected
-                ? "bg-primary text-primary-foreground shadow-xs"
-                : "bg-secondary text-muted-foreground hover:text-foreground hover:bg-secondary/80 border border-border"
+                ? "bg-primary text-primary-foreground shadow-xs shadow-primary/25 border border-transparent"
+                : "bg-card text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-border-strong border border-border shadow-2xs"
             )}
           >
             {t("home.week")} {week}

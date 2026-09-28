@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useLanguage } from "@/context/LanguageContext";
-import { Languages } from "lucide-react";
+import { Globe } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface LanguageToggleProps {
@@ -14,7 +14,7 @@ export default function LanguageToggle({
   className = "",
   showText = true,
 }: LanguageToggleProps) {
-  const { language, toggleLanguage, t } = useLanguage();
+  const { language, toggleLanguage } = useLanguage();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -25,7 +25,7 @@ export default function LanguageToggle({
     return (
       <div
         className={cn(
-          "h-9 w-9 rounded-md border border-border bg-secondary/50 animate-pulse",
+          "h-9 w-16 rounded-lg border border-border bg-secondary/50 animate-pulse",
           className
         )}
         aria-hidden="true"
@@ -33,9 +33,10 @@ export default function LanguageToggle({
     );
   }
 
-  // If language is 'ar', clicking switches to 'en' (and shows 'EN')
-  // If language is 'en', clicking switches to 'ar' (and shows 'عربي')
+  // If language is 'ar', clicking switches to 'en' (shows 'EN')
+  // If language is 'en', clicking switches to 'ar' (shows 'عربي')
   const nextLangLabel = language === "ar" ? "EN" : "عربي";
+  const currentLangLabel = language === "ar" ? "عربي" : "EN";
   const ariaLabel =
     language === "ar"
       ? "Switch interface language to English"
@@ -46,14 +47,18 @@ export default function LanguageToggle({
       type="button"
       onClick={toggleLanguage}
       className={cn(
-        "inline-flex items-center justify-center gap-1.5 h-9 px-2.5 rounded-md border border-border bg-background text-foreground hover:bg-secondary hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary cursor-pointer select-none text-xs font-semibold",
+        "group inline-flex items-center justify-center gap-1.5 h-9 px-2.5 rounded-lg border border-border bg-background text-foreground hover:bg-secondary hover:border-primary/30 transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary active:scale-95 cursor-pointer select-none text-xs font-semibold",
         className
       )}
       aria-label={ariaLabel}
       title={ariaLabel}
     >
-      <Languages className="h-4 w-4 text-muted-foreground transition-transform duration-200" aria-hidden="true" />
-      {showText && <span className="font-bold tracking-wide">{nextLangLabel}</span>}
+      <Globe className="h-3.5 w-3.5 text-muted-foreground group-hover:text-primary group-hover:rotate-180 transition-all duration-300" aria-hidden="true" />
+      {showText && (
+        <span className="inline-flex items-center justify-center px-1.5 py-0.5 rounded text-[11px] font-bold bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-200">
+          {nextLangLabel}
+        </span>
+      )}
     </button>
   );
 }
