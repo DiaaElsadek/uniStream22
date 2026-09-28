@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import "./style.css";
 import InstallPrompt from "./InstallPrompt";
 
 export const metadata: Metadata = {

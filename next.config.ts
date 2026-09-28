@@ -1,5 +1,6 @@
-/** @type {import('next').NextConfig} */
+import type { NextConfig } from "next";
 
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const withPWA = require("next-pwa")({
   dest: "public",
   register: true,
@@ -7,15 +8,11 @@ const withPWA = require("next-pwa")({
   disable: process.env.NODE_ENV === "development",
 });
 
-const nextConfig = withPWA({
+const nextConfig: NextConfig = {
   reactStrictMode: true,
   images: {
     domains: [],
   },
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
-  // ❌ احذف output: "export"
-});
+};
 
-module.exports = nextConfig;
+export default withPWA(nextConfig);

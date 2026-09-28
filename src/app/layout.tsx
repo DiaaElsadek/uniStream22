@@ -1,9 +1,17 @@
 import "./globals.css";
 import AuthProvider from "./AuthProvider";
-import { ThemeProvider } from "./ThemeProvider"; // ✅ أضفنا ThemeProvider
+import { ThemeProvider } from "./ThemeProvider";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Inter } from "next/font/google";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+});
 
 export const metadata = {
+  metadataBase: new URL("https://unistream22.vercel.app"),
   title: "UniStream22",
   description:
     "UniStream22 — منصة مخصصة لدفعة رابعة في المعهد التكنولوجي العالي، كلية الحاسبات والمعلومات، لمتابعة المواد والجداول والأخبار الجامعية بسهولة وسرعة في مكان واحد.",
@@ -41,7 +49,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ar" dir="ltr" suppressHydrationWarning>
+    <html lang="en" dir="ltr" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#091f42" />
         <link
@@ -79,8 +87,7 @@ export default function RootLayout({
         />
         <meta property="og:url" content="https://unistream22.vercel.app" />
       </head>
-      <body>
-        {/* ✅ ThemeProvider هنا هو اللي هيتحكم في الثيم */}
+      <body className={`${inter.variable} font-sans antialiased bg-background text-foreground min-h-screen selection:bg-primary/20 selection:text-primary`}>
         <ThemeProvider>
           <AuthProvider>{children}</AuthProvider>
           <SpeedInsights />
