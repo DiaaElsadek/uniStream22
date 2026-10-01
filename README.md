@@ -1,11 +1,11 @@
 <div align="center">
 
-  <img src="public/icons/icon-192x192.png" alt="UniStream22 Logo" width="96" height="96" style="border-radius: 22px; box-shadow: 0 4px 20px rgba(0,0,0,0.15);" />
+  <img src="public/icons/icon-192x192.png" alt="UniStream22 Logo" width="100" height="100" style="border-radius: 24px; box-shadow: 0 8px 30px rgba(0,0,0,0.18);" />
 
   # UniStream22
 
-  <p><strong>A Modern Academic Portal & Streamlined Lecture Platform</strong></p>
-  <p>Tailored for 4th-Year Computer Science Students at the Higher Technological Institute (HTI) • Class of 2026 / Batch 22</p>
+  <p><strong>A Next-Generation Academic Portal & Real-Time Student Operating Hub</strong></p>
+  <p>Engineered for 4th-Year Computer Science Students • Higher Technological Institute (HTI) • Class of 2026 / Batch 22</p>
 
   <div>
     <img src="https://img.shields.io/badge/Next.js-16.1-black?style=for-the-badge&logo=next.js" alt="Next.js" />
@@ -13,116 +13,124 @@
     <img src="https://img.shields.io/badge/TypeScript-5.0-3178C6?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" />
     <img src="https://img.shields.io/badge/Tailwind_CSS-v4-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS" />
     <img src="https://img.shields.io/badge/Radix_UI-Shadcn-161616?style=for-the-badge&logo=radix-ui" alt="Radix UI" />
-    <img src="https://img.shields.io/badge/PWA-Ready-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white" alt="PWA" />
+    <img src="https://img.shields.io/badge/Supabase-Backend-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white" alt="Supabase" />
+    <img src="https://img.shields.io/badge/PWA-Offline_Ready-5A0FC8?style=for-the-badge&logo=pwa&logoColor=white" alt="PWA" />
   </div>
 
   <br />
 
   <p>
-    <a href="https://unistream22.vercel.app"><strong>Explore the Live Platform »</strong></a>
+    <a href="https://unistream22.vercel.app"><strong>🌐 Explore the Live Platform »</strong></a>
   </p>
 
 </div>
 
 ---
 
-## 📖 Overview
+## 💡 The Product Idea & Vision
 
-**UniStream22** is an academic management web application and Progressive Web App (PWA) built specifically for senior computer science students at the Higher Technological Institute. It eliminates fragmentation and communication noise by centralizing departmental news, weekly lecture schedules, lab section group assignments, and personal notes into a single, distraction-free environment.
+### 🧩 1. The Real-World Academic Challenge
+In higher education environments—particularly in intensive technical faculties like Computer Science—information distribution is notoriously broken and inefficient:
 
-Designed around a **calm, mature, and focused design system**, UniStream22 prioritizes speed, high-density academic usability, bilingual accessibility (Arabic & English), and offline reliability.
-
----
-
-## 💡 The Product Idea
-
-### 🧩 1. The Core Problem
-In a typical university department, academic communication suffers from chronic fragmentation:
-- **The "Chat Noise" Problem**: Critical announcements—such as sudden lecture venue changes, revised assignment deadlines, or graduation project guidelines—are scattered across dozens of informal WhatsApp groups, Telegram channels, and Facebook posts. Students spend valuable time asking peers or scrolling through hundreds of chat messages just to find one piece of information.
-- **The "Schedule Complexity" Problem**: Senior year students take multiple specialized courses (e.g., *Digital Image Processing*, *Cloud Computing*, *Data Mining*, *Data Communications*, and *Graduation Project 1*). Because each student belongs to different practical lab groups (Groups 1 through 6), reading a massive 200-row departmental spreadsheet to determine which class to attend next is slow and error-prone.
-- **The "Campus Connectivity" Problem**: Lecture halls, computer labs, and auditorium basements often have weak or non-existent mobile coverage, making online-only student portals inaccessible right when students need them most.
+- **The "Chat Noise" Chaos**: Crucial departmental instructions, assignment deadline modifications, and lecture venue shifts are routinely scattered across dozens of unstructured WhatsApp groups, Telegram channels, and social media posts. Important announcements from professors and teaching assistants get buried under hundreds of student messages.
+- **The "Schedule Fragmentation" Dilemma**: Senior-year students attend specialized technical courses (*Digital Image Processing*, *Cloud Computing*, *Data Mining*, *Data Communications*, and *Graduation Project 1*). Because laboratory and practical sections are divided into multiple distinct groups (Groups 1 through 6), students are traditionally forced to decipher massive, multi-page departmental spreadsheets daily just to figure out when and where their next class takes place.
+- **The "Campus Connectivity" Barrier**: University lecture halls, computer labs, and basement auditoriums frequently suffer from poor or non-existent cellular reception. Online-only student portals fail completely when students need them most—right before entering an exam or lecture hall.
 
 ---
 
-### 🎯 2. The Solution & Vision: "UniStream"
-The name **UniStream22** reflects its central philosophy:
+### 🎯 2. The Solution: "UniStream"
+The name **UniStream22** encapsulates the core mission of the platform:
 
-$$\text{\textbf{Uni}} \text{ (University \& Unity)} \;+\; \text{\textbf{Stream}} \text{ (Real-Time Information Flow)} \;+\; \text{\textbf{22}} \text{ (Batch 22 / Senior Class)}$$
+$$\text{\textbf{Uni}} \text{ (University \& Unity)} \;+\; \text{\textbf{Stream}} \text{ (Continuous Academic Flow)} \;+\; \text{\textbf{22}} \text{ (Batch 22 / Senior Class)}$$
 
-Instead of treating the student portal as a bureaucratic database, **UniStream22 treats academic life as a streamlined, personal feed**:
-1. **One Source of Truth**: All official updates, assignments, and scheduling details are curated and published in one structured hub.
-2. **Dynamic Schedule Adaptation**: Students select their specific lab groups once (`/selectschedule`). From that point onward, the timetable view (`/schedule`) filters out all extraneous classes and renders *only their personalized weekly agenda* with room numbers and live today indicators.
-3. **The 2-Second Test**: The entire user experience is engineered around a single benchmark: *A student walking into the faculty building should be able to open the app and within two seconds know their next lecture, the hall number, and any urgent notices.*
+Rather than acting as a static, bureaucratic university website, **UniStream22 re-engineers student life as a calm, personal, and centralized digital stream**:
+
+1. **One Authoritative Source of Truth**: All official departmental circulars, faculty instructions, and lab announcements are published directly to a unified, chronologically organized timeline.
+2. **Adaptive Personal Timetables**: Students select their specific laboratory groups once (`/selectschedule`). The timetable engine automatically filters out extraneous sections, rendering a clear, personalized weekly agenda with room numbers and live day indicators.
+3. **The Two-Second Benchmark**: Every user interface flow is engineered to answer a student's immediate question within two seconds: *What lecture do I have next, in which hall, and is there any urgent notice for this week?*
 
 ---
 
-### 🏛️ 3. Product Pillars
+### 🏛️ 3. Core Product Pillars
 
-| Pillar | Principle | Real-World Implementation |
+| Pillar | Philosophy | Implementation |
 |---|---|---|
-| **Zero-Distraction UI** | Calm, mature, and content-first. | No advertisements, no social vanity metrics, no decorative animations that slow down navigation. Clean cards, high contrast, and clear typography. |
-| **Personalized Context** | Tailored to each student's exact schedule. | Group selection engine that dynamically personalizes weekly timetables across all five major senior courses. |
-| **Offline-First Resilience** | Access anytime, anywhere. | PWA architecture with service-worker caching so timetables, notes, and recent announcements remain readable with zero network signal. |
-| **Bilingual Excellence** | Arabic as a first-class citizen. | Fully direction-aware layouts (`RTL` & `LTR`) with native academic Arabic typography (**IBM Plex Sans Arabic**) paired with modern Latin geometry (**Plus Jakarta Sans**). |
+| **Zero-Distraction UI** | Focus, clarity, and calm academic productivity. | No advertisements, no social vanity metrics, and no sluggish decorative animations. Clean cards, high information density, and rapid navigation. |
+| **Contextual Personalization** | Relevant only to the individual student. | Dynamic schedule engine that maps each student's chosen practical groups to their personalized timetable. |
+| **Offline-First Resilience** | Uninterrupted access on campus. | Built as a Progressive Web App (PWA) with intelligent service worker caching—schedules and notes remain accessible with zero network signal. |
+| **Bilingual First-Class Citizen** | Native Arabic & English parity. | Automated bidirectional layout switching (`dir="rtl"` and `dir="ltr"`) featuring **IBM Plex Sans Arabic** for technical Arabic typography and **Plus Jakarta Sans** for Latin geometry. |
 
 ---
 
-## ✨ Key Features
+## ✨ Key Feature Highlights
 
-### 📢 1. Centralized Academic News & Announcements (`/home`)
-- **Real-Time Stream**: Official faculty notices, project deadlines, and course instructions grouped chronologically by academic week.
+### 📢 1. Centralized Announcement Stream (`/home`)
+- **Chronological Week Feed**: Faculty announcements grouped by academic week, keeping historical context organized and searchable.
 - **Priority Categorization**: Color-coded badges for **Urgent & High Priority**, **Medium**, and **General Notices** with live pulse indicators.
-- **Instant Search & Filters**: Search across course titles, section groups, and descriptions with quick tabs (`All`, `Urgent`, `Regular`).
-- **Shimmer Skeletons**: Smooth skeleton loading placeholders instead of jarring layout shifts.
+- **Instant Search & Category Tabs**: Real-time filtering by course title, section group, or keyword, with quick filter tabs (`All`, `Urgent`, `Regular`).
+- **Shimmer Skeletons**: Smooth skeleton loading placeholders that prevent layout shifts while fetching live updates.
 
-### 🗓️ 2. Personalized Weekly Schedule (`/schedule`)
-- **Group-Aware Timetable**: Automatically tailors lectures and practical lab timings according to each student's enrolled section groups.
-- **Day-by-Day Views**: Seamless tabbed navigation between weekdays (`Saturday` through `Friday`) with a live pulsing indicator highlighting **Today**.
-- **Contextual Chips**: Clean badges for lecture start/end timings (`09:00 - 10:40`), campus room numbers, and instructor details.
+### 🗓️ 2. Adaptive Weekly Timetable (`/schedule`)
+- **Group-Aware Scheduling**: Dynamically renders lecture and lab timings based on each student's enrolled section groups.
+- **Interactive Day Tabs**: Tabbed weekday navigation (`Saturday` through `Friday`) with a live pulsing indicator highlighting **Today**.
+- **Contextual Badges**: Chips for lecture start/end timings (`09:00 - 10:40`), campus room numbers, and course codes.
 
-### ⚙️ 3. Interactive Group Selection (`/selectschedule`)
-- **Visual Group Selector**: Interactive pill selectors (`Group 1` to `Group 6` or `None`) replacing cumbersome select dropdowns.
-- **Confirmation Dialog**: Accessible modal dialog to review schedule adjustments before submitting to the backend.
+### ⚙️ 3. Interactive Group Selection Engine (`/selectschedule`)
+- **Visual Group Selector**: Interactive pill selectors (`Group 1` to `Group 6` or `None`) replacing traditional dropdowns for frictionless setup.
+- **Confirmation Dialog**: Accessible modal dialog verifying schedule changes before saving to the cloud.
 
-### 📝 4. Student Sticky Notes (`/notes`)
-- **Personalized Workspace**: Quick in-browser scratchpad for course notes, lecture reminders, and study tasks.
-- **Visual Organization**: Multi-color palettes (Amber, Sky, Emerald, Purple, Rose), pin-to-top functionality, live character counters, and filter tabs (`All` / `Pinned`).
-- **Cloud Sync & Local Backup**: Instant persistence via local storage with background sync to Supabase.
+### 📝 4. Student Study Notepad (`/notes`)
+- **In-Browser Scratchpad**: Fast scratchpad for course notes, lecture reminders, and study checklists.
+- **Color-Coded Palettes**: Visual organization across Amber, Sky, Emerald, Purple, and Rose themes.
+- **Smart Management**: Pin-to-top feature, live character counter, delete confirmation dialogs, and instant local storage backup with Supabase cloud sync.
 
-### 🌐 5. Native Bilingual Support (Arabic & English)
-- **Automatic Layout Flipping**: Complete bidirectional UI support (`dir="rtl"` and `dir="ltr"`).
-- **Curated Academic Typography**:
-  - **Arabic**: [IBM Plex Sans Arabic](https://fonts.google.com/specimen/IBM+Plex+Sans+Arabic) — engineered for technical legibility and unbroken cursive ligatures.
-  - **English / Latin**: [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) — geometric neo-grotesque numerals and headings.
+### 📱 5. Progressive Web App (PWA)
+- **Installable Native Experience**: Add to home screen on iOS, Android, macOS, and Windows.
+- **Custom Service Worker**: Built with Workbox caching strategies ensuring offline reliability in campus dead zones.
 
-### 📱 6. Progressive Web App (PWA)
-- **Installable Native Feel**: Add to home screen on iOS, Android, macOS, and Windows.
-- **Offline Caching**: Built with Workbox and custom Service Worker caching strategies for reliable access even with spotty campus Wi-Fi.
-
-### 🛡️ 7. Role-Based Administration (`/dashboard/addnews`)
-- **Academic ID Authentication**: Secure student token sessions with role verification.
-- **Publisher Portal**: Administrative interface to draft, categorize, and broadcast new course announcements.
+### 🛡️ 6. Faculty Administration Portal (`/dashboard/addnews`)
+- **Secure Access Control**: Role-based authentication verifying student vs. administrator privileges.
+- **Announcement Publisher**: Dedicated drafting portal to compose, tag by subject, set priority, and broadcast notices to the batch.
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Technologies Used
 
-| Layer | Technologies |
-|---|---|
-| **Framework** | [Next.js 16.1](https://nextjs.org/) (App Router, Webpack builder) |
-| **UI Library** | [React 19.2](https://react.dev/) |
-| **Language** | [TypeScript 5](https://www.typescriptlang.org/) |
-| **Styling** | [Tailwind CSS v4](https://tailwindcss.com/) & CSS Custom Properties |
-| **Component Architecture** | [Radix UI Primitives](https://www.radix-ui.com/) (Shadcn UI model: Tabs, Dialog, Badge, Avatar, DropdownMenu, Tooltip, Skeleton, Separator) |
-| **Icons** | [Lucide React](https://lucide.dev/) |
-| **Typography** | `next/font/google` (`IBM_Plex_Sans_Arabic`, `Plus_Jakarta_Sans`, `Cairo`) |
-| **Backend / DB** | Next.js Route Handlers (`/api/*`) connected to [Supabase](https://supabase.com/) REST APIs |
-| **PWA & Offline** | `next-pwa`, Google Workbox, Web App Manifest |
-| **Theming** | `next-themes` (Dark, Light, and System modes) |
+### 🖥️ Frontend & Architecture
+- **[Next.js 16.1](https://nextjs.org/) (App Router)**: The React framework for production, leveraging React Server Components, server actions, route handlers, and Webpack compilation.
+- **[React 19.2](https://react.dev/)**: The core rendering engine delivering concurrent transitions, optimized hydration, and reactive state updates.
+- **[TypeScript 5](https://www.typescriptlang.org/)**: Full-stack end-to-end type safety guaranteeing robust data modeling and zero runtime interface errors.
+
+### 🎨 Design System & UI Components
+- **[Tailwind CSS v4](https://tailwindcss.com/)**: Next-generation utility-first styling engine utilizing native CSS `@theme inline` variables, high-performance compilation, and clean cascading layers.
+- **[Radix UI Primitives](https://www.radix-ui.com/) (Shadcn UI Architecture)**: Unstyled, fully accessible UI foundations adapted for UniStream22:
+  - **Tabs**: Segmented controllers for schedule days and feed filtering.
+  - **Dialog**: Accessible modal dialogs with backdrop blur and focus trapping.
+  - **DropdownMenu**: User profile, quick navigation, and session actions.
+  - **Avatar**: Visual student and subject initials chips.
+  - **Badge**: Multi-variant priority and metadata indicators (`destructive`, `success`, `accent`, `secondary`).
+  - **Tooltip**: Action hints and keyboard shortcut indicators.
+  - **Skeleton**: Content-aware shimmer placeholders.
+  - **Separator**: Semantic dividers maintaining visual hierarchy.
+- **[Lucide React](https://lucide.dev/)**: Clean, consistent vector iconography.
+
+### 🔤 Typography & Internationalization
+- **[IBM Plex Sans Arabic](https://fonts.google.com/specimen/IBM+Plex+Sans+Arabic)**: The premier technical Arabic digital typeface, offering clean vertical alignment, balanced counter-spaces, and protected cursive ligatures.
+- **[Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans)**: Modern geometric grotesque typeface optimized for tabular numerals, course codes, and dashboard readability.
+- **Bi-Directional Engine**: Custom React Language Context dynamically switching text direction (`dir="rtl"` vs. `dir="ltr"`), document language tags, and localized date formatting.
+
+### 🗄️ Backend, Database & Authentication
+- **[Supabase](https://supabase.com/)**: Cloud database backend hosting PostgreSQL tables for announcements, student profiles, group schedules, and sticky notes via REST APIs.
+- **Next.js Route Handlers (`/api/*`)**: Serverless API endpoints managing authentication token verification, schedule queries, and note synchronization.
+- **JWT & Role-Based Middleware**: Next.js Edge Middleware verifying student session cookies and enforcing role-based route protection (`admin` vs. `student`).
+
+### ⚡ Offline & Mobile Capabilities
+- **`next-pwa` & Google Workbox**: Pre-caching static runtime assets, fonts, and application shell routes.
+- **Web App Manifest (`manifest.json`)**: Configured with custom high-resolution maskable app icons, theme colors, and standalone display modes.
 
 ---
 
-## 📁 Project Structure
+## 📁 Architectural Overview
 
 ```text
 uniStream22/
@@ -148,7 +156,7 @@ uniStream22/
 │   │   ├── ui/                 # Shadcn UI primitives (Tabs, Badge, Dialog, Avatar, ...)
 │   │   ├── home/               # Announcement cards, search bar, week navigation
 │   │   ├── Navbar.tsx          # Main navigation with student account menu
-│   │   ├── UniStreamLogo.tsx   # Official vector brand logo
+│   │   ├── UniStreamLogo.tsx   # Official vector brand emblem
 │   │   ├── ThemeToggle.tsx     # Light/Dark mode switcher
 │   │   └── LanguageToggle.tsx  # Arabic/English switcher
 │   ├── context/                # React Contexts (LanguageContext, ThemeProvider)
@@ -161,54 +169,14 @@ uniStream22/
 
 ---
 
-## 🚀 Getting Started
+## 👥 Contributors & Institutional Context
 
-### Prerequisites
-- [Node.js](https://nodejs.org/) (version `18.18.0` or later recommended)
-- `npm`, `pnpm`, or `yarn`
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/DiaaElsadek/uniStream22.git
-cd uniStream22
-```
-
-### 2. Install Dependencies
-```bash
-npm install
-```
-
-### 3. Configure Environment Variables
-Create a `.env.local` file in the root directory:
-```env
-SUPABASE_URL=your_supabase_project_url
-SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
-```
-
-### 4. Run the Development Server
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) in your browser to view the application.
-
-### 5. Production Build
-To create an optimized production build:
-```bash
-npm run build
-npm run start
-```
-
----
-
-## 👥 Contributors & Acknowledgements
-
-- **Lead Developer**: [Diaa Elsadek](https://linkedin.com/in/diaaelsadek)
-- **Institution**: Higher Technological Institute (HTI) — Computer Science Department
-- **Target Audience**: 4th-Year Computer Science Students (Class of 2026 / Batch 22)
+- **Creator & Lead Developer**: [Diaa Elsadek](https://linkedin.com/in/diaaelsadek)
+- **Academic Institution**: Higher Technological Institute (HTI) — Computer Science Department
+- **Primary Audience**: 4th-Year Computer Science Students (Class of 2026 / Batch 22)
 
 ---
 
 ## 📄 License
 
-This project is maintained for educational purposes by and for the students of the Higher Technological Institute.
+This project is created and maintained for educational purposes by and for the students of the Higher Technological Institute.
