@@ -41,7 +41,7 @@ In higher education environments—particularly in intensive technical faculties
 ### 🎯 2. The Solution: "UniStream"
 The name **UniStream22** encapsulates the core mission of the platform:
 
-$$\text{\textbf{Uni}} \text{ (University \& Unity)} \;+\; \text{\textbf{Stream}} \text{ (Continuous Academic Flow)} \;+\; \text{\textbf{22}} \text{ (Batch 22 / Senior Class)}$$
+> **Uni** *(University & Unity)* &nbsp;+&nbsp; **Stream** *(Continuous Academic Flow)* &nbsp;+&nbsp; **22** *(Batch 22 / Senior Class)*
 
 Rather than acting as a static, bureaucratic university website, **UniStream22 re-engineers student life as a calm, personal, and centralized digital stream**:
 
