@@ -284,7 +284,7 @@ export default function NotesPage() {
       <div
         key={note.id}
         className={cn(
-          "group flex flex-col rounded-2xl border p-4 transition-all duration-200 h-64 shadow-2xs hover:-translate-y-1 hover:shadow-md bg-card/90 backdrop-blur-xs",
+          "group flex flex-col rounded-xl border p-4 transition-colors duration-150 h-64 shadow-2xs bg-card",
           style.card,
           style.border
         )}
@@ -303,7 +303,7 @@ export default function NotesPage() {
                   type="button"
                   onClick={() => togglePin(note.id)}
                   className={cn(
-                    "p-1.5 rounded-lg transition-all duration-150 cursor-pointer active:scale-95",
+                    "p-1.5 rounded-lg transition-colors duration-150 cursor-pointer",
                     note.isPinned
                       ? "text-primary bg-primary/20 shadow-xs"
                       : "text-muted-foreground hover:text-foreground hover:bg-background/60"
@@ -327,7 +327,7 @@ export default function NotesPage() {
                 <button
                   type="button"
                   onClick={() => changeColor(note.id)}
-                  className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-background/60 transition-all duration-150 cursor-pointer active:scale-95"
+                  className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-background/60 transition-colors duration-150 cursor-pointer"
                   aria-label={t("notes.colorTooltip")}
                 >
                   <Palette className="h-3.5 w-3.5" aria-hidden="true" />
@@ -341,7 +341,7 @@ export default function NotesPage() {
                 <button
                   type="button"
                   onClick={() => deleteNote(note.id)}
-                  className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/15 transition-all duration-150 cursor-pointer active:scale-95"
+                  className="p-1.5 rounded-lg text-muted-foreground hover:text-destructive hover:bg-destructive/15 transition-colors duration-150 cursor-pointer"
                   aria-label={t("notes.deleteTooltip")}
                 >
                   <Trash2 className="h-3.5 w-3.5" aria-hidden="true" />

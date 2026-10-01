@@ -133,28 +133,21 @@ export default function SelectSchedulePage() {
               <Card
                 key={subj}
                 className={cn(
-                  "border transition-all duration-200 rounded-2xl shadow-2xs overflow-hidden",
+                  "border transition-colors duration-150 rounded-xl shadow-2xs overflow-hidden",
                   isConfigured
-                    ? "border-primary/50 bg-card ring-1 ring-primary/20"
-                    : "border-border/80 bg-card/95 hover:border-border-strong"
+                    ? "border-primary/50 bg-card"
+                    : "border-border bg-card hover:border-border-strong"
                 )}
               >
-                <CardContent className="p-4 sm:p-5 flex flex-col gap-4">
+                <CardContent className="p-4 sm:p-5 flex flex-col gap-3.5">
                   <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3">
-                      <Avatar className="h-10 w-10 rounded-xl border-primary/20 bg-primary/10">
-                        <AvatarFallback className="rounded-xl bg-primary/10 text-primary font-bold">
-                          {initial}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <h3 className="text-base font-bold text-foreground">
-                          {subj}
-                        </h3>
-                        <p className="text-xs text-muted-foreground font-medium">
-                          {t("selectSchedule.coursePrefix")} #{index + 1}
-                        </p>
-                      </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        {subj}
+                      </h3>
+                      <p className="text-xs text-muted-foreground font-medium">
+                        {t("selectSchedule.coursePrefix")} #{index + 1}
+                      </p>
                     </div>
 
                     <Badge
@@ -178,10 +171,10 @@ export default function SelectSchedulePage() {
                         type="button"
                         onClick={() => handleSelect(subj, null)}
                         className={cn(
-                          "px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer",
+                          "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer",
                           currentVal === null
-                            ? "bg-secondary text-foreground border-border shadow-xs font-bold"
-                            : "bg-background/60 text-muted-foreground border-border/60 hover:bg-secondary/70 hover:text-foreground"
+                            ? "bg-secondary text-foreground border-border shadow-xs font-semibold"
+                            : "bg-background text-muted-foreground border-border hover:bg-secondary hover:text-foreground"
                         )}
                       >
                         {t("selectSchedule.noneOption")}
@@ -195,10 +188,10 @@ export default function SelectSchedulePage() {
                             type="button"
                             onClick={() => handleSelect(subj, num)}
                             className={cn(
-                              "px-3 py-1.5 rounded-lg text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1",
+                              "px-3 py-1.5 rounded-lg text-xs font-medium border transition-colors cursor-pointer flex items-center gap-1",
                               active
-                                ? "bg-primary text-primary-foreground border-primary shadow-xs font-bold scale-[1.02]"
-                                : "bg-background/60 text-foreground border-border/70 hover:border-primary/40 hover:bg-secondary/70"
+                                ? "bg-primary text-primary-foreground border-primary shadow-xs font-semibold"
+                                : "bg-background text-foreground border-border hover:border-border-strong hover:bg-secondary"
                             )}
                           >
                             {active && <Check className="h-3 w-3" />}
@@ -220,7 +213,7 @@ export default function SelectSchedulePage() {
             size="lg"
             variant="primary"
             onClick={() => setShowModal(true)}
-            className="w-full sm:w-auto gap-2 shadow-sm"
+            className="w-full sm:w-auto gap-2 shadow-xs"
           >
             <Save className="h-4 w-4" aria-hidden="true" />
             <span>{t("selectSchedule.saveSchedule")}</span>
@@ -233,7 +226,7 @@ export default function SelectSchedulePage() {
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
-              <Sparkles className="h-4 w-4 text-primary" />
+              <BookOpen className="h-4 w-4 text-primary" />
               <span>{t("selectSchedule.modalTitle")}</span>
             </DialogTitle>
             <DialogDescription>

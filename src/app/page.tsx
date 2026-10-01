@@ -210,18 +210,18 @@ export default function LandingPage() {
       </header>
 
       <main className="flex-1">
-        {/* Hero Section with Ambient Glow */}
-        <section className="relative overflow-hidden pt-12 pb-16 sm:pt-20 sm:pb-24 border-b border-border bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(37,99,235,0.12),transparent_70%)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(59,130,246,0.18),transparent_70%)]">
+        {/* Hero Section */}
+        <section className="relative pt-12 pb-16 sm:pt-20 sm:pb-24 border-b border-border bg-background">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center space-y-6 max-w-3xl mx-auto">
               {/* Academic Badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full text-xs font-semibold bg-background/80 border border-primary/25 text-foreground backdrop-blur-md shadow-xs animate-float-gentle">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md text-xs font-medium bg-secondary text-foreground border border-border">
                 <Sparkles className="h-3.5 w-3.5 text-primary" aria-hidden="true" />
                 <span>{t("landing.heroBadge")}</span>
               </div>
 
               {/* Headline */}
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-foreground leading-[1.18]">
+              <h1 className="text-3xl sm:text-5xl font-bold tracking-tight text-foreground leading-tight">
                 {t("landing.heroTitle")}
               </h1>
 
@@ -237,7 +237,7 @@ export default function LandingPage() {
                     size="lg"
                     variant="primary"
                     onClick={() => router.push("/home")}
-                    className="w-full sm:w-auto gap-2 px-6 text-base"
+                    className="w-full sm:w-auto gap-2 px-6 text-sm font-semibold shadow-xs"
                   >
                     <span>{t("landing.launchFeed")}</span>
                     <ArrowIcon className="h-4 w-4" aria-hidden="true" />
@@ -245,13 +245,13 @@ export default function LandingPage() {
                 ) : (
                   <>
                     <Link href="/signup" className="w-full sm:w-auto">
-                      <Button size="lg" variant="primary" className="w-full gap-2 px-6 text-base">
+                      <Button size="lg" variant="primary" className="w-full gap-2 px-6 text-sm font-semibold shadow-xs">
                         <span>{t("landing.getStarted")}</span>
                         <ArrowIcon className="h-4 w-4" aria-hidden="true" />
                       </Button>
                     </Link>
                     <Link href="/login" className="w-full sm:w-auto">
-                      <Button size="lg" variant="outline" className="w-full gap-2 px-6 text-base">
+                      <Button size="lg" variant="outline" className="w-full gap-2 px-6 text-sm font-medium shadow-xs">
                         <span>{t("landing.signInAccount")}</span>
                       </Button>
                     </Link>
@@ -260,17 +260,17 @@ export default function LandingPage() {
               </div>
 
               {/* Trust Indicators */}
-              <div className="pt-4 flex flex-wrap items-center justify-center gap-5 text-xs text-muted-foreground">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/60 border border-border/60">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
+              <div className="pt-4 flex flex-wrap items-center justify-center gap-4 text-xs text-muted-foreground">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary/60 border border-border font-medium">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
                   <span>{t("landing.trustId")}</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/60 border border-border/60">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary/60 border border-border font-medium">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
                   <span>{t("landing.trustNoAds")}</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-secondary/60 border border-border/60">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" aria-hidden="true" />
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-secondary/60 border border-border font-medium">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" aria-hidden="true" />
                   <span>{t("landing.trustPwa")}</span>
                 </span>
               </div>
@@ -278,28 +278,28 @@ export default function LandingPage() {
 
             {/* Live-Feel UI Preview Mockup */}
             <div id="preview" className="mt-12 sm:mt-16 max-w-5xl mx-auto">
-              <div className="rounded-2xl border border-border/80 bg-card p-2 sm:p-4 shadow-xl shadow-black/5 dark:shadow-black/20">
+              <div className="rounded-xl border border-border bg-card p-2 sm:p-3 shadow-xs">
                 {/* Mock Browser Header */}
-                <div className="flex items-center justify-between pb-3 px-2 border-b border-border/80 text-xs text-muted-foreground">
+                <div className="flex items-center justify-between pb-2.5 px-2 border-b border-border text-xs text-muted-foreground">
                   <div className="flex items-center gap-1.5">
-                    <span className="w-3 h-3 rounded-full bg-red-400 dark:bg-red-500/80" />
-                    <span className="w-3 h-3 rounded-full bg-amber-400 dark:bg-yellow-500/80" />
-                    <span className="w-3 h-3 rounded-full bg-emerald-400 dark:bg-green-500/80" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-border-strong" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-border-strong" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-border-strong" />
                   </div>
-                  <div className="flex items-center gap-1.5 px-3 py-1 rounded-md bg-secondary text-[11px] font-mono text-muted-foreground truncate max-w-xs sm:max-w-md">
+                  <div className="flex items-center gap-1.5 px-3 py-0.5 rounded-md bg-secondary text-[11px] font-mono text-muted-foreground truncate max-w-xs sm:max-w-md">
                     <Lock className="w-3 h-3 text-muted-foreground shrink-0" />
                     <span>unistream22.vercel.app/home</span>
                   </div>
-                  <div className="text-[11px] font-semibold text-foreground">
+                  <div className="text-[11px] font-medium text-foreground">
                     {t("landing.previewSemester")}
                   </div>
                 </div>
 
                 {/* Mock Content Layout */}
-                <div className="p-4 sm:p-6 grid grid-cols-1 md:grid-cols-3 gap-4 bg-background/50 rounded-b-xl">
+                <div className="p-3.5 sm:p-5 grid grid-cols-1 md:grid-cols-3 gap-4 bg-secondary/20 rounded-b-lg">
                   {/* Left Column: Sample Announcement Card */}
-                  <div className="md:col-span-2 space-y-3">
-                    <div className="flex items-center justify-between text-xs text-muted-foreground pb-1">
+                  <div className="md:col-span-2 space-y-2.5">
+                    <div className="flex items-center justify-between text-xs text-muted-foreground pb-0.5">
                       <span className="font-semibold text-foreground uppercase tracking-wider">
                         {t("landing.previewLatestAnnounce")}
                       </span>
@@ -308,18 +308,18 @@ export default function LandingPage() {
                       </span>
                     </div>
 
-                    <div className="rounded-xl border border-border bg-card p-5 space-y-3 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-200 shadow-2xs">
+                    <div className="rounded-xl border border-border bg-card p-4 space-y-2.5 shadow-2xs">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-destructive/10 text-destructive border border-destructive/20">
-                          <span className="w-1.5 h-1.5 rounded-full bg-destructive animate-pulse" />
+                        <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md text-xs font-medium bg-destructive/10 text-destructive border border-destructive/20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-destructive" />
                           {t("landing.previewHighPriority")}
                         </span>
-                        <span className="text-xs text-muted-foreground inline-flex items-center gap-1">
+                        <span className="text-xs text-muted-foreground inline-flex items-center gap-1 font-mono">
                           <Hash className="w-3 h-3" /> {t("landing.previewWeek")}
                         </span>
                       </div>
 
-                      <h4 className="text-base font-bold text-foreground">
+                      <h4 className="text-base font-semibold text-foreground">
                         {t("landing.previewAnnounceTitle")}
                       </h4>
 
@@ -327,7 +327,7 @@ export default function LandingPage() {
                         {t("landing.previewAnnounceContent")}
                       </p>
 
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground pt-2 border-t border-border">
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground pt-2 border-t border-border/60">
                         <span className="inline-flex items-center gap-1 font-medium text-foreground">
                           <BookOpen className="w-3.5 h-3.5 text-primary" /> {t("landing.previewCourseName")}
                         </span>
@@ -342,17 +342,17 @@ export default function LandingPage() {
                   </div>
 
                   {/* Right Column: Schedule & Sticky Note Snippet */}
-                  <div className="space-y-4">
+                  <div className="space-y-3.5">
                     <div className="space-y-2">
                       <span className="text-xs font-semibold text-foreground uppercase tracking-wider">
                         {t("landing.previewTodayLecture")}
                       </span>
-                      <div className="rounded-xl border border-primary/40 bg-card p-4 space-y-2 shadow-2xs">
+                      <div className="rounded-xl border border-border bg-card p-3.5 space-y-2 shadow-2xs">
                         <div className="flex items-center justify-between">
-                          <span className="text-xs font-bold text-foreground">
+                          <span className="text-xs font-semibold text-foreground">
                             {t("landing.previewCloudComputing")}
                           </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-primary text-primary-foreground font-semibold">
+                          <span className="text-[10px] px-2 py-0.5 rounded-md bg-primary text-primary-foreground font-medium">
                             {t("common.today")}
                           </span>
                         </div>
@@ -367,7 +367,7 @@ export default function LandingPage() {
                       </div>
                     </div>
 
-                    <div className="rounded-xl border border-amber-500/30 bg-amber-500/10 p-3.5 space-y-1.5 shadow-2xs">
+                    <div className="rounded-lg border border-amber-500/20 bg-amber-500/5 p-3 space-y-1 shadow-2xs">
                       <div className="flex items-center justify-between text-xs text-amber-800 dark:text-amber-300 font-semibold">
                         <span>{t("landing.previewProjectNote")}</span>
                         <StickyNote className="w-3.5 h-3.5" />
@@ -384,35 +384,35 @@ export default function LandingPage() {
         </section>
 
         {/* Feature Highlights Grid */}
-        <section id="features" className="py-16 sm:py-24 border-b border-border bg-background">
+        <section id="features" className="py-16 sm:py-20 border-b border-border bg-background">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 sm:mb-16">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+            <div className="text-center space-y-2.5 max-w-2xl mx-auto mb-10 sm:mb-14">
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
                 {t("landing.featuresBadge")}
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
                 {t("landing.featuresTitle")}
               </h2>
-              <p className="text-sm sm:text-base text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {t("landing.featuresSubtitle")}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {FEATURES.map((feat) => {
                 const Icon = feat.icon;
                 return (
-                  <Card key={feat.title} hoverable className="group border-border hover:border-primary/40 transition-all duration-200">
-                    <CardHeader className="pb-3">
+                  <Card key={feat.title} className="border-border bg-card shadow-2xs hover:border-border-strong transition-colors duration-150">
+                    <CardHeader className="pb-2.5">
                       <div className="flex items-center justify-between mb-2">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary text-primary group-hover:scale-105 group-hover:bg-primary/10 transition-all duration-200">
+                        <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-secondary text-primary">
                           <Icon className="h-5 w-5" aria-hidden="true" />
                         </div>
-                        <span className="text-[11px] font-semibold text-muted-foreground px-2.5 py-0.5 rounded-full bg-secondary/80 border border-border/60">
+                        <span className="text-[11px] font-medium text-muted-foreground px-2 py-0.5 rounded-md bg-secondary border border-border">
                           {feat.badge}
                         </span>
                       </div>
-                      <CardTitle className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                      <CardTitle className="text-base font-semibold text-foreground">
                         {feat.title}
                       </CardTitle>
                     </CardHeader>
@@ -429,54 +429,54 @@ export default function LandingPage() {
         </section>
 
         {/* Curriculum Section */}
-        <section id="courses" className="py-16 sm:py-24 border-b border-border bg-secondary/20">
+        <section id="courses" className="py-16 sm:py-20 border-b border-border bg-secondary/15">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 sm:mb-16">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+            <div className="text-center space-y-2.5 max-w-2xl mx-auto mb-10 sm:mb-14">
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
                 {t("landing.curriculumBadge")}
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
                 {t("landing.curriculumTitle")}
               </h2>
-              <p className="text-sm sm:text-base text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {t("landing.curriculumSubtitle")}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
               {COURSES.map((course, idx) => (
                 <div
                   key={course.code}
-                  className="group rounded-xl border border-border bg-card p-5 space-y-2 hover:border-primary/40 hover:-translate-y-0.5 hover:shadow-md transition-all duration-200 shadow-2xs"
+                  className="rounded-xl border border-border bg-card p-4 sm:p-5 space-y-2 hover:border-border-strong transition-colors duration-150 shadow-2xs"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-xs font-mono font-bold text-primary px-2.5 py-0.5 rounded-md bg-primary/10">
+                    <span className="text-xs font-mono font-semibold text-primary px-2 py-0.5 rounded-md bg-primary/10">
                       {course.code}
                     </span>
                     <span className="text-xs text-muted-foreground font-medium">#{idx + 1}</span>
                   </div>
 
-                  <h3 className="text-base font-bold text-foreground group-hover:text-primary transition-colors">
+                  <h3 className="text-base font-semibold text-foreground">
                     {course.name}
                   </h3>
-                  <p className="text-xs text-muted-foreground leading-relaxed pt-1.5 border-t border-border/70">
+                  <p className="text-xs text-muted-foreground leading-relaxed pt-1.5 border-t border-border/60">
                     {course.description}
                   </p>
                 </div>
               ))}
 
               {/* Extra Summary Box */}
-              <div className="rounded-xl border border-dashed border-border bg-card/60 p-5 flex flex-col justify-between hover:border-primary/40 transition-colors">
+              <div className="rounded-xl border border-dashed border-border bg-card p-4 sm:p-5 flex flex-col justify-between hover:border-border-strong transition-colors">
                 <div className="space-y-2">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
-                    <Layers className="h-5 w-5" />
+                  <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                    <Layers className="h-4.5 w-4.5" />
                   </div>
-                  <h3 className="text-base font-bold text-foreground">{t("landing.groupsCardTitle")}</h3>
+                  <h3 className="text-base font-semibold text-foreground">{t("landing.groupsCardTitle")}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">
                     {t("landing.groupsCardDesc")}
                   </p>
                 </div>
-                <Link href={isLoggedIn ? "/selectschedule" : "/signup"} className="pt-4">
+                <Link href={isLoggedIn ? "/selectschedule" : "/signup"} className="pt-3">
                   <Button variant="outline" size="sm" className="w-full gap-1 text-xs">
                     <span>{t("landing.configureGroups")}</span>
                     <ChevronIcon className="h-3.5 w-3.5" />
@@ -488,25 +488,25 @@ export default function LandingPage() {
         </section>
 
         {/* Workflow / How It Works */}
-        <section id="workflow" className="py-16 sm:py-24 border-b border-border bg-background">
+        <section id="workflow" className="py-16 sm:py-20 border-b border-border bg-background">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="text-center space-y-3 max-w-2xl mx-auto mb-12 sm:mb-16">
-              <span className="text-xs font-bold uppercase tracking-wider text-primary">
+            <div className="text-center space-y-2.5 max-w-2xl mx-auto mb-10 sm:mb-14">
+              <span className="text-xs font-semibold uppercase tracking-wider text-primary">
                 {t("landing.workflowBadge")}
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+              <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
                 {t("landing.workflowTitle")}
               </h2>
-              <p className="text-sm sm:text-base text-muted-foreground">
+              <p className="text-xs sm:text-sm text-muted-foreground">
                 {t("landing.workflowSubtitle")}
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {STEPS.map((s) => (
-                <div key={s.step} className="flex flex-col items-start space-y-3 p-5 rounded-xl border border-border/60 bg-card/40 hover:border-primary/30 transition-colors">
-                  <span className="text-3xl font-extrabold text-primary/40 font-mono">{s.step}</span>
-                  <h3 className="text-lg font-bold text-foreground">{s.title}</h3>
+                <div key={s.step} className="flex flex-col items-start space-y-2.5 p-5 rounded-xl border border-border bg-card shadow-2xs">
+                  <span className="text-xl font-bold text-primary font-mono">{s.step}</span>
+                  <h3 className="text-base font-semibold text-foreground">{s.title}</h3>
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{s.description}</p>
                 </div>
               ))}
@@ -515,12 +515,12 @@ export default function LandingPage() {
         </section>
 
         {/* Final CTA Banner */}
-        <section className="py-16 sm:py-20 bg-gradient-to-b from-secondary/40 to-background border-b border-border">
-          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center space-y-6">
-            <h2 className="text-2xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+        <section className="py-14 sm:py-16 bg-secondary/30 border-b border-border">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 text-center space-y-5">
+            <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
               {t("landing.ctaTitle")}
             </h2>
-            <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
+            <p className="text-xs sm:text-sm text-muted-foreground max-w-xl mx-auto leading-relaxed">
               {t("landing.ctaSubtitle")}
             </p>
             <div className="pt-2 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -529,7 +529,7 @@ export default function LandingPage() {
                   size="lg"
                   variant="primary"
                   onClick={() => router.push("/home")}
-                  className="w-full sm:w-auto gap-2 px-8 text-base"
+                  className="w-full sm:w-auto gap-2 px-6 text-sm font-semibold shadow-xs"
                 >
                   <span>{t("landing.ctaOpenFeed")}</span>
                   <ArrowIcon className="h-4 w-4" aria-hidden="true" />
@@ -537,13 +537,13 @@ export default function LandingPage() {
               ) : (
                 <>
                   <Link href="/signup" className="w-full sm:w-auto">
-                    <Button size="lg" variant="primary" className="w-full gap-2 px-8 text-base">
+                    <Button size="lg" variant="primary" className="w-full gap-2 px-6 text-sm font-semibold shadow-xs">
                       <span>{t("landing.ctaCreateAccount")}</span>
                       <ArrowIcon className="h-4 w-4" aria-hidden="true" />
                     </Button>
                   </Link>
                   <Link href="/login" className="w-full sm:w-auto">
-                    <Button size="lg" variant="outline" className="w-full gap-2 px-8 text-base">
+                    <Button size="lg" variant="outline" className="w-full gap-2 px-6 text-sm font-medium shadow-xs">
                       <span>{t("landing.ctaSignIn")}</span>
                     </Button>
                   </Link>

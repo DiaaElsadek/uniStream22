@@ -85,12 +85,12 @@ export default function NewsTable({ items, onEdit, onDelete }: NewsTableProps) {
                   <td className="py-3 px-4 whitespace-nowrap">
                     <span
                       className={cn(
-                        "inline-flex px-2 py-0.5 rounded-full text-[11px] font-semibold uppercase",
+                        "inline-flex px-2 py-0.5 rounded-md text-[11px] font-medium uppercase border",
                         item.priorty === "high"
-                          ? "bg-destructive/10 text-destructive"
+                          ? "bg-destructive/10 text-destructive border-destructive/20"
                           : item.priorty === "low"
-                          ? "bg-primary/10 text-primary"
-                          : "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
+                          ? "bg-primary/10 text-primary border-primary/20"
+                          : "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20"
                       )}
                     >
                       {item.priorty === "high"
@@ -104,10 +104,10 @@ export default function NewsTable({ items, onEdit, onDelete }: NewsTableProps) {
                   <td className="py-3 px-4 whitespace-nowrap">
                     <span
                       className={cn(
-                        "inline-flex px-2 py-0.5 rounded-full text-[11px] font-medium",
+                        "inline-flex px-2 py-0.5 rounded-md text-[11px] font-medium border",
                         item.publish
-                          ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                          : "bg-secondary text-muted-foreground"
+                          ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border-emerald-500/20"
+                          : "bg-secondary text-muted-foreground border-border"
                       )}
                     >
                       {item.publish ? t("dashboard.publishedBadge") : t("dashboard.draftBadge")}

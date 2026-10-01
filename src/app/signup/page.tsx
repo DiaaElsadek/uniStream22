@@ -207,7 +207,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 selection:bg-primary/20 selection:text-primary bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(37,99,235,0.08),transparent_70%)] dark:bg-[radial-gradient(ellipse_80%_60%_at_50%_-10%,rgba(59,130,246,0.12),transparent_70%)]">
+    <div className="min-h-screen bg-background text-foreground flex flex-col justify-between p-4 sm:p-6 selection:bg-primary/20 selection:text-primary">
       {/* Top Bar with Brand, Language Toggle & Theme Toggle */}
       <div className="w-full max-w-6xl mx-auto flex items-center justify-between py-2">
         <Link
@@ -225,12 +225,12 @@ export default function SignupPage() {
 
       {/* Main Signup Card */}
       <div className="w-full max-w-lg mx-auto my-8">
-        <Card className="rounded-2xl border-border/80 bg-card/95 backdrop-blur-md shadow-xl shadow-black/5 dark:shadow-black/20">
-          <CardHeader className="text-center pb-6 space-y-2">
-            <div className="mx-auto mb-1 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary border border-primary/20 shadow-2xs">
+        <Card className="rounded-xl border border-border bg-card shadow-xs">
+          <CardHeader className="text-center pb-5 space-y-2">
+            <div className="mx-auto mb-1 flex h-10 w-10 items-center justify-center rounded-lg bg-secondary text-primary border border-border">
               <GraduationCap className="h-5 w-5" aria-hidden="true" />
             </div>
-            <CardTitle className="text-2xl font-extrabold tracking-tight text-foreground">
+            <CardTitle className="text-2xl font-bold tracking-tight text-foreground">
               {t("auth.signupTitle")}
             </CardTitle>
             <CardDescription className="text-xs sm:text-sm text-muted-foreground">
@@ -436,7 +436,7 @@ export default function SignupPage() {
                 variant="primary"
                 isLoading={loading}
                 disabled={!formValid}
-                className="w-full h-11 mt-3 text-sm font-semibold shadow-md shadow-primary/20"
+                className="w-full h-10 mt-3 text-sm font-semibold shadow-xs"
               >
                 <span>{loading ? t("auth.registering") : t("auth.registerBtn")}</span>
                 {!loading && <ArrowIcon className="h-4 w-4 ms-1.5" aria-hidden="true" />}

@@ -36,9 +36,9 @@ export default function WeekNav({
         aria-selected={activeWeek === null}
         onClick={() => onSelectWeek(null)}
         className={cn(
-          "inline-flex items-center justify-center rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all duration-150 cursor-pointer active:scale-95 select-none",
+          "inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-xs font-medium transition-colors duration-150 cursor-pointer select-none",
           activeWeek === null
-            ? "bg-primary text-primary-foreground shadow-xs shadow-primary/25 border border-transparent"
+            ? "bg-primary text-primary-foreground shadow-xs font-semibold"
             : "bg-card text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-border-strong border border-border shadow-2xs"
         )}
       >
@@ -57,9 +57,9 @@ export default function WeekNav({
             aria-selected={isSelected}
             onClick={() => onSelectWeek(weekNum)}
             className={cn(
-              "inline-flex items-center justify-center rounded-lg px-3.5 py-1.5 text-xs font-semibold transition-all duration-150 cursor-pointer active:scale-95 select-none",
+              "inline-flex items-center justify-center rounded-lg px-3 py-1.5 text-xs font-medium transition-colors duration-150 cursor-pointer select-none",
               isSelected
-                ? "bg-primary text-primary-foreground shadow-xs shadow-primary/25 border border-transparent"
+                ? "bg-primary text-primary-foreground shadow-xs font-semibold"
                 : "bg-card text-muted-foreground hover:text-foreground hover:bg-secondary hover:border-border-strong border border-border shadow-2xs"
             )}
           >

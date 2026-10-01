@@ -33,7 +33,7 @@ const priorityConfig = {
   high: {
     key: "home.highPriority",
     variant: "destructive" as const,
-    dotColor: "bg-destructive animate-pulse",
+    dotColor: "bg-destructive",
   },
   medium: {
     key: "home.mediumPriority",
@@ -65,40 +65,32 @@ export default function NewsCard({ item }: { item: NewsItem }) {
       })
     : null;
 
-  const subjectInitial = subjectName.charAt(0);
   const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
   return (
-    <Card hoverable className="group/card flex flex-col h-full overflow-hidden transition-all duration-200 hover:border-primary/40 hover:shadow-md bg-card/95 backdrop-blur-xs">
-      <CardHeader className="pb-3 space-y-3">
-        {/* Top Badges using shadcn Badge */}
+    <Card hoverable className="group/card flex flex-col h-full rounded-xl border border-border bg-card transition-colors duration-150 hover:border-border-strong">
+      <CardHeader className="pb-2.5 space-y-2.5">
+        {/* Top Badges */}
         <div className="flex items-center justify-between gap-2">
           <Badge
             variant={priority.variant}
             dotColor={priority.dotColor}
             size="sm"
-            className="font-semibold shadow-2xs"
+            className="font-medium"
           >
             {t(priority.key)}
           </Badge>
 
-          <Badge variant="outline" size="sm" className="gap-1 font-mono text-[11px] text-muted-foreground bg-secondary/40">
+          <span className="inline-flex items-center gap-1 font-mono text-[11px] text-muted-foreground">
             <Hash className="w-3 h-3 text-muted-foreground" aria-hidden="true" />
             {t("home.week")} {item.week}
-          </Badge>
+          </span>
         </div>
 
-        {/* Title with Subject Avatar Initial */}
-        <div className="flex items-start gap-2.5">
-          <Avatar className="h-8 w-8 shrink-0 mt-0.5 border-primary/20 bg-primary/10">
-            <AvatarFallback className="bg-primary/10 text-primary text-xs font-bold">
-              {subjectInitial}
-            </AvatarFallback>
-          </Avatar>
-          <CardTitle className="text-base sm:text-lg font-bold leading-snug line-clamp-2 text-foreground group-hover/card:text-primary transition-colors duration-150">
-            {item.title || "Untitled Announcement"}
-          </CardTitle>
-        </div>
+        {/* Title */}
+        <CardTitle className="text-base font-semibold leading-snug line-clamp-2 text-foreground group-hover/card:text-primary transition-colors">
+          {item.title || "Untitled Announcement"}
+        </CardTitle>
       </CardHeader>
 
       <CardContent className="flex-1 pb-4">
@@ -106,14 +98,14 @@ export default function NewsCard({ item }: { item: NewsItem }) {
           {item.content || "No detailed description provided."}
         </p>
 
-        {/* Metadata Grid */}
-        <div className="flex flex-wrap items-center gap-y-1.5 gap-x-2 text-xs text-muted-foreground pt-3 border-t border-border/70">
-          <Badge variant="secondary" size="sm" className="gap-1 font-medium bg-secondary/70">
+        {/* Metadata Details */}
+        <div className="flex flex-wrap items-center gap-y-1.5 gap-x-2 text-xs text-muted-foreground pt-3 border-t border-border/60">
+          <Badge variant="secondary" size="sm" className="gap-1 font-medium">
             <BookOpen className="w-3 h-3 text-primary" aria-hidden="true" />
             <span className="truncate max-w-[130px] sm:max-w-[170px]">{subjectName}</span>
           </Badge>
 
-          <Badge variant="outline" size="sm" className="gap-1 font-medium bg-background/50">
+          <Badge variant="outline" size="sm" className="gap-1 font-medium">
             <Users className="w-3 h-3 text-muted-foreground" aria-hidden="true" />
             <span>{groupName}</span>
           </Badge>
@@ -130,10 +122,10 @@ export default function NewsCard({ item }: { item: NewsItem }) {
       <CardFooter className="pt-0">
         <Link
           href={`/new/${item.id}`}
-          className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border/80 bg-secondary/50 px-3 py-2 text-xs font-semibold text-foreground hover:bg-primary hover:text-primary-foreground hover:border-transparent transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary shadow-2xs group/btn"
+          className="inline-flex w-full items-center justify-center gap-1.5 rounded-lg border border-border bg-secondary/50 px-3 py-2 text-xs font-medium text-foreground hover:bg-secondary hover:text-foreground hover:border-border-strong transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
         >
           <span>{t("home.readMore")}</span>
-          <ArrowIcon className="w-3.5 h-3.5 transition-transform duration-150 group-hover/btn:translate-x-1 rtl:group-hover/btn:-translate-x-1" aria-hidden="true" />
+          <ArrowIcon className="w-3.5 h-3.5 text-muted-foreground" aria-hidden="true" />
         </Link>
       </CardFooter>
     </Card>

@@ -171,7 +171,7 @@ export default function SchedulePage() {
                 >
                   <span>{t(`schedule.days.${day}`)}</span>
                   {isToday && (
-                    <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+                    <span className="h-1.5 w-1.5 rounded-full bg-primary" />
                   )}
                 </TabsTrigger>
               );
@@ -240,23 +240,23 @@ export default function SchedulePage() {
                 <Card
                   key={day}
                   className={cn(
-                    "flex flex-col h-full rounded-2xl border transition-all duration-200 overflow-hidden",
+                    "flex flex-col h-full rounded-xl border transition-colors duration-150 overflow-hidden",
                     isToday
-                      ? "border-primary/50 shadow-md shadow-primary/10 ring-2 ring-primary/20 bg-card"
-                      : "border-border/80 shadow-2xs hover:border-border-strong bg-card/95"
+                      ? "border-primary/60 bg-card shadow-xs"
+                      : "border-border bg-card shadow-2xs hover:border-border-strong"
                   )}
                 >
                   <CardHeader className={cn(
-                    "pb-3.5 border-b border-border/80",
-                    isToday ? "bg-primary/5" : "bg-secondary/30"
+                    "py-3 px-4 border-b border-border/80",
+                    isToday ? "bg-primary/5" : "bg-secondary/40"
                   )}>
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
-                        <CardTitle className="text-base font-bold text-foreground">
+                        <CardTitle className="text-base font-semibold text-foreground">
                           {t(`schedule.days.${day}`)}
                         </CardTitle>
                         {isToday && (
-                          <Badge variant="default" size="sm" className="gap-1 font-bold animate-pulse shadow-xs">
+                          <Badge variant="default" size="sm" className="gap-1 font-medium">
                             <Sparkles className="w-3 h-3" />
                             <span>{t("schedule.todayBadge")}</span>
                           </Badge>
@@ -271,9 +271,9 @@ export default function SchedulePage() {
                     </div>
                   </CardHeader>
 
-                  <CardContent className="flex-1 p-4 space-y-3">
+                  <CardContent className="flex-1 p-3.5 space-y-2.5">
                     {sortedLectures.length === 0 ? (
-                      <div className="py-12 text-center text-xs text-muted-foreground">
+                      <div className="py-10 text-center text-xs text-muted-foreground">
                         {t("schedule.noLectures")}
                       </div>
                     ) : (
@@ -282,24 +282,16 @@ export default function SchedulePage() {
                           SUBJECTS[lec.subjectId - 1] || `Course ${lec.subjectId}`;
                         const groupText =
                           lec.groupId === 0 ? t("schedule.global") : `${t("schedule.groupPrefix")} ${lec.groupId}`;
-                        const initial = subjectTitle.charAt(0);
 
                         return (
                           <div
                             key={lec.id}
-                            className="rounded-xl border border-border/80 border-s-4 border-s-primary bg-card/80 p-4 space-y-2.5 hover:border-primary/40 hover:-translate-y-0.5 transition-all duration-150 shadow-2xs group"
+                            className="rounded-lg border border-border/70 border-s-[3px] border-s-primary bg-secondary/20 p-3 space-y-2 transition-colors duration-150 hover:bg-secondary/40 group"
                           >
-                            <div className="flex items-start justify-between gap-2.5">
-                              <div className="flex items-center gap-2">
-                                <Avatar className="h-7 w-7 rounded-lg border-primary/20 bg-primary/10">
-                                  <AvatarFallback className="rounded-lg bg-primary/10 text-primary text-xs font-bold">
-                                    {initial}
-                                  </AvatarFallback>
-                                </Avatar>
-                                <h4 className="text-sm font-bold text-foreground leading-snug group-hover:text-primary transition-colors">
-                                  {subjectTitle}
-                                </h4>
-                              </div>
+                            <div className="flex items-start justify-between gap-2">
+                              <h4 className="text-sm font-semibold text-foreground leading-snug group-hover:text-primary transition-colors">
+                                {subjectTitle}
+                              </h4>
 
                               {lec.groupId !== undefined && (
                                 <Badge variant="secondary" size="sm" className="gap-1 shrink-0 font-medium">
@@ -309,8 +301,8 @@ export default function SchedulePage() {
                               )}
                             </div>
 
-                            <div className="flex flex-wrap items-center gap-y-1 gap-x-2 text-xs text-muted-foreground pt-1">
-                              <Badge variant="accent" size="sm" className="gap-1.5 font-semibold font-mono">
+                            <div className="flex flex-wrap items-center gap-y-1 gap-x-2 text-xs text-muted-foreground">
+                              <Badge variant="accent" size="sm" className="gap-1 font-medium font-mono text-[11px]">
                                 <Clock className="w-3 h-3 text-primary" aria-hidden="true" />
                                 <span>
                                   {lec.startTime ?? "—"} - {lec.endTime ?? "—"}
@@ -318,15 +310,15 @@ export default function SchedulePage() {
                               </Badge>
 
                               {lec.location && (
-                                <Badge variant="outline" size="sm" className="gap-1">
+                                <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
                                   <MapPin className="w-3 h-3 text-muted-foreground" aria-hidden="true" />
                                   <span>{lec.location}</span>
-                                </Badge>
+                                </span>
                               )}
                             </div>
 
                             {lec.description && (
-                              <p className="text-xs text-muted-foreground pt-2 border-t border-border/60 leading-relaxed" dir="auto">
+                              <p className="text-xs text-muted-foreground pt-1.5 border-t border-border/50 leading-relaxed" dir="auto">
                                 {lec.description}
                               </p>
                             )}

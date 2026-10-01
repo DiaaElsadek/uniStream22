@@ -192,22 +192,19 @@ export default function HomePage() {
           {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
-              className="rounded-2xl border border-border/70 p-5 space-y-4 bg-card/60 shadow-xs"
+              className="rounded-xl border border-border p-4 sm:p-5 space-y-3.5 bg-card shadow-2xs"
             >
               <div className="flex justify-between items-center">
-                <Skeleton className="h-5 w-20 rounded-full" />
+                <Skeleton className="h-5 w-20 rounded-md" />
                 <Skeleton className="h-4 w-12 rounded-md" />
               </div>
-              <div className="flex gap-2.5 items-center">
-                <Skeleton className="h-8 w-8 rounded-full shrink-0" />
-                <Skeleton className="h-5 w-3/4" />
+              <Skeleton className="h-5 w-4/5 rounded-md" />
+              <Skeleton className="h-10 w-full rounded-md" />
+              <div className="flex gap-2 pt-2 border-t border-border/60">
+                <Skeleton className="h-5 w-24 rounded-md" />
+                <Skeleton className="h-5 w-16 rounded-md" />
               </div>
-              <Skeleton className="h-12 w-full rounded-md" />
-              <div className="flex gap-2 pt-2 border-t border-border/50">
-                <Skeleton className="h-6 w-24 rounded-full" />
-                <Skeleton className="h-6 w-20 rounded-full" />
-              </div>
-              <Skeleton className="h-9 w-full rounded-lg" />
+              <Skeleton className="h-8 w-full rounded-lg" />
             </div>
           ))}
         </div>

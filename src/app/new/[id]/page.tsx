@@ -39,7 +39,7 @@ const priorityConfig = {
   high: {
     key: "home.highPriority",
     variant: "destructive" as const,
-    dotColor: "bg-destructive animate-pulse",
+    dotColor: "bg-destructive",
   },
   medium: {
     key: "home.mediumPriority",
@@ -255,13 +255,7 @@ export default function NewsDetailsPage() {
               </Badge>
             </div>
 
-            <div className="flex items-start gap-3 pt-1">
-              <Avatar className="h-11 w-11 shrink-0 mt-1 border-primary/20 bg-primary/10">
-                <AvatarFallback className="bg-primary/10 text-primary font-bold text-base">
-                  {subjectInitial}
-                </AvatarFallback>
-              </Avatar>
-
+            <div className="pt-1">
               <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-foreground leading-tight">
                 {newsItem.title || "Untitled Announcement"}
               </h1>

@@ -247,7 +247,7 @@ export default function AddNewsPage() {
       title={t("dashboard.title")}
       description={t("dashboard.subtitle")}
       action={
-        <Button variant="primary" onClick={openCreateModal} className="gap-2 shadow-sm shadow-primary/20">
+        <Button variant="primary" onClick={openCreateModal} className="gap-2 shadow-xs">
           <Plus className="h-4 w-4" aria-hidden="true" />
           <span>{t("dashboard.newAnnouncement")}</span>
         </Button>
@@ -263,45 +263,45 @@ export default function AddNewsPage() {
 
       {/* Summary Statistics */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-        <Card className="rounded-2xl border-border/80 shadow-2xs hover:border-primary/30 transition-all">
-          <CardContent className="p-5 flex items-center justify-between">
+        <Card className="rounded-xl border border-border bg-card shadow-2xs">
+          <CardContent className="p-4 sm:p-5 flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
                 {t("dashboard.totalItems")}
               </p>
-              <h3 className="text-3xl font-extrabold text-foreground mt-1.5">{stats.total}</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground mt-1">{stats.total}</h3>
             </div>
-            <div className="p-3 rounded-xl bg-secondary text-foreground">
-              <Layers className="h-5 w-5 text-primary" aria-hidden="true" />
+            <div className="p-2.5 rounded-lg bg-secondary text-muted-foreground">
+              <Layers className="h-5 w-5" aria-hidden="true" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border-border/80 shadow-2xs hover:border-emerald-500/30 transition-all">
-          <CardContent className="p-5 flex items-center justify-between">
+        <Card className="rounded-xl border border-border bg-card shadow-2xs">
+          <CardContent className="p-4 sm:p-5 flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
                 {t("dashboard.published")}
               </p>
-              <h3 className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1.5">
+              <h3 className="text-2xl sm:text-3xl font-bold text-foreground mt-1">
                 {stats.published}
               </h3>
             </div>
-            <div className="p-3 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+            <div className="p-2.5 rounded-lg bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
               <CheckCircle2 className="h-5 w-5" aria-hidden="true" />
             </div>
           </CardContent>
         </Card>
 
-        <Card className="rounded-2xl border-border/80 shadow-2xs hover:border-amber-500/30 transition-all">
-          <CardContent className="p-5 flex items-center justify-between">
+        <Card className="rounded-xl border border-border bg-card shadow-2xs">
+          <CardContent className="p-4 sm:p-5 flex items-center justify-between">
             <div>
-              <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider">
+              <p className="text-xs text-muted-foreground font-medium uppercase tracking-wider">
                 {t("dashboard.drafts")}
               </p>
-              <h3 className="text-3xl font-extrabold text-muted-foreground mt-1.5">{stats.drafts}</h3>
+              <h3 className="text-2xl sm:text-3xl font-bold text-muted-foreground mt-1">{stats.drafts}</h3>
             </div>
-            <div className="p-3 rounded-xl bg-secondary text-muted-foreground">
+            <div className="p-2.5 rounded-lg bg-secondary text-muted-foreground">
               <Clock className="h-5 w-5" aria-hidden="true" />
             </div>
           </CardContent>
